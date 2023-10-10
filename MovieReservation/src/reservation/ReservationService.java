@@ -4,5 +4,7 @@ import member.Member;
 import movie.Movie;
 
 public interface ReservationService {
-    void createReservation(Member member, Movie movie)
+    void createReservation(Member member);
+    void cancelReservation(Member member);
+
 }
