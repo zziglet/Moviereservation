@@ -1,17 +1,42 @@
 package movie;
 
+import java.util.Arrays;
+
 public class Movie {
-    private String name;
+
+
+	private String theater;
+	private String name;
     private String date;
-    private String time;
+    private String start;
+    private String end;
+    private String rseat[];
+    private String seat[];
+    
+    Movie(){};
 
-    public Movie(String name, String date, String time) {
-        this.name = name;
-        this.date = date;
-        this.time = time;
-    }
+    public Movie(String theater, String name, String date, String start, String end, String[] rseat) {
+		super();
+		this.theater = theater;
+		this.name = name;
+		this.date = date;
+		this.start = start;
+		this.end = end;
+		this.rseat = rseat;
+		this.seat = new String[72];
+		Arrays.fill(seat, "1");
+	}
+    
 
-    public String getName() {
+	public String getTheater() {
+		return theater;
+	}
+
+	public void setTheater(String theater) {
+		this.theater = theater;
+	}
+
+	public String getName() {
         return name;
     }
 
@@ -27,11 +52,36 @@ public class Movie {
         this.date = date;
     }
 
-    public String getTime() {
-        return time;
-    }
+	public String getStart() {
+		return start;
+	}
 
-    public void setTime(String time) {
-        this.time = time;
-    }
+	public void setStart(String start) {
+		this.start = start;
+	}
+
+	public String getEnd() {
+		return end;
+	}
+
+	public void setEnd(String end) {
+		this.end = end;
+	}
+    
+    public String[] getRseat() {
+		return rseat;
+	}
+
+	public void setRseat(String[] rseat) {
+		this.rseat = rseat;
+	}
+
+	public String[] getSeat() {
+		return seat;
+	}
+
+	public void setSeat(String[] seat) {
+		this.seat = seat;
+	}
+
 }
