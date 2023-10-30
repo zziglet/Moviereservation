@@ -1,6 +1,5 @@
-package movie;
+package Movie;
 
-import java.util.Arrays;
 
 public class Movie {
 
@@ -15,7 +14,7 @@ public class Movie {
     
     Movie(){};
 
-    public Movie(String theater, String name, String date, String start, String end, String[] rseat) {
+    public Movie(String theater, String name, String date, String start, String end, String[] rseat, String[] seat) {
 		super();
 		this.theater = theater;
 		this.name = name;
@@ -23,8 +22,8 @@ public class Movie {
 		this.start = start;
 		this.end = end;
 		this.rseat = rseat;
-		this.seat = new String[72];
-		Arrays.fill(seat, "1");
+		this.seat = seat;
+
 	}
     
 
@@ -85,3 +84,4 @@ public class Movie {
 	}
 
 }
+
