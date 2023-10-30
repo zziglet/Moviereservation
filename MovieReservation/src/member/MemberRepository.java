@@ -30,10 +30,14 @@ public class MemberRepository {
     public void SaveMovie(Member member, Movie movie){
         String path =  "src/user/"+member.getId()+".txt";
         File file = new File(path);
+        
 
     }
-    public Member find(String id){
+    public void DeleteMembertxtMovie(Movie movie, Member member){
 
+    }
+
+    public void FindMovie(Member member){
 
     }
 }
