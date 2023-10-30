@@ -1,6 +1,6 @@
-package member;
+package Member;
 
-import movie.Movie;
+import Movie.Movie;
 
 import java.io.*;
 
