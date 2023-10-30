@@ -1,4 +1,4 @@
-package menu;
+package Menu;
 
 public class SignUpInMenu{
 
