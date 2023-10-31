@@ -19,7 +19,7 @@ public class MainMenu {
 
             switch(input){
                 case 1:
-                    MemberService.CreateReservation();
+                    //MemberService.CreateReservation();
                     break;
                 case 2:
                     MyPageMenu.ShowMenu2();
