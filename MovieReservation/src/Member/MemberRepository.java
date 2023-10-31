@@ -1,6 +1,6 @@
 package Member;
 
-import movie.Movie;
+import Movie.Movie;
 
 import java.io.*;
 import java.util.ArrayList;

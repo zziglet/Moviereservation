@@ -1,6 +1,6 @@
 package Member;
 
-import movie.Movie;
+import Movie.Movie;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
