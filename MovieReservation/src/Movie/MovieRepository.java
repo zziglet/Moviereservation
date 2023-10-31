@@ -6,55 +6,58 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MovieRepository {
-
-
-    public void saveMovietxt(Movie movie, String seat) {
+    public void SaveMovietxt(Movie movie, String seat) {
 
     }
 
-    public void DeleteMovietxt(Movie movie, String seat) throws IOException {
-        //tempFile이라는 임시 저장 파일을 만들어서 좌석 번호 삭제 후 임시 파일에 저장 -> 임시 파일을 기존 파일로 변경
-        File inputFile = new File("movie.txt");
-        File tempFile = new File("temp_movie.txt");
 
-        //좌석 번호들 리스트로
-        List<String> seatsCancelList=Arrays.asList(seat.split("\\s+"));
+    public void DeleteMovietxt(Movie movie, String seat) {
+        File inputFile = new File("./src/movie.txt");
+        String dummyContent = "";
 
-        try (
-                BufferedReader reader = new BufferedReader(new FileReader(inputFile));
-                BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(inputFile))) {
+            String currentLine;
 
-                String line;
-                String movieInfo=String.format("%s %s %s %s %s", movie.getTheater(), movie.getName(), movie.getDate(), movie.getStart(), movie.getEnd());
+            //좌석 내역 정보 전까지 movieInfo에 저장
+            String movieInfo = String.format("%s %s %s %s %s",
+                    movie.getTheater(),
+                    movie.getName(),
+                    movie.getDate(),
+                    movie.getStart(),
+                    movie.getEnd());
 
-                while((line=reader.readLine())!=null){
-                    if(line.startsWith(movieInfo)){
-                        //movie 정보랑 seat 구분
-                        List<String> part= new ArrayList<>(Arrays.asList(line.split(" ")));
-                        //취소된 좌석 삭제
-                        part.removeAll(seatsCancelList);
-                        //정보 다시 합치기
-                        String afterline=String.join(" ", part);
-                        writer.write(afterline);
+            //파일 끝까지 한 줄씩 읽기
+            while ((currentLine = reader.readLine()) != null) {
+                // 현재 읽은 줄에 해당 영화 정보가 있는지 확인
+                if (currentLine.startsWith(movieInfo)) {
+                    String[] seats = currentLine.split(" ");
+                    dummyContent += String.join(" ", Arrays.copyOfRange(seats, 0, 5)) + " ";
 
-                    }else {
-                        writer.write(line);
+                    // 취소된 좌석 삭제
+                    for (int i = 5; i < seats.length; i++) {
+                        if (!seats[i].equals(seat)) {
+                            dummyContent += seats[i] + " ";
+                        }
                     }
-                    writer.newLine();
+                    dummyContent = dummyContent.trim() + System.lineSeparator();
+                } else {
+                    dummyContent += currentLine + System.lineSeparator();
                 }
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
-        //수정된 파일로 기존 파일 업데이트
-        //원본 파일 삭제 실패 시 error handling
-        if(!inputFile.delete()){
-            System.out.println("..! file delete fail");
-            return;
-        }
-
-        if(!tempFile.renameTo(inputFile)){
-            System.out.println("..! Cannot update the file");
+        // 변경된 내용 txt 파일에 저장
+        try (FileWriter writer = new FileWriter(inputFile)) {
+            writer.write(dummyContent);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
+
 
 
     public ArrayList<Movie> find(){
