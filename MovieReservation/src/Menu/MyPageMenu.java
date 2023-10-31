@@ -8,9 +8,9 @@ import Member.MemberService;
 
 public class MyPageMenu{
 
-    static Member member;
-    static MemberRepository memberrepo;
-    static MemberService membersev;
+    Member member;
+    MemberRepository memberrepo;
+    MemberService membersev;
     
     static Scanner scan = new Scanner(System.in);
     String moviefile = "./src/movie.txt";
@@ -21,7 +21,7 @@ public class MyPageMenu{
         this.member = member;
     }
     
-    public static void ShowMenu2() {
+    public void ShowMenu2() {
 
     	int choice = 0;
     	while(choice != 3) {
