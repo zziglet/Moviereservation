@@ -1,4 +1,4 @@
-package member;
+package Member;
 
 import movie.Movie;
 
@@ -86,10 +86,10 @@ public class Member {
                         String moviedate = info[i];
                         String moviestarttime = info[i+1];
                         String movieendtime = info[i+2];
-                        String[] movierseat = new String[info.length - (i+3)];
+                        String[] movierseat = new String[info.length - (i+4)];
                         String[] movieseat = {""};
                         int cnt = 0;
-                        for(int j=i+3; j<info.length; j++) {
+                        for(int j=i+4; j<info.length; j++) {
                             movierseat[cnt] = info[j];
                             cnt++;
                         }
