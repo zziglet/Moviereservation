@@ -7,7 +7,43 @@ import java.util.List;
 
 public class MovieRepository {
     public void SaveMovietxt(Movie movie, String seat) {
+        File movieFile = new File("./src/movie.txt");
 
+        try (BufferedReader reader = new BufferedReader(new FileReader(movieFile))) {
+            
+            //좌석 내역 정보 전까지 movieInfo에 저장
+            String movieInfo = String.format("%s %s %s %s %s",
+                    movie.getTheater(),
+                    movie.getName(),
+                    movie.getDate(),
+                    movie.getStart(),
+                    movie.getEnd());
+            
+            //파일을 읽어서 리스트에 저장
+            List<String> lines = new ArrayList<>();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.startsWith(movieInfo)) {
+                    //해당 line의 마지막에 seat 추가
+                    line = line + " " + seat;
+                }
+                lines.add(line);
+            }
+            reader.close();
+
+            // 파일을 다시 쓰기
+            BufferedWriter writer = new BufferedWriter(new FileWriter(movieFile));
+            for (String updatedLine : lines) {
+                writer.write(updatedLine);
+                writer.newLine();
+            }
+            writer.close();
+            
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
