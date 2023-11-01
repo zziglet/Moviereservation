@@ -42,7 +42,7 @@ public class SignUpInMenu {
         else if(input1.equals("2"))
             SignIn();
         else if(input1.equals("3"))
-            exit();
+            Exit();
         else {
             System.out.println("!오류: 잘못된 입력입니다. 다시 입력해주세요.\n");
             System.out.print("MovieReservation>> ");
