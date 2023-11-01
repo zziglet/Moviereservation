@@ -1,19 +1,68 @@
 package Member;
 
 import Movie.Movie;
+import Movie.MovieRepository
 import Menu.MainMenu;
 
 import java.awt.*;
 import java.io.*;
-import java.util.Scanner;
-import java.util.ArrayList;
+import java.util.*;
 
 
 public class MemberService {
 
+    MemberRepository memberRepository = new MemberRepository();
+    MovieRepository movieRepository = new MovieRepository();
+    Scanner scan = new Scanner(System.in);
     //영화 예매를 위한 메소드 (인자를 뭘 넘겨야할지 아직 감이 안옴)
     public void CreateReservation(Member member){
-        
+        ArrayList<Movie> movieList = movieRepository.find();
+        Set<String> movieNames = new HashSet<String>();
+        Set<String> movieDates = new HashSet<String>();
+        Set<String> movieTimes = new HashSet<String>();
+
+        movieNames.add(movieList.get(0).getName());
+        String movieNameBeforeThis = movieList.get(0).getName();
+        for (int i = 0; i < movieList.size(); i++){
+            if(movieList.get(i).getName().equals(movieNameBeforeThis)) continue;
+            movieNames.add(movieList.get(i).getName());
+            movieNameBeforeThis = movieList.get(i).getName();
+        }
+
+        System.out.println("[예매 / 영화선택] 현재 상영되고 있는 영화입니다. 영화 제목을 입력해주세요.\n");
+
+        Iterator<String> nameIter = movieNames.iterator();
+        while(nameIter.hasNext())
+            System.out.println(nameIter.next());
+        System.out.println();
+        System.out.print("MovieReservation >> ");
+        String movieNameInput = scan.nextLine();
+
+/*
+영화 제목 검사 부분
+ */
+
+        for (int i = 0; i < movieList.size();) {
+            if (!movieList.get(i).getName().equals(movieNameInput))
+                movieList.remove(i);
+            else
+                i++;
+        }
+        System.out.println("[예매 / 날짜선택] 선택하신 영화의 상영 날짜입니다. 날짜를 입력해주세요.\n");
+
+        Iterator<String> dateIter = movieDates.iterator();
+        while (dateIter.hasNext())
+            System.out.println(dateIter.next());
+        System.out.println();
+        System.out.print("MovieReservation >> ");
+        String movieDateInput = scan.nextLine();
+
+        for (int i = 0; i < movieList.size(); i++) {
+            if (movieList.get(i).getName().equals(movieNameInput)){
+                movieDates.add(movieList.get(i).getDate());
+            }
+        }
+
     }
 
     //영화 예매 취소 메소드
