@@ -16,7 +16,9 @@ public class MemberRepository {
             이 함수를 통해 생성되는 파일은 항상 새로운 파일
          */
         try{
-            String path =  "src/user/"+id+".txt";
+            String userdir = System.getProperty("user.dir")+"/MovieReservation/src/user/";
+            System.out.println(userdir);
+            String path =  userdir +id+".txt";
             File file = new File(path);
             FileWriter fw = new FileWriter(file);
             BufferedWriter writer = new BufferedWriter(fw);
