@@ -5,12 +5,38 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4b4d1604-b06c-459f-9cda-76522a36034f" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/Member/MemberServiceApp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MovieReservation.iml" beforeDir="false" afterPath="$PROJECT_DIR$/MovieReservation.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MovieReservation/Main.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MovieReservation/MemberApp.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MovieReservation/MoiveApp.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MovieReservation/member/Member.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MovieReservation/member/MemberRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MovieReservation/member/MemberService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MovieReservation/member/MemberServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MovieReservation/member/TxtMemberRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MovieReservation/movie/Movie.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MovieReservation/movie/MovieRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MovieReservation/movie/MovieService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MovieReservation/movie/MovieServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MovieReservation/movie/Theater.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MovieReservation/movie/TxtMovieRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MovieReservation/reservation/Reservation.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Member/MemberService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Member/MemberService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Menu/MainMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Menu/MainMenu.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -30,16 +56,20 @@
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "reference.settingsdialog.project.gant",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager">
-    <configuration name="MemberServiceApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Member.MemberServiceApp" />
+  <component name="RunManager" selected="Application.Main">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Menu.Main" />
       <module name="MovieReservation" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="Member.*" />
+          <option name="PATTERN" value="Menu.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -47,8 +77,21 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="MemberServiceApp" type="Application" factoryName="Application">
+      <option name="ALTERNATIVE_JRE_PATH" value="/Library/Java/JavaVirtualMachines/jdk-11.jdk/Contents/Home" />
+      <option name="MAIN_CLASS_NAME" value="Member.MemberServiceApp" />
+      <module name="MovieReservation" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.MemberServiceApp" />
+      <item itemvalue="Application.Main" />
+    </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Main" />
         <item itemvalue="Application.MemberServiceApp" />
       </list>
     </recent_temporary>
@@ -61,7 +104,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1698820915132</updated>
-      <workItem from="1698820916236" duration="3604000" />
+      <workItem from="1698820916236" duration="8214000" />
     </task>
     <servers />
   </component>
