@@ -135,51 +135,48 @@ public class SignUpInMenu {
             System.out.println("아이디를 입력하세요.");
             System.out.print("MovieReservation>> ");
             String id = scan.nextLine();
+
             String path = System.getProperty("user.dir") + "\\MovieReservation\\src\\user";
             File folder = new File(path);
             File[] filelist = folder.listFiles();
 
             boolean temp=true;
             boolean isID=true;
-            String name="";
+
             String pw="";
             String line="";
+            String userName = null;
+            String userId = null;
+            String userPw = null;
 
             while(temp) {
                 if(filelist != null){
                     for(File file:filelist) {
                     if(file.isFile()&&file.canRead()) {
-                        //해당 아이디를 가진 유저 메모장의 경우
+                        //해당 아이디를 가진 유저 메모장이 있을 경우
                         if(file.getName().equals(id+".txt")) {
                             isID=false;
                             FileReader filereader = new FileReader(file);
                             BufferedReader bufReader = new BufferedReader(filereader);
                             line=bufReader.readLine();
                             String arr[]=line.split("\\s");
+
+                            userName = arr[0]; //member 객체를 만들 때 전달해 줘야하기 때문에
+                            userId = arr[1];
+                            userPw = arr[2];
+
                             System.out.println("비밀번호를 입력해주세요.");
                             System.out.print("MovieReservation>> ");
                             pw=scan.nextLine();
+
                             //비밀번호가 일치하는지 체크
-                            while(!(arr[arr.length-1].equals(pw))) {
+                            while(!(userPw.equals(pw))) {
                                 System.out.println("..! 오류: 비밀번호가 일치하지 않습니다. 다시 입력해주세요\n");
                                 System.out.print("MovieReservation>> ");
                                 pw=scan.nextLine();
                             }
                             temp=false;
-                            /*
-                            name=line.substring(0,line.length()-pw.length()-1);
-                            Scanner s = new Scanner(file);
-                            s.nextLine();
-                            while(s.hasNextLine()) {
-                                String res1[]=s.nextLine().split("\\s");
-                                Flight flight= new Flight(res1[0],res1[1],res1[2],res1[3],res1[4],res1[5]);
-                                String res2[]=s.nextLine().split("\\s");
-                                FlightTicket flightticket = new FlightTicket(flight,res2[1],Integer.parseInt(res2[0]));
-                                flightTicketList.add(flightticket);
-                            }
-                            s.close();
-                             */
-                            
+
                             filereader.close();
                             bufReader.close();
                         }
@@ -197,7 +194,7 @@ public class SignUpInMenu {
             System.out.println("로그인 완료!\n");
 
             //로그인 완료 시 유저 객체 생성
-            Member user = new Member(id,pw,name);
+            Member user = new Member(userId, userPw, userName);
             //메인메뉴 객체 생성
             MainMenu mainmenu = new MainMenu();
             //메인메뉴의 showMenu 함수 호출
@@ -206,7 +203,6 @@ public class SignUpInMenu {
         }catch(Exception e) {
             e.printStackTrace();
         }
-
     }
 
     void Exit() {
