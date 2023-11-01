@@ -61,15 +61,11 @@ public class SignUpInMenu {
                 if(file.isFile() && file.canRead()) {
                     if(file.getName().equals(id+".txt")) {
                         System.out.println("!오류: 이미 존재하는 아이디입니다. 다시 입력해주세요.\n");
-                    /*
-                     * System.out.print("MovieReservation>> ");
-                     * newid=FileIdRead(newid=scan.nextLine()); //아이디 문법 규칙 검증은?
-                     * */
-                    return null;
+                        return null;
+                    }
                 }
             }
         }
-    }
         return newid;
     }
 
@@ -88,7 +84,6 @@ public class SignUpInMenu {
         }
 
         System.out.println("아이디를 입력하세요");
-        System.out.print("MovieReservation>> ");
         String id = null;
         boolean idcorrect=true;
         //아이디 문법규칙, 의미규칙 체크
@@ -108,7 +103,7 @@ public class SignUpInMenu {
             idcorrect = !(idcorrect); //idcorrect가 false라면 아이디 오류
         }
 
-        System.out.println("\n비밀번호를 입력하세요.");
+        System.out.println("비밀번호를 입력하세요.");
         System.out.print("MovieReservation>> ");
         String pw = scan.nextLine();
         //비밀번호 문법규칙 체크
