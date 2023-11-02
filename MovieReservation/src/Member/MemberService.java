@@ -187,7 +187,7 @@ public class MemberService {
                                                     String[] appendSeats = movieList.get(0).getSeat();
                                                     for (int i = 0; i<splited_input.length;i++){
                                                         char ch = splited_input[i].charAt(0);
-                                                        String idxOfNumber = splited_input[i].substring(1,2);
+                                                        String idxOfNumber = splited_input[i].substring(1,3);
                                                         int idxOfNumberInt = Integer.parseInt(idxOfNumber)-1;
                                                         int idxOfLine = (int)ch - 65;
                                                         appendRSeats[idxOfLine*6+idxOfNumberInt] = "00";
