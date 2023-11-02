@@ -196,6 +196,9 @@ public class MemberService {
                                                     movie1.setRseat(appendRSeats);
                                                     movie1.setSeat(appendSeats);
                                                     memberRepository.SaveMovie(member,movie1);
+                                                    //오류수정을 위해 잠시 추가
+                                                    System.out.println("영화 예매를 완료했습니다. 처음 화면으로 돌아갑니다.\n");
+                                                    new MainMenu(member).ShowMenu();
                                                 }
                                                 break;
                                             } else if (input.equals("2")) {

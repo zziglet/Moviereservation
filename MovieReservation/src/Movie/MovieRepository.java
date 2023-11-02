@@ -68,6 +68,7 @@ public class MovieRepository {
                 // 현재 읽은 줄에 해당 영화 정보가 있는지 확인
                 if (currentLine.startsWith(movieInfo)) {
                     String[] seats = currentLine.split(" ");
+                    System.out.println(Arrays.toString(seats));
                     dummyContent += String.join(" ", Arrays.copyOfRange(seats, 0, 5)) + " ";
 
                     // 취소된 좌석 삭제
