@@ -102,75 +102,70 @@ public class MovieRepository {
         ArrayList<Movie> list = new ArrayList<Movie>();
         int idx = 1;
         try {
-            //movie.txt 불러오기
-            BufferedReader mvbr = new BufferedReader
-                    (new InputStreamReader(new FileInputStream("MovieReservation/src/movie.txt"), "UTF-8"));
+            try (//movie.txt 불러오기
+			BufferedReader mvbr = new BufferedReader
+                    (new InputStreamReader(new FileInputStream("./src/movie.txt"), "UTF-8"))) {
+				//한줄씩 읽기
+				String line;
+				while ((line = mvbr.readLine()) != null) {
+					line = line.trim();
+					String[] info = line.split("\\s+");
+					
+					for(int i=info.length-1 ; i>0; i--) {
+	                	if(Pattern.matches("^[\\d]{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$",info[i])){
+	                		idx = i;
+	                		break;
+	                	}
+	                }
+					
+			for(int i=0; i<info.length; ) {
 
-            //한줄씩 읽기
-            String line;
-            while ((line = mvbr.readLine()) != null) {
-                String[] info = line.split(" ");
-                
-                for(int i=info.length-1 ; i>0; i--) {
-                	if(Pattern.matches("^[\\d]{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$",info[i])){
-                		idx = i;
-                		break;
-                	}
-                }
-                
-                //System.out.println(info[idx]);
-                
-                for(int i=0; i<info.length; ) {
+		                String[] movienamelist = new String[idx-1];
+		                for(int j=1; j<idx; j++) {
+		                     movienamelist[j-1] = info[j];
+		                }
 
-                //첫 숫자가 나오기 전까지 영화제목
-                String[] movienamelist = new String[idx-1];
-                for(int j=1; j<idx; j++) {
-                     movienamelist[j-1] = info[j];
-                }
+		                //movie 인자
+		                String movietheater = info[0];
+		                
+		                String moviename = String.join(" ", movienamelist);
+		                String moviedate = info[idx];
+		                String moviestarttime = info[idx+1];
+		                String movieendtime = info[idx+2];
+		                String[] movierseat = new String[72];
+		                String[] movieseat = new String[72];
 
-                //movie 인자
-                String movietheater = info[0];
-                String moviename = String.join(" ", movienamelist);
-                String moviedate = info[idx];
-                String moviestarttime = info[idx+1];
-                String movieendtime = info[idx+2];
-                String[] movierseat = new String[72];
-                String[] movieseat = new String[72];
+		                //좌석 초기화
+		                for(int j=0; j<12; j++) {
+		                    for(int k=0; k<6; k++) {
+		                        movierseat[j*6+k] = "0" + Integer.toString(k+1);
+		                    }
+		                }
 
-                //좌석 초기화
-                for(int j=0; j<12; j++) {
-                    for(int k=0; k<6; k++) {
-                        movierseat[j*6+k] = "0" + Integer.toString(k+1);
-                    }
-                }
+		                Arrays.fill(movieseat, "1");
 
-                Arrays.fill(movieseat, "1");
+		                //예약된 좌석 표기
+		                int idx2 = 0;
+		                for(int j=idx+3; j<info.length; j++) {
+		                    String[] inforseat = info[j].split("");
+		                    int temp = (int)inforseat[0].charAt(0);
+		                    idx2 = 6*(temp - 65) + Integer.parseInt(inforseat[2]) - 1;
+		                    movierseat[idx2] = "00";
+		                    movieseat[idx2] = "0";
+		                }
 
-                //예약된 좌석 표기
-                int idx2 = 0;
-                for(int j=idx+3; j<info.length; j++) {
-                    String[] inforseat = info[j].split("");
-                    int temp = (int)inforseat[0].charAt(0);
-                    idx2 = 6*(temp - 65) + Integer.parseInt(inforseat[2]) - 1;
-                    movierseat[idx2] = "00";
-                    movieseat[idx2] = "0";
-                }
+		                Movie movie = new Movie(movietheater, moviename, moviedate, moviestarttime, movieendtime, movierseat, movieseat);
+						
 
-                Movie movie = new Movie(movietheater, moviename, moviedate, moviestarttime, movieendtime, movierseat, movieseat);
-
-
-                
-				/*
-				 * System.out.printf("%s %s %s %s %s", movie.getTheater(), movie.getName(),
-				 * movie.getDate(), movie.getStart(), movie.getEnd()); for(String st :
-				 * movie.getRseat()) { System.out.printf(" %s", st); } System.out.println();
-				 * 
-				 */
-
-                list.add(movie);
-                break;
-                }
-            }
+		                list.add(movie);
+		                break;
+		                }
+				}
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+            
 
         } catch(IOException e) {
             e.printStackTrace();
@@ -179,7 +174,5 @@ public class MovieRepository {
         return list;
 
     }
-
-
 
 }
