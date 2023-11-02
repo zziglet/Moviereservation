@@ -104,7 +104,7 @@ public class MovieRepository {
         try {
             try (//movie.txt 불러오기
 			BufferedReader mvbr = new BufferedReader
-                    (new InputStreamReader(new FileInputStream("./src/movie.txt"), "UTF-8"))) {
+                    (new InputStreamReader(new FileInputStream("MovieReservation/src/movie.txt"), "UTF-8"))) {
 				//한줄씩 읽기
 				String line;
 				while ((line = mvbr.readLine()) != null) {
