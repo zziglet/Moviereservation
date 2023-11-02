@@ -18,7 +18,6 @@ public class MemberRepository {
          */
         try {
             String userdir = System.getProperty("user.dir") + "/MovieReservation/src/user/";
-            System.out.println(userdir);
             String path = userdir + id + ".txt";
             File file = new File(path);
             FileWriter fw = new FileWriter(file);
@@ -64,7 +63,6 @@ public class MemberRepository {
         ArrayList<String> memtxt = new ArrayList<>();
         try {
             String userdir = System.getProperty("user.dir") + "/MovieReservation/src/user/";
-
             String path = userdir + member.getId() + ".txt";
             BufferedReader membr = new BufferedReader
                     (new InputStreamReader
@@ -76,7 +74,6 @@ public class MemberRepository {
                 line = line.trim();
                 memtxt.add(line);
             }
-
 
             memtxt.remove(targetstr);
 

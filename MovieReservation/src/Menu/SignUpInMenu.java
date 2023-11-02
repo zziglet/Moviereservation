@@ -196,7 +196,7 @@ public class SignUpInMenu {
             //로그인 완료 시 유저 객체 생성
             Member user = new Member(userId, userPw, userName);
             //메인메뉴 객체 생성
-            MainMenu mainmenu = new MainMenu();
+            MainMenu mainmenu = new MainMenu(user);
             //메인메뉴의 showMenu 함수 호출
             mainmenu.ShowMenu();
 
