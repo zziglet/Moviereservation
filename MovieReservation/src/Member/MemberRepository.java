@@ -32,7 +32,9 @@ public class MemberRepository {
 
     public void SaveMovie(Member member, Movie movie) {
         try {
-            String path = "MovieReservation/src/user/" + member.getId() + ".txt";
+            String userdir = System.getProperty("user.dir") + "/MovieReservation/src/user/";
+            String path = userdir + member.getId() + ".txt";
+
             File file = new File(path);
             if (!file.exists()) {
                 System.out.println("Cannot find file");

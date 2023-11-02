@@ -22,8 +22,8 @@ public class MainMenu {
 
 
         while(true){
-            System.out.print("\n\n[메인 메뉴] 원하시는 서비스의 숫자를 입력해주세요.\n\n");
-            System.out.print("1. 예매\n2. 마이페이지\n3. 종료\n");
+            System.out.print("[메인 메뉴] 원하시는 서비스의 숫자를 입력해주세요.\n\n");
+            System.out.print("  1. 예매\n  2. 마이페이지\n  3. 종료\n");
             System.out.print("MovieReservation >>");
             
             String input=scan.nextLine();

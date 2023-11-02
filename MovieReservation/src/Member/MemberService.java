@@ -183,7 +183,9 @@ public class MemberService {
                                                         continue;
                                                     }
                                                     Movie movie1 = movieList.get(0);
-                                                    String[] appendRSeats = movieList.get(0).getRseat();
+                                                    System.out.println(Arrays.toString(splited_input));
+                                                    movie1.setRseat(splited_input);
+                                                    /*String[] appendRSeats = movieList.get(0).getRseat();
                                                     String[] appendSeats = movieList.get(0).getSeat();
                                                     for (int i = 0; i<splited_input.length;i++){
                                                         char ch = splited_input[i].charAt(0);
@@ -195,6 +197,12 @@ public class MemberService {
                                                     }
                                                     movie1.setRseat(appendRSeats);
                                                     movie1.setSeat(appendSeats);
+                                                    */
+                                                    String seatsstr = "";
+                                                    for(String str : splited_input){
+                                                        seatsstr += str+ " ";
+                                                    }
+                                                    movieRepository.SaveMovietxt(movie1,seatsstr);
                                                     memberRepository.SaveMovie(member,movie1);
                                                     //오류수정을 위해 잠시 추가
                                                     System.out.println("영화 예매를 완료했습니다. 처음 화면으로 돌아갑니다.\n");
