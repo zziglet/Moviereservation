@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 
 public class MovieRepository {
     public void SaveMovietxt(Movie movie, String seat) {
-        File movieFile = new File("./src/movie.txt");
+        File movieFile = new File("MovieReservation/src/movie.txt");
 
         try (BufferedReader reader = new BufferedReader(new FileReader(movieFile))) {
             
@@ -49,7 +49,7 @@ public class MovieRepository {
 
 
     public void DeleteMovietxt(Movie movie, String seat) {
-        File inputFile = new File("./src/movie.txt");
+        File inputFile = new File("MovieReservation/src/movie.txt");
         String dummyContent = "";
 
         try (BufferedReader reader = new BufferedReader(new FileReader(inputFile))) {
@@ -103,7 +103,7 @@ public class MovieRepository {
         try {
             //movie.txt 불러오기
             BufferedReader mvbr = new BufferedReader
-                    (new InputStreamReader(new FileInputStream("./src/movie.txt"), "UTF-8"));
+                    (new InputStreamReader(new FileInputStream("MovieReservation/src/movie.txt"), "UTF-8"));
 
             //한줄씩 읽기
             String line;
