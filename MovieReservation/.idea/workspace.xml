@@ -5,26 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4b4d1604-b06c-459f-9cda-76522a36034f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/Member/MemberServiceApp.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MovieReservation.iml" beforeDir="false" afterPath="$PROJECT_DIR$/MovieReservation.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MovieReservation/Main.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MovieReservation/MemberApp.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MovieReservation/MoiveApp.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MovieReservation/member/Member.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MovieReservation/member/MemberRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MovieReservation/member/MemberService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MovieReservation/member/MemberServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MovieReservation/member/TxtMemberRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MovieReservation/movie/Movie.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MovieReservation/movie/MovieRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MovieReservation/movie/MovieService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MovieReservation/movie/MovieServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MovieReservation/movie/Theater.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MovieReservation/movie/TxtMovieRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MovieReservation/reservation/Reservation.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Member/MemberService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Member/MemberService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Menu/MainMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Menu/MainMenu.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -104,11 +86,22 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1698820915132</updated>
-      <workItem from="1698820916236" duration="8214000" />
+      <workItem from="1698820916236" duration="13940000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>

@@ -38,20 +38,19 @@ public class MemberService {
 
         String movieNameInput;
         boolean flag1 = false; // 영화 제목 체크
-        while(!flag1){
+        while(!flag1) {
             System.out.print("MovieReservation >> ");
             movieNameInput = scan.nextLine();
-            if(false/*영화제목 정규식 작성*/){
-                System.out.println("..! 오류 : 잘못된 입력입니다. 다시 입력해주세요.");
+            if (!Pattern.matches("^[가-힣a-zA-Z0-9 ,:.!?()~-]+$",movieNameInput)) {
+                System.out.println("..! 오류 : 잘못된 입력입니다. 다시 입력해주세요.\n");
                 continue;
             }
-            if(movieNames.contains(movieNameInput)){
+            if (movieNames.contains(movieNameInput)) {
                 flag1 = true;
                 for (int i = 0; i < movieList.size(); i++) {
-                    if (movieList.get(i).getName().equals(movieNameInput)){
+                    if (movieList.get(i).getName().equals(movieNameInput)) {
                         movieDates.add(movieList.get(i).getDate());
-                    }
-                    else{
+                    } else {
                         movieList.remove(i);
                         i--;
                     }
@@ -65,17 +64,17 @@ public class MemberService {
 
                 String movieDateInput;
                 boolean flag2 = false;
-                while(!flag2){
+                while (!flag2) {
                     System.out.println();
                     System.out.print("MovieReservation >> ");
                     movieDateInput = scan.nextLine();
 
-                    if(false/*영화 날짜 정규표현식 작성*/){
+                    if (!Pattern.matches("^[\\d]{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$", movieDateInput)) {
                         System.out.println("..! 오류 : 잘못된 입력입니다. 다시 입력해주세요.");
                         continue;
                     }
 
-                    if(movieDates.contains(movieDateInput)){
+                    if (movieDates.contains(movieDateInput)) {
                         flag2 = true;
                         for (int i = 0; i < movieList.size(); i++) {
                             if (movieList.get(i).getDate().equals(movieDateInput)) {
@@ -93,22 +92,22 @@ public class MemberService {
 
                         String movieStartInput;
                         boolean flag3 = false;
-                        while(!flag3){
+                        while (!flag3) {
                             System.out.println();
                             System.out.print("MovieReservation >> ");
                             movieStartInput = scan.nextLine();
 
-                            if(false/*영화 시간 정규표현식 작성*/){
+                            if (!Pattern.matches("^([1-9]|[01][0-9]|2[0-3]):([0-5][0-9])$", movieStartInput)) {
                                 System.out.println("..! 오류 : 잘못된 입력입니다. 다시 입력해주세요.");
                                 continue;
                             }
 
-                            if(false/*요구사항 반영 조건*/){
+                            if (false/*요구사항 반영 조건*/) {
                                 System.out.println("동일한 시간대에 예매한 영화가 있습니다. 다시 입력해주세요.");
                                 continue;
                             }
 
-                            if(movieStarts.contains(movieStartInput)){
+                            if (movieStarts.contains(movieStartInput)) {
                                 flag3 = true;
                                 for (int i = 0; i < movieList.size(); i++) {
                                     if (!movieList.get(i).getStart().equals(movieStartInput)) {
@@ -120,47 +119,119 @@ public class MemberService {
 
                                 String movieNumber;
                                 boolean flag4 = true;
-                                while(flag4){
+                                while (flag4) {
                                     System.out.print("MovieReservation >> ");
                                     movieNumber = scan.nextLine();
-                                    if(!Pattern.matches("[0-9]+|\\d+명",movieNumber)){
+                                    if (!Pattern.matches("[1-9]+|\\d+명", movieNumber)) {
                                         System.out.println("..! 오류 : 잘못된 입력입니다. 다시 입력해주세요.");
                                         continue;
                                     }
-                                    if(!Pattern.matches("[0-9]+",movieNumber)) movieNumber= movieNumber.substring(0,movieNumber.length()-1);
+                                    if (!Pattern.matches("[1-9]+", movieNumber))
+                                        movieNumber = movieNumber.substring(0, movieNumber.length() - 1);
                                     int num = Integer.parseInt(movieNumber);
-                                    if(num>=1&&num<=5){
+                                    if (num >= 1 && num <= 5) {
                                         flag4 = false;
                                         Movie movie = movieList.get(0);
                                         String[] reservedSeats = movie.getRseat();
+                                        System.out.println("[예매 / 좌석선택] 좌석을 선택해주세요.\n");
+                                        for (int i = 0; i < 12; i++) {
+                                            int line = 65 + i;
+                                            char ch = (char) line;
+                                            System.out.print(ch + "|\t");
+                                            for (int j = 0; j < 6; j++) {
+                                                if (j == 5) System.out.print(reservedSeats[6 * i + j]);
+                                                else System.out.print(reservedSeats[6 * i + j] + "|");
+                                            }
+                                            if (i == 1 || i == 5 || i == 11) System.out.println("\n");
+                                            else System.out.println();
+                                        }
+                                        String[] seats = movie.getSeat();
+                                        int seatsNum = 72;
+                                        int reservedSeatsNum = 0;
+                                        for (int i = 0; i < seats.length; i++) {
+                                            if (seats[i].equals("0")) reservedSeatsNum++;
+                                        }
+                                        System.out.println("첫 열에 표시된 영대문자는 각 행의 좌석 라인입니다.");
+                                        System.out.println("00으로 표시된 좌석은 이미 예약된 좌석입니다. 전여 좌석 수는 " + (seatsNum - reservedSeatsNum) + "/" + seatsNum + "석입니다.");
+                                        System.out.println("다음 중 원하는 메뉴를 선택하세요.\n");
+                                        System.out.println("1. 좌석 선택");
+                                        System.out.println("2. 메인 메뉴로 돌아가기.\n");
+
+                                        boolean flag5 = true;
+                                        while (flag5) {
+                                            System.out.print("MovieReservation >> ");
+                                            String input = scan.nextLine();
+
+                                            if (input.equals("1")) {
+                                                flag5=false;
+                                                System.out.println("[예매 / 좌석선택] 예매하려는 좌석번호를 입력해주세요.");
+                                                String seatInput;
+                                                boolean flag6 = true;
+                                                lp:
+                                                while (flag6) {
+                                                    System.out.print("MovieReservation >> ");
+                                                    seatInput = scan.nextLine();
+                                                    String[] splited_input = seatInput.split("[\\s\\t\\v]+");
+                                                    for (String el : splited_input) {
+                                                        if (!Pattern.matches("^[A-Z][0-9][0-9]", el)) {
+                                                            System.out.println("!오류 : 잘못된 입력입니다. 다시 입력해주세요.");
+                                                            continue lp;
+                                                        }
+                                                    }
+                                                    if (splited_input.length != num) {
+                                                        System.out.println("..! 앞서 입력하신 인원 수 (" + num + "명)에 맞지 않는 좌석을 선택했습니다. 다시 입력해주세요.");
+                                                        continue;
+                                                    }
+                                                    Movie movie1 = movieList.get(0);
+                                                    String[] appendRSeats = movieList.get(0).getRseat();
+                                                    String[] appendSeats = movieList.get(0).getSeat();
+                                                    for (int i = 0; i<splited_input.length;i++){
+                                                        char ch = splited_input[i].charAt(0);
+                                                        String idxOfNumber = splited_input[i].substring(1,2);
+                                                        int idxOfNumberInt = Integer.parseInt(idxOfNumber)-1;
+                                                        int idxOfLine = (int)ch - 65;
+                                                        appendRSeats[idxOfLine*6+idxOfNumberInt] = "00";
+                                                        appendSeats[idxOfLine*6+idxOfNumberInt] = "0";
+                                                    }
+                                                    movie1.setRseat(appendRSeats);
+                                                    movie1.setSeat(appendSeats);
+                                                    memberRepository.SaveMovie(member,movie1);
+                                                }
+                                                break;
+                                            } else if (input.equals("2")) {
+                                                new MainMenu().ShowMenu();
+                                                flag5 = false;
+                                            } else System.out.println("..! 오류 : 잘못된 입력입니다. 다시 입력해주세요.");
+
+                                        }
+
                                     }
-                                    else {
+                                    else{
                                         System.out.println("..! 오류 : 최대 예매 인원 수를 초과했습니다. 다시 입력해주세요.");
                                         continue;
                                     }
                                 }
+
                             }
                             else{
-                                System.out.println("..! 오류 : 선택하신 영화의 상영시간이 아닙니다. 다시 입력해주세요\n");
+                                System.out.println("..! 오류 : 선택하신 영화의 상영시간이 아닙니다. 다시 입력해주세요");
                                 continue;
                             }
                         }
+
                     }
-                    else {
-                        System.out.println("..! 오류 : 선택하신 영화의 상영날짜가 아닙니다. 다시 입력해주세요\n");
+                    else{
+                        System.out.println("..! 오류 : 선택하신 영화의 상영날짜가 아닙니다. 다시 입력해주세요");
                         continue;
                     }
                 }
+
             }
-            else {
+            else{
                 System.out.println("..! 현재 상영하고 있는 영화가 아닙니다. 다시 입력해주세요.\n");
                 continue;
             }
         }
-
-
-
-
     }
 
     //영화 예매 취소 메소드
