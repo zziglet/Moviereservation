@@ -192,6 +192,7 @@ public class MemberService {
                                                             continue lp;
                                                         }
                                                     }
+                                                    flag6 = false;
                                                     Movie movie1 = movieList.get(0);
                                                     System.out.println(Arrays.toString(splited_input));
                                                     movie1.setRseat(splited_input);
