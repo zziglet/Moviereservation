@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 
 public class MovieRepository {
     public void SaveMovietxt(Movie movie, String seat) {
-        File movieFile = new File("./src/movie.txt");
+        File movieFile = new File("MovieReservation/src/movie.txt");
 
         try (BufferedReader reader = new BufferedReader(new FileReader(movieFile))) {
             
