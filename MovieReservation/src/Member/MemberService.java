@@ -199,7 +199,7 @@ public class MemberService {
                                                 }
                                                 break;
                                             } else if (input.equals("2")) {
-                                                new MainMenu().ShowMenu();
+                                                new MainMenu(member).ShowMenu();
                                                 flag5 = false;
                                             } else System.out.println("..! 오류 : 잘못된 입력입니다. 다시 입력해주세요.");
 
