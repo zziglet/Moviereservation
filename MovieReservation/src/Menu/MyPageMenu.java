@@ -8,9 +8,9 @@ import Member.MemberService;
 
 public class MyPageMenu{
 
-    Member member;
-    MemberRepository memberrepo;
-    MemberService membersev;
+    Member member = new Member();
+    MemberRepository memberrepo = new MemberRepository();
+    MemberService membersev = new MemberService();
     
     static Scanner scan = new Scanner(System.in);
     String moviefile = "./src/movie.txt";
@@ -27,7 +27,7 @@ public class MyPageMenu{
     	while(choice != 3) {
     		System.out.println("[마이페이지] 원하는 서비스의 숫자를 입력해주세요.\n");
         	System.out.println("1. 예매 내역 확인\n2. 예매 취소\n3. 뒤로 가기\n");
-                System.out.print("MovieReservation >");
+                System.out.print("MovieReservation >> ");
                 String input = scan.nextLine();
 
                 String result = input.replaceAll(" ", "");
@@ -38,10 +38,10 @@ public class MyPageMenu{
                 
                 switch (choice) {
                     case 1:
-                        memberrepo.FindMovie(member);
+                        memberrepo.FindMovie(this.member);
                         break;
                     case 2:
-                        membersev.CancelReservation(member);
+                        membersev.CancelReservation(this.member);
                         break;
                     case 3:
                         break;

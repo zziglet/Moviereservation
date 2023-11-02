@@ -103,7 +103,6 @@ public class MemberRepository {
         ArrayList<Movie> mov = member.getMovielist();
         for (int i = 0; i < mov.size(); i++) {
             Movie movies = mov.get(i);
-            System.out.println("====================================");
             System.out.println("[" + (i + 1) + "]");
             System.out.println(movies.getName());
             System.out.println(movies.getDate());
