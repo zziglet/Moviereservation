@@ -6,6 +6,9 @@ import static java.lang.System.exit;
 
 public class MainMenu {
     Member member= new Member();
+    MemberService memberService = new MemberService();
+    MyPageMenu myPageMenu = new MyPageMenu();
+
     public void ShowMenu(){
         Scanner scan=new Scanner(System.in);
 
@@ -19,10 +22,10 @@ public class MainMenu {
 
             switch(input){
                 case 1:
-                    MemberService.CreateReservation();
+                    memberService.CreateReservation(member);
                     break;
                 case 2:
-                    MyPageMenu.ShowMenu2();
+                    myPageMenu.ShowMenu2();
                     break;
                 case 3:
                     Exit();
