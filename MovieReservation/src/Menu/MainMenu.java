@@ -6,34 +6,38 @@ import static java.lang.System.exit;
 
 public class MainMenu {
     Member member= new Member();
-    MemberService memberService = new MemberService();
-    MyPageMenu myPageMenu = new MyPageMenu();
-
+    
+	public MainMenu(Member member) {
+		super();
+		this.member = member;
+	}
+	
     public void ShowMenu(){
         Scanner scan=new Scanner(System.in);
+        
+        MemberService memberservice = new MemberService();
+        MyPageMenu mypagemenu = new MyPageMenu(this.member);
+        
 
-        System.out.print("\n\n[메인 메뉴] 원하시는 서비스의 숫자를 입력해주세요.\n\n");
-        System.out.print("1. 예매\n2. 마이페이지\n3. 종료\n");
 
 
         while(true){
+            System.out.print("\n\n[메인 메뉴] 원하시는 서비스의 숫자를 입력해주세요.\n\n");
+            System.out.print("1. 예매\n2. 마이페이지\n3. 종료\n");
             System.out.print("MovieReservation >>");
-            int input=scan.nextInt();
-
-            switch(input){
-                case 1:
-                    memberService.CreateReservation(member);
-                    break;
-                case 2:
-                    myPageMenu.ShowMenu2();
-                    break;
-                case 3:
-                    Exit();
-                    break;
-                default:
-                    System.out.print("..! 오류 : 잘못된 입력입니다. 다시 입력해주세요");
-                    System.out.println();
-                    break;
+            
+            String input=scan.nextLine();
+            String result = input.replaceAll(" ", "");
+            
+            if(result.equals("1"))
+            	memberservice.CreateReservation(this.member);
+            else if(result.equals("2"))
+            	mypagemenu.ShowMenu2();
+            else if(result.equals("3"))
+            	Exit();
+            else {
+                System.out.print("..! 오류 : 잘못된 입력입니다. 다시 입력해주세요");
+                System.out.println();
             }
         }
 
