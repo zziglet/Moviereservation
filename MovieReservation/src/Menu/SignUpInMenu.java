@@ -191,7 +191,7 @@ public class SignUpInMenu {
                     id = scan.nextLine();
                 }
             }
-            System.out.println("로그인 완료!\n");
+            System.out.println("로그인이 완료되었습니다.");
 
             //로그인 완료 시 유저 객체 생성
             Member user = new Member(userId, userPw, userName);
