@@ -15,7 +15,7 @@ public class Member {
     private String pw;
     private String name;
 
-    private final ArrayList<Movie> movieList;
+    private ArrayList<Movie> movieList;
 
     public Member(String id, String pw, String name) {
         this.id = id;
@@ -57,6 +57,7 @@ public class Member {
 
     public ArrayList<Movie> getMovielist() {
         // txt 파일을 읽어와서 movieList로 반환
+        this.movieList = new ArrayList<>();
         int idx = 1;
         try {
             //movie.txt 불러오기
@@ -78,8 +79,6 @@ public class Member {
                     }
                 }
 
-                //System.out.println(info[idx]);
-
                 for(int i=0; i<info.length; ) {
 
                     //첫 숫자가 나오기 전까지 영화제목
@@ -94,7 +93,6 @@ public class Member {
                     String moviedate = info[idx];
                     String moviestarttime = info[idx+1];
                     String movieendtime = info[idx+2];
-                    System.out.println(info[idx+4]);
                     String[] movierseat = new String[info.length - (idx + 4)];
                     String[] movieseat = {""};
                     int cnt = 0;
