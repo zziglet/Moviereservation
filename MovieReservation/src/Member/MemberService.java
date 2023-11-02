@@ -193,7 +193,7 @@ public class MemberService {
                         break;
                     }else if(ans.equals("n")||ans.equals("N")) {
                         System.out.println("메인 메뉴로 돌아갑니다.");
-                        MainMenu mainmenu = new MainMenu();
+                        MainMenu mainmenu = new MainMenu(member);
                         mainmenu.ShowMenu();
                         break;
                     }else{
