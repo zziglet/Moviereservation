@@ -1,6 +1,7 @@
 package Movie;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -68,7 +69,6 @@ public class MovieRepository {
                 // 현재 읽은 줄에 해당 영화 정보가 있는지 확인
                 if (currentLine.startsWith(movieInfo)) {
                     String[] seats = currentLine.split(" ");
-                    System.out.println(Arrays.toString(seats));
                     dummyContent += String.join(" ", Arrays.copyOfRange(seats, 0, 5)) + " ";
 
                     // 취소된 좌석 삭제
@@ -100,11 +100,13 @@ public class MovieRepository {
 
     public ArrayList<Movie> find(){
         ArrayList<Movie> list = new ArrayList<Movie>();
+        String userdir = System.getProperty("user.dir") + "/MovieReservation/src/";
+        String path = userdir +"movie.txt";
         int idx = 1;
         try {
             try (//movie.txt 불러오기
 			BufferedReader mvbr = new BufferedReader
-                    (new InputStreamReader(new FileInputStream("MovieReservation/src/movie.txt"), "UTF-8"))) {
+                    (new InputStreamReader(new FileInputStream(path), StandardCharsets.UTF_8))) {
 				//한줄씩 읽기
 				String line;
 				while ((line = mvbr.readLine()) != null) {

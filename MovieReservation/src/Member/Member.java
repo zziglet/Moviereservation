@@ -70,7 +70,7 @@ public class Member {
             String line;
             membr.readLine(); // 첫 줄에는 계정 정보가 있으므로 미리 읽어들임
             while ((line = membr.readLine()) != null) {
-                String[] info = line.split(" ");
+                String[] info = line.split("\\s+");
 
                 for(int i=info.length-1 ; i>0; i--) {
                     if(Pattern.matches("^[\\d]{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$",info[i])){
