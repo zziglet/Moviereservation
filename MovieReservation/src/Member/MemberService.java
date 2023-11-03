@@ -102,6 +102,22 @@ public class MemberService {
                                 continue;
                             }
 
+                            System.out.println(movieStartInput);
+                            ArrayList<Movie> mov = member.getMovielist();
+                            int[] starttimes = new int[mov.size()];
+                            int[] endtimes = new int[mov.size()];
+                            int[] runningtimes = new int[mov.size()];
+                            for(int i = 0; i < mov.size()-1; i++){
+                                starttimes[i] =Integer.parseInt(mov.get(i).getStart().replaceAll(":",""));
+                                endtimes[i]=Integer.parseInt(mov.get(i).getEnd().replaceAll(":",""));
+                                runningtimes[i] = endtimes[i] - starttimes[i];
+                            }
+                            for(int i=0;i<mov.size()-1;i++){
+                                System.out.println(starttimes[i]);
+                                System.out.println(endtimes[i]);
+                                System.out.println(runningtimes[i]);
+                            }
+
                             if (false/*요구사항 반영 조건*/) {
                                 System.out.println("동일한 시간대에 예매한 영화가 있습니다. 다시 입력해주세요.");
                                 continue;
@@ -222,6 +238,7 @@ public class MemberService {
 
                             }
                             else{
+
                                 System.out.println("..! 오류 : 선택하신 영화의 상영시간이 아닙니다. 다시 입력해주세요");
                                 continue;
                             }
