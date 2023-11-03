@@ -1,6 +1,7 @@
 package Movie;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -99,11 +100,13 @@ public class MovieRepository {
 
     public ArrayList<Movie> find(){
         ArrayList<Movie> list = new ArrayList<Movie>();
+        String userdir = System.getProperty("user.dir") + "/MovieReservation/src/";
+        String path = userdir +"movie.txt";
         int idx = 1;
         try {
             try (//movie.txt 불러오기
 			BufferedReader mvbr = new BufferedReader
-                    (new InputStreamReader(new FileInputStream("./src/movie.txt"), "UTF-8"))) {
+                    (new InputStreamReader(new FileInputStream(path), StandardCharsets.UTF_8))) {
 				//한줄씩 읽기
 				String line;
 				while ((line = mvbr.readLine()) != null) {
