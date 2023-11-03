@@ -198,6 +198,17 @@ public class MemberService {
                                                         System.out.println("..! 앞서 입력하신 인원 수 (" + num + "명)에 맞지 않는 좌석을 선택했습니다. 다시 입력해주세요.");
                                                         continue;
                                                     }
+                                                    for (int i = 0; i<splited_input.length;i++){
+                                                        char ch = splited_input[i].charAt(0);
+                                                        String idxOfNumber = splited_input[i].substring(1,3);
+                                                        int idxOfNumberInt = Integer.parseInt(idxOfNumber)-1;
+                                                        int idxOfLine = (int)ch - 65;
+                                                        if(movieList.get(0).getSeat()[idxOfLine*6+idxOfNumberInt]=="0"){
+                                                            System.out.println("..! 이미 예약되어있는 자리 입니다. 다시 입력해주세요.");
+                                                            continue lp;
+                                                        }
+                                                    }
+                                                    flag6 = false;
                                                     Movie movie1 = movieList.get(0);
                                                     System.out.println(Arrays.toString(splited_input));
                                                     movie1.setRseat(splited_input);
@@ -221,7 +232,8 @@ public class MemberService {
                                                     movieRepository.SaveMovietxt(movie1,seatsstr);
                                                     memberRepository.SaveMovie(member,movie1);
                                                 }
-                                                break;
+                                                System.out.println("영화 예매를 완료했습니다. 처음 화면으로 돌아갑니다.");
+                                                new MainMenu(member).ShowMenu();
                                             } else if (input.equals("2")) {
                                                 new MainMenu(member).ShowMenu();
                                                 flag5 = false;
