@@ -102,6 +102,22 @@ public class MemberService {
                                 continue;
                             }
 
+                            System.out.println(movieStartInput);
+                            ArrayList<Movie> mov = member.getMovielist();
+                            int[] starttimes = new int[mov.size()];
+                            int[] endtimes = new int[mov.size()];
+                            int[] runningtimes = new int[mov.size()];
+                            for(int i = 0; i < mov.size()-1; i++){
+                                starttimes[i] =Integer.parseInt(mov.get(i).getStart().replaceAll(":",""));
+                                endtimes[i]=Integer.parseInt(mov.get(i).getEnd().replaceAll(":",""));
+                                runningtimes[i] = endtimes[i] - starttimes[i];
+                            }
+                            for(int i=0;i<mov.size()-1;i++){
+                                System.out.println(starttimes[i]);
+                                System.out.println(endtimes[i]);
+                                System.out.println(runningtimes[i]);
+                            }
+
                             if (false/*요구사항 반영 조건*/) {
                                 System.out.println("동일한 시간대에 예매한 영화가 있습니다. 다시 입력해주세요.");
                                 continue;
@@ -182,8 +198,20 @@ public class MemberService {
                                                         System.out.println("..! 앞서 입력하신 인원 수 (" + num + "명)에 맞지 않는 좌석을 선택했습니다. 다시 입력해주세요.");
                                                         continue;
                                                     }
+                                                    for (int i = 0; i<splited_input.length;i++){
+                                                        char ch = splited_input[i].charAt(0);
+                                                        String idxOfNumber = splited_input[i].substring(1,3);
+                                                        int idxOfNumberInt = Integer.parseInt(idxOfNumber)-1;
+                                                        int idxOfLine = (int)ch - 65;
+                                                        if(movieList.get(0).getSeat()[idxOfLine*6+idxOfNumberInt]=="0"){
+                                                            System.out.println("..! 이미 예약되어있는 자리 입니다. 다시 입력해주세요.");
+                                                            continue lp;
+                                                        }
+                                                    }
+                                                    flag6 = false;
                                                     Movie movie1 = movieList.get(0);
-                                                    String[] appendRSeats = movieList.get(0).getRseat();
+                                                    movie1.setRseat(splited_input);
+                                                    /*String[] appendRSeats = movieList.get(0).getRseat();
                                                     String[] appendSeats = movieList.get(0).getSeat();
                                                     for (int i = 0; i<splited_input.length;i++){
                                                         char ch = splited_input[i].charAt(0);
@@ -195,9 +223,16 @@ public class MemberService {
                                                     }
                                                     movie1.setRseat(appendRSeats);
                                                     movie1.setSeat(appendSeats);
+                                                    */
+                                                    String seatsstr = "";
+                                                    for(String str : splited_input){
+                                                        seatsstr += str+ " ";
+                                                    }
+                                                    movieRepository.SaveMovietxt(movie1,seatsstr);
                                                     memberRepository.SaveMovie(member,movie1);
                                                 }
-                                                break;
+                                                System.out.println("영화 예매를 완료했습니다. 처음 화면으로 돌아갑니다.");
+                                                new MainMenu(member).ShowMenu();
                                             } else if (input.equals("2")) {
                                                 new MainMenu(member).ShowMenu();
                                                 flag5 = false;
@@ -214,6 +249,7 @@ public class MemberService {
 
                             }
                             else{
+
                                 System.out.println("..! 오류 : 선택하신 영화의 상영시간이 아닙니다. 다시 입력해주세요");
                                 continue;
                             }
