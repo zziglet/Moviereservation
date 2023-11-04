@@ -77,7 +77,7 @@ public class SignUpInMenu {
         System.out.print("MovieReservation>> ");
         String name = scan.nextLine();
         //이름 문법규칙 체크
-        while(name.isBlank()||name.trim()!=name||(!Pattern.matches("^[a-zA-z가-힣]*$", name.replaceAll("\\s","")))) {
+        while(name.isBlank()||name.trim()!=name||(!Pattern.matches("^[a-zA-z가-힣]*$", name))) {
             System.out.println(" ..! 오류: 이름은 한글, 영문 대/소문자로 구성된 길이가 1 이상의 문자열이어야 합니다. 다시 입력해주세요.\n");
             System.out.print("MovieReservation>> ");
             name = scan.nextLine();
