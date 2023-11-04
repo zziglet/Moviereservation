@@ -4,7 +4,6 @@ import Movie.Movie;
 import Movie.MovieRepository;
 import Menu.MainMenu;
 
-import java.awt.*;
 import java.io.*;
 import java.util.*;
 import java.util.regex.Pattern;
@@ -117,7 +116,7 @@ public class MemberService {
                                         int inputStartMinuteInteger = Integer.parseInt(inputStartTime.substring(3));
                                         int inputEndTimeInteger = Integer.parseInt(inputEndTime.substring(0,2));
                                         int inputEndMinuteInteger = Integer.parseInt(inputEndTime.substring(3));
-                                        int inputTimeInteger = (inputEndTimeInteger-inputStartTimeInteger);
+                                        int inputTimeInteger = (inputEndMinuteInteger-inputStartMinuteInteger >= 0) ? inputEndTimeInteger-inputStartTimeInteger : inputEndTimeInteger-inputStartTimeInteger-1;
                                         int inputMinuteInteger = (inputEndMinuteInteger-inputStartMinuteInteger >= 0) ? inputEndMinuteInteger-inputStartMinuteInteger : inputEndMinuteInteger-inputStartMinuteInteger + 60;
 
                                         ArrayList<Movie> mov = member.getMovielist();
