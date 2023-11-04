@@ -228,11 +228,8 @@ public class MemberService {
                                                     for(String str : splited_input){
                                                         seatsstr += str+ " ";
                                                     }
-
-
                                                     movieRepository.SaveMovietxt(movie1,seatsstr);
                                                     memberRepository.SaveMovie(member,movie1);
-
                                                 }
                                                 System.out.println("영화 예매를 완료했습니다. 처음 화면으로 돌아갑니다.");
                                                 new MainMenu(member).ShowMenu();
