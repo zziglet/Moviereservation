@@ -92,6 +92,7 @@ public class MemberService {
 
                         String movieStartInput;
                         boolean flag3 = false;
+                        lp1:
                         while (!flag3) {
                             System.out.println();
                             System.out.print("MovieReservation >> ");
@@ -102,33 +103,37 @@ public class MemberService {
                                 continue;
                             }
 
-                            System.out.println(movieStartInput);
-                            ArrayList<Movie> mov = member.getMovielist();
-                            int[] starttimes = new int[mov.size()];
-                            int[] endtimes = new int[mov.size()];
-                            int[] runningtimes = new int[mov.size()];
-                            for(int i = 0; i < mov.size()-1; i++){
-                                starttimes[i] =Integer.parseInt(mov.get(i).getStart().replaceAll(":",""));
-                                endtimes[i]=Integer.parseInt(mov.get(i).getEnd().replaceAll(":",""));
-                                runningtimes[i] = endtimes[i] - starttimes[i];
-                            }
-                            for(int i=0;i<mov.size()-1;i++){
-                                System.out.println(starttimes[i]);
-                                System.out.println(endtimes[i]);
-                                System.out.println(runningtimes[i]);
-                            }
-
-                            if (false/*요구사항 반영 조건*/) {
-                                System.out.println("동일한 시간대에 예매한 영화가 있습니다. 다시 입력해주세요.");
-                                continue;
-                            }
-
                             if (movieStarts.contains(movieStartInput)) {
                                 flag3 = true;
                                 for (int i = 0; i < movieList.size(); i++) {
                                     if (!movieList.get(i).getStart().equals(movieStartInput)) {
                                         movieList.remove(i);
                                         i--;
+                                    }
+                                    else {
+                                        String inputStartTime = movieList.get(i).getStart();
+                                        String inputEndTime = movieList.get(i).getEnd();
+                                        int inputStartTimeInteger = Integer.parseInt(inputStartTime.substring(0,2));
+                                        int inputStartMinuteInteger = Integer.parseInt(inputStartTime.substring(3));
+                                        int inputEndTimeInteger = Integer.parseInt(inputEndTime.substring(0,2));
+                                        int inputEndMinuteInteger = Integer.parseInt(inputEndTime.substring(3));
+                                        int inputTimeInteger = (inputEndTimeInteger-inputStartTimeInteger);
+                                        int inputMinuteInteger = (inputEndMinuteInteger-inputStartMinuteInteger >= 0) ? inputEndMinuteInteger-inputStartMinuteInteger : inputEndMinuteInteger-inputStartMinuteInteger + 60;
+
+                                        ArrayList<Movie> mov = member.getMovielist();
+                                        int[] reservatedMovieStartTime = new int[mov.size()];
+                                        int[] reservatedMovieStartMinute = new int[mov.size()];
+                                        for(int j = 0; j < mov.size(); j++){
+                                            reservatedMovieStartTime[i] = Integer.parseInt(mov.get(i).getStart().substring(0,2));
+                                            reservatedMovieStartMinute[i] = Integer.parseInt(mov.get(i).getStart().substring(3));
+                                        }
+                                        for (int j = 0; j < mov.size(); j++){
+                                            if(movieDateInput.equals(mov.get(i).getDate())&&(inputStartTimeInteger*60+inputStartMinuteInteger)<((reservatedMovieStartTime[i]+inputTimeInteger)*60+(reservatedMovieStartMinute[i]+inputMinuteInteger))&&(inputEndTimeInteger*60+inputEndMinuteInteger)>((reservatedMovieStartTime[i]+inputTimeInteger)*60+(reservatedMovieStartMinute[i]+inputMinuteInteger))){
+                                                System.out.println("동일한 시간대에 예매한 영화가 있습니다. 다시 입력해주세요.");
+                                                flag3 = false;
+                                                continue lp1;
+                                            }
+                                        }
                                     }
                                 }
                                 System.out.println("[예매 / 인원선택] 영화예매를 진행하실 인원 수를 입력해주세요.\n");
@@ -183,7 +188,7 @@ public class MemberService {
                                                 System.out.println("[예매 / 좌석선택] 예매하려는 좌석번호를 입력해주세요.");
                                                 String seatInput;
                                                 boolean flag6 = true;
-                                                lp:
+                                                lp2:
                                                 while (flag6) {
                                                     System.out.print("MovieReservation >> ");
                                                     seatInput = scan.nextLine();
@@ -191,7 +196,7 @@ public class MemberService {
                                                     for (String el : splited_input) {
                                                         if (!Pattern.matches("^[A-Z][0-9][0-9]", el)) {
                                                             System.out.println("!오류 : 잘못된 입력입니다. 다시 입력해주세요.");
-                                                            continue lp;
+                                                            continue lp2;
                                                         }
                                                     }
                                                     if (splited_input.length != num) {
@@ -205,7 +210,7 @@ public class MemberService {
                                                         int idxOfLine = (int)ch - 65;
                                                         if(movieList.get(0).getSeat()[idxOfLine*6+idxOfNumberInt]=="0"){
                                                             System.out.println("..! 이미 예약되어있는 자리 입니다. 다시 입력해주세요.");
-                                                            continue lp;
+                                                            continue lp2;
                                                         }
                                                     }
                                                     flag6 = false;
