@@ -17,7 +17,20 @@ public class MemberService {
     Scanner scan = new Scanner(System.in);
     //영화 예매를 위한 메소드 (인자를 뭘 넘겨야할지 아직 감이 안옴)
     public void CreateReservation(Member member){
-        ArrayList<Movie> movieList = movieRepository.find();
+        ArrayList<Movie> movieAllList = movieRepository.find();
+        ArrayList<Movie> movieList = new ArrayList<Movie>();
+        
+        int cnt = 0;
+        for(int j=0; j< movieAllList.size(); j++) {
+        	for(String st : movieAllList.get(j).getSeat()) {
+        		if(st == "0")  cnt++;
+        	}
+        	if(cnt < 72) {
+        		movieList.add(movieAllList.get(j));
+        	}
+        	cnt = 0;
+        }
+        
         Set<String> movieNames = new HashSet<String>();
         Set<String> movieDates = new HashSet<String>();
         Set<String> movieStarts = new HashSet<String>();
