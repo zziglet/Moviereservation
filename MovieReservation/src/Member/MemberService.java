@@ -150,9 +150,26 @@ public class MemberService {
                                     if (!Pattern.matches("[1-9]+", movieNumber))
                                         movieNumber = movieNumber.substring(0, movieNumber.length() - 1);
                                     int num = Integer.parseInt(movieNumber);
+
+                                    //남은 좌석 수보다 많은 인원 수 입력했을 시
+                                    Movie movie = movieList.get(0);
+                                    String[] seats = movie.getSeat();
+                                    int seatsNum = 72; // 전체 좌석 수
+                                    int reservedSeatsNum = 0; // 이미 예약된 좌석 수
+                                    for (String seat : seats) {
+                                        if (seat.equals("0")) reservedSeatsNum++;
+                                    }
+                                    int availableSeats = seatsNum - reservedSeatsNum; // 남은 좌석 수
+
+                                    // 입력받은 인원 수와 남은 좌석 수 비교
+                                    if (num > availableSeats) {
+                                        System.out.println("..! 오류 : 남은 좌석이 " + availableSeats + "석입니다. " +"다시 입력해주세요.");
+                                        continue; // 사용자가 다시 인원 수를 입력하도록 유도
+                                    }
+
                                     if (num >= 1 && num <= 5) {
                                         flag4 = false;
-                                        Movie movie = movieList.get(0);
+//                                        Movie movie = movieList.get(0);
                                         String[] reservedSeats = movie.getRseat();
                                         System.out.println("[예매 / 좌석선택] 좌석을 선택해주세요.\n");
                                         for (int i = 0; i < 12; i++) {
@@ -166,9 +183,9 @@ public class MemberService {
                                             if (i == 1 || i == 5 || i == 11) System.out.println("\n");
                                             else System.out.println();
                                         }
-                                        String[] seats = movie.getSeat();
-                                        int seatsNum = 72;
-                                        int reservedSeatsNum = 0;
+//                                        String[] seats = movie.getSeat();
+//                                        int seatsNum = 72;
+//                                        int reservedSeatsNum = 0;
                                         for (int i = 0; i < seats.length; i++) {
                                             if (seats[i].equals("0")) reservedSeatsNum++;
                                         }
@@ -247,7 +264,7 @@ public class MemberService {
 
                                     }
                                     else{
-                                        System.out.println("..! 오류 : 최대 예매 인원 수를 초과했습니다. 다시 입력해주세요.");
+                                        System.out.println("..! 오류 : 예매 가능 인원 수가 아닙니다. 다시 입력해주세요.");
                                         continue;
                                     }
                                 }
