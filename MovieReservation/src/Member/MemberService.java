@@ -117,18 +117,22 @@ public class MemberService {
                                         int inputStartMinuteInteger = Integer.parseInt(inputStartTime.substring(3));
                                         int inputEndTimeInteger = Integer.parseInt(inputEndTime.substring(0,2));
                                         int inputEndMinuteInteger = Integer.parseInt(inputEndTime.substring(3));
-                                        int inputTimeInteger = (inputEndTimeInteger-inputStartTimeInteger);
+                                        int inputTimeInteger = (inputEndMinuteInteger-inputStartMinuteInteger >= 0) ? inputEndTimeInteger-inputStartTimeInteger : inputEndTimeInteger-inputStartTimeInteger-1;
                                         int inputMinuteInteger = (inputEndMinuteInteger-inputStartMinuteInteger >= 0) ? inputEndMinuteInteger-inputStartMinuteInteger : inputEndMinuteInteger-inputStartMinuteInteger + 60;
 
                                         ArrayList<Movie> mov = member.getMovielist();
                                         int[] reservatedMovieStartTime = new int[mov.size()];
                                         int[] reservatedMovieStartMinute = new int[mov.size()];
+                                        int[] reservatedMovieEndTime = new int[mov.size()];
+                                        int[] reservatedMovieEndMinute = new int[mov.size()];
                                         for(int j = 0; j < mov.size(); j++){
-                                            reservatedMovieStartTime[i] = Integer.parseInt(mov.get(j).getStart().substring(0,2));
-                                            reservatedMovieStartMinute[i] = Integer.parseInt(mov.get(j).getStart().substring(3));
+                                            reservatedMovieStartTime[j] = Integer.parseInt(mov.get(j).getStart().substring(0,2));
+                                            reservatedMovieStartMinute[j] = Integer.parseInt(mov.get(j).getStart().substring(3));
+                                            reservatedMovieEndTime[j] = Integer.parseInt(mov.get(j).getEnd().substring(0,2));
+                                            reservatedMovieEndMinute[j] = Integer.parseInt(mov.get(j).getEnd().substring(3));
                                         }
                                         for (int j = 0; j < mov.size(); j++){
-                                            if(movieDateInput.equals(mov.get(j).getDate())&&(inputStartTimeInteger*60+inputStartMinuteInteger)<((reservatedMovieStartTime[i]+inputTimeInteger)*60+(reservatedMovieStartMinute[i]+inputMinuteInteger))&&(inputEndTimeInteger*60+inputEndMinuteInteger)>((reservatedMovieStartTime[i]+inputTimeInteger)*60+(reservatedMovieStartMinute[i]+inputMinuteInteger))){
+                                            if(movieDateInput.equals(mov.get(j).getDate())&&(inputStartTimeInteger*60+inputStartMinuteInteger)<((reservatedMovieStartTime[j]+inputTimeInteger)*60+(reservatedMovieStartMinute[j]+inputMinuteInteger))&&((reservatedMovieEndTime[j]+inputTimeInteger)*60+(reservatedMovieEndMinute[j]+inputMinuteInteger))>(inputEndTimeInteger*60+inputEndMinuteInteger)){
                                                 System.out.println("동일한 시간대에 예매한 영화가 있습니다. 다시 입력해주세요.");
                                                 flag3 = false;
                                                 continue lp1;
