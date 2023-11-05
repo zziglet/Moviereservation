@@ -16,7 +16,7 @@ public class MyPageMenu{
     String moviefile = "./src/movie.txt";
     String userfile;
     
-    MyPageMenu(Member member) {
+    public MyPageMenu(Member member) {
     	super();
         this.member = member;
     }
@@ -44,6 +44,7 @@ public class MyPageMenu{
                         membersev.CancelReservation(this.member);
                         break;
                     case 3:
+                        new MainMenu(member).ShowMenu();
                         break;
                     default:
                         System.out.println("..! 오류 : 잘못된 입력입니다. 다시 입력해주세요.");
