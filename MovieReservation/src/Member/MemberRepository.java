@@ -1,5 +1,7 @@
 package Member;
 
+import Menu.MainMenu;
+import Menu.MyPageMenu;
 import Movie.Movie;
 
 import java.io.*;
@@ -103,6 +105,7 @@ public class MemberRepository {
         System.out.println("[예매 내역 확인]\n\n");
         if(mov.isEmpty()){
             System.out.println("사용자의 예매 내역이 존재하지 않습니다.\n ");
+           new MyPageMenu(member).ShowMenu2();
             return;
         }
         for (int i = 0; i < mov.size(); i++) {
