@@ -4,10 +4,11 @@ import Movie.Movie;
 import Movie.MovieRepository;
 import Menu.MainMenu;
 
-import java.awt.*;
+
 import java.io.*;
 import java.util.*;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 
 public class MemberService {
@@ -221,24 +222,40 @@ public class MemberService {
                                                 flag5 = false;
                                                 System.out.println("[예매 / 좌석선택] 예매하려는 좌석번호를 입력해주세요.");
                                                 String seatInput;
+                                                String seatInputlower;
                                                 boolean flag6 = true;
                                                 lp2:
                                                 while (flag6) {
                                                     System.out.print("MovieReservation >> ");
-                                                    seatInput = scan.nextLine();
+                                                    seatInputlower = scan.nextLine();
+                                                    seatInput = seatInputlower.toUpperCase();
+                                                    
                                                     String[] splited_input = seatInput.split("[\\s\\t\\v]+");
+                                                    
                                                     for (String el : splited_input) {
-                                                        if (!Pattern.matches("^[A-Z][0-9][0-9]", el)) {
+                                                        if (!Pattern.matches("^[A-L|a-l][0-9][0-6]", el)) {
                                                             System.out.println("!오류 : 잘못된 입력입니다. 다시 입력해주세요.");
                                                             continue lp2;
                                                         }
+                                                        
                                                     }
+                                                    Long distinctCount = Stream.of(splited_input).distinct().count();
+                                                    
+                                                    if(distinctCount != splited_input.length) {
+                                                    	System.out.println("..! 중복되는 좌석을 선택했습니다. 다시 입력해주세요.");
+                                                        continue;
+                                                    }
+                                                    
                                                     if (splited_input.length != num) {
                                                         System.out.println("..! 앞서 입력하신 인원 수 (" + num + "명)에 맞지 않는 좌석을 선택했습니다. 다시 입력해주세요.");
                                                         continue;
                                                     }
+                                                    
                                                     for (int i = 0; i < splited_input.length; i++) {
-                                                        char ch = splited_input[i].charAt(0);
+                                                        
+                                                   
+                                                    	char ch = splited_input[i].charAt(0);
+                                                        ch = Character.toUpperCase(ch);
                                                         String idxOfNumber = splited_input[i].substring(1, 3);
                                                         int idxOfNumberInt = Integer.parseInt(idxOfNumber) - 1;
                                                         int idxOfLine = (int) ch - 65;
@@ -246,7 +263,18 @@ public class MemberService {
                                                             System.out.println("..! 이미 예약되어있는 자리 입니다. 다시 입력해주세요.");
                                                             continue lp2;
                                                         }
+                                                        for (int j=0; j<splited_input[i].length(); j++) {
+                                                        	String[] str = splited_input[i].split("");
+                                                        	String upper = str[0].toUpperCase();
+                                                        	str[0] = upper;
+                                                        	String result = "";
+                                                        	for(String st : str) {
+                                                        		result += st;
+                                                        	}
+                                                        	splited_input[i] = result;
+                                                        }
                                                     }
+                                                    
                                                     flag6 = false;
                                                     Movie movie1 = movieList.get(0);
                                                     movie1.setRseat(splited_input);
@@ -267,6 +295,7 @@ public class MemberService {
                                                     for (String str : splited_input) {
                                                         seatsstr += str + " ";
                                                     }
+                                                    
                                                     movieRepository.SaveMovietxt(movie1, seatsstr);
                                                     memberRepository.SaveMovie(member, movie1);
                                                 }
@@ -367,3 +396,4 @@ public class MemberService {
     }
 
 }
+
