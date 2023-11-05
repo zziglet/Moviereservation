@@ -216,8 +216,9 @@ public class MemberService {
                                         boolean flag5 = true;
                                         while (flag5) {
                                             System.out.print("MovieReservation >> ");
-                                            String input = scan.nextLine();
-
+                                            String result1 = scan.nextLine();
+                                            String input = result1.replaceAll("\\s+", "");
+                                            
                                             if (input.equals("1")) {
                                                 flag5 = false;
                                                 System.out.println("[예매 / 좌석선택] 예매하려는 좌석번호를 입력해주세요.");
@@ -230,7 +231,7 @@ public class MemberService {
                                                     seatInputlower = scan.nextLine();
                                                     seatInput = seatInputlower.toUpperCase();
                                                     
-                                                    String[] splited_input = seatInput.split("[\\s\\t\\v]+");
+                                                    String[] splited_input = seatInput.split("[\\s+\\t\\v]+");
                                                     
                                                     for (String el : splited_input) {
                                                         if (!Pattern.matches("^[A-L|a-l][0-9][0-6]", el)) {
@@ -396,4 +397,3 @@ public class MemberService {
     }
 
 }
-
