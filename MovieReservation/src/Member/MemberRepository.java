@@ -100,6 +100,11 @@ public class MemberRepository {
 
     public void FindMovie(Member member) {
         ArrayList<Movie> mov = member.getMovielist();
+        System.out.println("[예매 내역 확인]\n\n");
+        if(mov.isEmpty()){
+            System.out.println("사용자의 예매 내역이 존재하지 않습니다.\n ");
+            return;
+        }
         for (int i = 0; i < mov.size(); i++) {
             Movie movies = mov.get(i);
             System.out.println("[" + (i + 1) + "]");

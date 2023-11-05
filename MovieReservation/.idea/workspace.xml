@@ -7,6 +7,7 @@
     <list default="true" id="4b4d1604-b06c-459f-9cda-76522a36034f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Member/MemberService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Member/MemberService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/user/godori.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/user/godori.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -86,7 +87,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1698820915132</updated>
-      <workItem from="1698820916236" duration="19517000" />
+      <workItem from="1698820916236" duration="26552000" />
     </task>
     <servers />
   </component>
