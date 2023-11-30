@@ -16,7 +16,8 @@ public class AdminService {
             // 관리자에게 수정할 관 번호 선택
             System.out.println("수정할 관 번호가 담긴 리스트입니다. \n");
             String userdir = System.getProperty("user.dir") + "./src/user/";
-            String path = userdir + "theater.txt";
+            String srcdir = System.getProperty("user.dir") + "./src/";
+            String path = srcdir + "theater.txt";
             BufferedReader membr = new BufferedReader(
                     new InputStreamReader(new FileInputStream(path), StandardCharsets.UTF_8));
             StringBuffer inputBuffer = new StringBuffer();
@@ -44,20 +45,18 @@ public class AdminService {
             // 오류 처리 해줘야함
             String repString = input.replaceAll("\\s+", "");
             String[] info = movieList.get(result - 1).split(" ");
-            String targetKey = info[0];
+            String theaterKey = info[0];
 
-            //////////////////////////////////////////////////////////
-            //// movie.txt (상영 스케줄)에 수정된 내역 적용
-
-            path = userdir + "movie.txt";
+            // theater.txt에 수정된 내역 적용
+            path = srcdir + "theater.txt";
             membr = new BufferedReader(
                     new InputStreamReader(new FileInputStream(path), StandardCharsets.UTF_8));
 
             while ((line = membr.readLine()) != null) {
                 info = line.split(" ");
-                if(info[1].equals(targetKey))
-                    info[3] = repString;
-                    line = "";
+                if (info[0].equals(theaterKey))
+                    info[1] = repString;
+                line = "";
                 for (String str : info) {
                     line += str + " ";
                 }
@@ -71,8 +70,57 @@ public class AdminService {
             fileout.write(inputBuffer.toString().getBytes());
             fileout.close();
             scan.close();
-            // 예매 내역 반영 -> id.txt 안에도 키 값을 부여해야 하나?
 
+            //////////////////////////////////////////////////////////
+            //// movie.txt (상영 스케줄)에 수정된 내역 적용
+
+            path = srcdir + "movie.txt";
+            membr = new BufferedReader(
+                    new InputStreamReader(new FileInputStream(path), StandardCharsets.UTF_8));
+            String movieKey = "";
+
+            while ((line = membr.readLine()) != null) {
+                info = line.split(" ");
+                if (info[1].equals(theaterKey))
+                    movieKey = info[0];
+                info[3] = repString;
+                line = "";
+                for (String str : info) {
+                    line += str + " ";
+                }
+                inputBuffer.append(line);
+                inputBuffer.append("\n");
+            }
+
+            membr.close();
+
+            fileout = new FileOutputStream(path);
+            fileout.write(inputBuffer.toString().getBytes());
+            fileout.close();
+            scan.close();
+
+            // 예매 내역 반영
+
+            path = userdir + "movie.txt";
+            membr = new BufferedReader(
+                    new InputStreamReader(new FileInputStream(path), StandardCharsets.UTF_8));
+            while ((line = membr.readLine()) != null) {
+                info = line.split(" ");
+                if (info[0].equals(movieKey))
+                    info[1] = repString;
+                line = "";
+                for (String str : info) {
+                    line += str + " ";
+                }
+                inputBuffer.append(line);
+                inputBuffer.append("\n");
+            }
+            membr.close();
+
+            fileout = new FileOutputStream(path);
+            fileout.write(inputBuffer.toString().getBytes());
+            fileout.close();
+            scan.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -88,7 +136,8 @@ public class AdminService {
             // 관리자에게 수정할 제목 리스트 제공
             System.out.println("수정할 제목이 담긴 리스트입니다. \n");
             String userdir = System.getProperty("user.dir") + "./src/user/";
-            String path = userdir + "movieinfo.txt";
+            String srcdir = System.getProperty("user.dir") + "./src/";
+            String path = srcdir + "movieinfo.txt";
             BufferedReader membr = new BufferedReader(
                     new InputStreamReader(new FileInputStream(path), StandardCharsets.UTF_8));
             StringBuffer inputBuffer = new StringBuffer();
@@ -116,20 +165,21 @@ public class AdminService {
             // 오류 처리 해줘야함
             String repString = input.replaceAll("\\s+", "");
             String[] info = movieList.get(result - 1).split(" ");
-            String targetKey = info[0];
+            String theaterKey = info[0];
 
-            //////////////////////////////////////////////////////////
             //// movie.txt (상영 스케줄)에 수정된 내역 적용
 
-            path = userdir + "movie.txt";
+            path = srcdir + "movie.txt";
             membr = new BufferedReader(
                     new InputStreamReader(new FileInputStream(path), StandardCharsets.UTF_8));
+            String movieKey = "";
 
             while ((line = membr.readLine()) != null) {
                 info = line.split(" ");
-                if(info[1].equals(targetKey))
-                    info[5] = repString;
-                    line = "";
+                if (info[1].equals(theaterKey))
+                    movieKey = info[0];
+                info[5] = repString;
+                line = "";
                 for (String str : info) {
                     line += str + " ";
                 }
@@ -143,8 +193,29 @@ public class AdminService {
             fileout.write(inputBuffer.toString().getBytes());
             fileout.close();
             scan.close();
-            // 예매 내역 반영 -> id.txt 안에도 키 값을 부여해야 하나?
 
+            // 예매 내역 반영
+
+            path = userdir + "movie.txt";
+            membr = new BufferedReader(
+                    new InputStreamReader(new FileInputStream(path), StandardCharsets.UTF_8));
+            while ((line = membr.readLine()) != null) {
+                info = line.split(" ");
+                if (info[0].equals(movieKey))
+                    info[2] = repString;
+                line = "";
+                for (String str : info) {
+                    line += str + " ";
+                }
+                inputBuffer.append(line);
+                inputBuffer.append("\n");
+            }
+            membr.close();
+
+            fileout = new FileOutputStream(path);
+            fileout.write(inputBuffer.toString().getBytes());
+            fileout.close();
+            scan.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
