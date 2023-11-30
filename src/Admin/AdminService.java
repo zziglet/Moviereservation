@@ -121,7 +121,6 @@ public class AdminService {
 		        
 	}
 	
->>>>>>> e47a7839c4f3ca46190f303b38c687e5e59b0a5a
     public void EditTheaterNum() {
         /* 관번호 수정 */
         try {
