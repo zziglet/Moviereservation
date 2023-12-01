@@ -1,4 +1,5 @@
 package Admin;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -12,23 +13,230 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Pattern;
+
 public class AdminService {
 	 private static String theaternumMax = "2600"; 
 	 private static String theaternumMin = "1"; 
 	 
+	 private static String movieruntimeMax = "1440"; 
+	 private static String movieruntimeMin = "1"; 
+	 
+	 
 	 public void AddTheater(){
 		String lastKey = null;
 		String userdir = System.getProperty("user.dir") + "./src/";
-	     	String path = userdir +"theater.txt";
-	     	ArrayList<String> theaterNamelist = new ArrayList<String>();
-	     	ArrayList<String> theaterKeylist = new ArrayList<String>();
-         	String num = null;
-         
-         	try {
-        	 try (BufferedReader mvbr = new BufferedReader
-                    (new InputStreamReader(new FileInputStream(path), StandardCharsets.UTF_8))) {
+     	String path = userdir +"theater.txt";
+     	ArrayList<String> theaterNamelist = new ArrayList<String>();
+     	ArrayList<String> theaterKeylist = new ArrayList<String>();
+     	String num = null;
+     
+     	try {
+    	 try (BufferedReader mvbr = new BufferedReader
+                (new InputStreamReader(new FileInputStream(path), StandardCharsets.UTF_8))) {
+             String line;
+             while ((line = mvbr.readLine()) != null) {
+                 line = line.trim();
+                 String[] info = line.split(" ");
+                 theaterKeylist.add(info[0]);
+                 theaterNamelist.add(info[1]);
+             }
+             
+             String[] info2 = theaterKeylist.get(theaterKeylist.size()-1).split("");
+             String[] info3 = new String[info2.length-1];
+             for(int j=1; j<info2.length; j++) {
+                  info3[j-1] = info2[j];
+             }
+             lastKey = String.join("", info3);
+        	 }
+        	 
+             System.out.println("추가할 상영관 이름을 입력하십시오.\n");
+               
+             @SuppressWarnings("resource")
+     		 Scanner scan = new Scanner(System.in);
+             boolean flag1 = false; // 관 번호 체크
+             lp1:
+             while (!flag1) {
+            	System.out.print("MovieReservation >> ");
+                String input = scan.nextLine();
+                if (!Pattern.matches("^[0-99]+$", input)) {
+                   System.out.println("..! 오류 : 잘못된 입력입니다. 다시 입력해주세요.\n");
+                   continue lp1;
+                }
+                
+                for(String st : theaterNamelist) {
+                   if(st.equals(input)) {
+                      System.out.println("..! 오류 : 같은 상영관 번호가 있습니다. 다시 입력해주세요.\n");
+                       continue lp1;
+                   }
+                }
+                
+                System.out.println("추가할 상영관의 좌석 수를 입력하십시오.\n");
+                boolean flag2 = false;
+                lp2:
+                while(!flag2) {
+		             flag1 = true;
+		 	          
+		 	         System.out.print("MovieReservation >> ");
+		 	         scan = new Scanner(System.in);
+		 	         num = scan.nextLine();
+		 	          
+		 	         if (!Pattern.matches("^[0-9]*$", num)) {
+		                 System.out.println("..! 오류 : 잘못된 입력입니다. 다시 입력해주세요.\n");
+		                 continue lp2;
+		             }
+		 	         
+		 	         if((Integer.parseInt(num) < Integer.parseInt(theaternumMin)) || (Integer.parseInt(num) > Integer.parseInt(theaternumMax))) {
+		                System.out.println("..! 오류 : 가능한 좌석 수가 아닙니다. 다시 입력해주세요.\n");
+		                continue lp2;
+		             }
+		 	        
+		             flag2 = true;
+                }
+		          
+	            File file = new File(path);
+	            if (!file.exists()) {
+	                System.out.println("Cannot find file");
+	                return;
+	            }
+	            FileWriter fw = new FileWriter(file, true);
+	            BufferedWriter writer = new BufferedWriter(fw);
+	            String str = "T" + Integer.toString(Integer.parseInt(lastKey) + 1) + " " + input + " " + num;
+	            writer.write(str + System.lineSeparator());
+	            writer.close();
+             }
+            
+         } catch (NumberFormatException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace(); 
+         } catch(IOException e) {
+            e.printStackTrace();
+         }
+    
+    
+    }
+	    
+	public void AddMovieInfo(){
+		String lastKey = null;
+		String userdir = System.getProperty("user.dir") + "./src/";
+     	String path = userdir +"movieinfo.txt";
+     	ArrayList<String> movieNamelist = new ArrayList<String>();
+     	ArrayList<String> movieKeylist = new ArrayList<String>();
+     	ArrayList<String> movieRuntimelist = new ArrayList<String>();
+     	String runtime = null;
+     
+     	try {
+    	 try (BufferedReader mvbr = new BufferedReader
+                (new InputStreamReader(new FileInputStream(path), StandardCharsets.UTF_8))) {
+             String line;
+             while ((line = mvbr.readLine()) != null) {
+                 line = line.trim();
+                 String[] info = line.split("\\s+");
+                 movieKeylist.add(info[0]);
+                 ArrayList<String> namebuflist = new ArrayList<String>();
+                 for(int i=1 ; i<info.length - 1; i++) {
+	                namebuflist.add(info[i]);
+	             }
+                 String moviename = String.join(" ", namebuflist);
+                 
+                 movieNamelist.add(moviename);
+                 movieRuntimelist.add(info[info.length-1]);
+             }
+             
+             String[] info2 = movieKeylist.get(movieKeylist.size()-1).split("");
+             String[] info3 = new String[info2.length-1];
+             for(int j=1; j<info2.length; j++) {
+                  info3[j-1] = info2[j];
+             }
+             lastKey = String.join("", info3);
+        	 }
+        	 
+             System.out.println("추가할 영화의 제목을 입력하십시오.\n");
+               
+             @SuppressWarnings("resource")
+     		 Scanner scan = new Scanner(System.in);
+             boolean flag1 = false; // 영화 제목 체크
+             lp1:
+             while (!flag1) {
+            	System.out.print("MovieReservation >> ");
+                String input = scan.nextLine().trim();
+                System.out.println(input);
+                if (!Pattern.matches("^[가-힣a-zA-Z0-9 ,:.!?()~-]+$", input)) {
+                   System.out.println("..! 오류 : 잘못된 입력입니다. 다시 입력해주세요.\n");
+                   continue lp1;
+                }
+                
+                
+                for(String st : movieNamelist) {
+                   if(st.equals(input)) {
+                      System.out.println("..! 오류 : 같은 영화 제목이 있습니다. 다시 입력해주세요.\n");
+                       continue lp1;
+                   }
+                }
+                
+                System.out.println("추가할 영화의 러닝타임을 입력하십시오.\n");
+                boolean flag2 = false;
+                lp2:
+                while(!flag2) {
+		             flag1 = true;
+		 	          
+		 	         System.out.print("MovieReservation >> ");
+		 	         scan = new Scanner(System.in);
+		 	         runtime = scan.nextLine();
+		 	          
+		 	         if (!Pattern.matches("^[0-9]*$", runtime)) {
+		                 System.out.println("..! 오류 : 잘못된 입력입니다. 다시 입력해주세요.\n");
+		                 continue lp2;
+		             }
+		 	         
+		 	         if((Integer.parseInt(runtime) < Integer.parseInt(movieruntimeMin)) || (Integer.parseInt(runtime) > Integer.parseInt(movieruntimeMax))) {
+		                System.out.println("..! 오류 : 가능한 러닝타임이 아닙니다. 다시 입력해주세요.\n");
+		                continue lp2;
+		             }
+		 	        
+		             flag2 = true;
+                }
+		          
+	            File file = new File(path);
+	            if (!file.exists()) {
+	                System.out.println("Cannot find file");
+	                return;
+	            }
+	            FileWriter fw = new FileWriter(file, true);
+	            BufferedWriter writer = new BufferedWriter(fw);
+	            String str = "O" + Integer.toString(Integer.parseInt(lastKey) + 1) + " " + input + " " + runtime;
+	            writer.write(str + System.lineSeparator());
+	            writer.close();
+             }
+            
+         } catch (NumberFormatException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace(); 
+         } catch(IOException e) {
+            e.printStackTrace();
+         }
+        
+              
+	}
+		
+	public void AddMovie(){
+		String lastKey = null;
+		String userdir = System.getProperty("user.dir") + "./src/";
+     	String path = userdir +"theater.txt";
+     	ArrayList<String> theaterNamelist = new ArrayList<String>();
+     	ArrayList<String> theaterKeylist = new ArrayList<String>();
+     	
+     	
+     	System.out.println("\n추가할 상영스케줄의 상영관 key를 입력하십시오.\n");
+     	Scanner scan = new Scanner(System.in);
+        boolean flag1 = false; // 상영관 체크
+        lp1:
+        while (!flag1) {
+	     	try {
+	    	 try (BufferedReader mvbr = new BufferedReader
+	                (new InputStreamReader(new FileInputStream(path), StandardCharsets.UTF_8))) {
 	             String line;
 	             while ((line = mvbr.readLine()) != null) {
+	            	 System.out.println(line);
 	                 line = line.trim();
 	                 String[] info = line.split(" ");
 	                 theaterKeylist.add(info[0]);
@@ -41,80 +249,161 @@ public class AdminService {
 	                  info3[j-1] = info2[j];
 	             }
 	             lastKey = String.join("", info3);
-	        	 }
-	        	 
-	             System.out.println("추가할 상영관 이름을 입력하십시오.\n");
-	               
-	             @SuppressWarnings("resource")
-	     		 Scanner scan = new Scanner(System.in);
-	             boolean flag1 = false; // 관 번호 체크
-	             lp1:
-	             while (!flag1) {
-	            	System.out.print("MovieReservation >> ");
-	                String input = scan.nextLine();
-	                if (!Pattern.matches("^[0-99]+$", input)) {
-	                   System.out.println("..! 오류 : 잘못된 입력입니다. 다시 입력해주세요.\n");
-	                   continue lp1;
-	                }
-	                
-	                for(String st : theaterNamelist) {
-	                   if(st.equals(input)) {
-	                      System.out.println("..! 오류 : 같은 상영관 번호가 있습니다. 다시 입력해주세요.\n");
-	                       continue lp1;
-	                   }
-	                }
-	                
-	                System.out.println("추가할 상영관의 좌석 수를 입력하십시오.\n");
-	                boolean flag2 = false;
-	                lp2:
-	                while(!flag2) {
-			             flag1 = true;
-			 	          
-			 	         System.out.print("MovieReservation >> ");
-			 	         scan = new Scanner(System.in);
-			 	         num = scan.nextLine();
-			 	          
-			 	         if (!Pattern.matches("^[0-9]*$", num)) {
-			                 System.out.println("..! 오류 : 잘못된 입력입니다. 다시 입력해주세요.\n");
-			                 continue lp2;
-			             }
-			 	         
-			 	         if((Integer.parseInt(num) < Integer.parseInt(theaternumMin)) || (Integer.parseInt(num) > Integer.parseInt(theaternumMax))) {
-			                System.out.println("..! 오류 : 가능한 좌석 수가 아닙니다. 다시 입력해주세요.\n");
-			                continue lp2;
-			             }
-			 	        
-			             flag2 = true;
-	                }
-			          
-		            File file = new File(path);
-		            if (!file.exists()) {
-		                System.out.println("Cannot find file");
-		                return;
-		            }
-		            FileWriter fw = new FileWriter(file, true);
-		            BufferedWriter writer = new BufferedWriter(fw);
-		            String str = "T" + Integer.toString(Integer.parseInt(lastKey) + 1) + " " + input + " " + num;
-		            writer.write(str + System.lineSeparator());
-		            writer.close();
-	             }
+	    	 	}
 	            
 	         } catch (NumberFormatException e) {
 	            // TODO Auto-generated catch block
 	            e.printStackTrace(); 
 	         } catch(IOException e) {
-	            e.printStackTrace();
-	         }
-        
-        
-    	}
-	    
-	public void AddMovieInfo(){
-		        
-	}
-		
-	public void AddMovie(){
+	            e.printStackTrace();}
+	     	System.out.println();
+	     	System.out.print("MovieReservation >> ");
+            String input = scan.nextLine().trim();
+	     	
+	     	if (!Pattern.matches("^[A-Z][0-9]*$", input)) {
+                System.out.println("..! 오류 : 잘못된 입력입니다. 다시 입력해주세요.\n");
+                continue lp1;}
+             
+             
+            if((Integer.parseInt(input.substring(1)) > Integer.parseInt(lastKey)) || (Integer.parseInt(input.substring(1)) == 0)){
+                System.out.println("..! 오류 : 벗어난 Key 값입니다. 다시 입력해주세요.\n");
+                continue lp1;}
+            
+             System.out.println("\n추가할 상영스케줄의 영화 정보 key를 입력하십시오.\n");
+             boolean flag2 = false;
+             lp2:
+             while(!flag2) {
+		             flag1 = true;
+		 	          
+		     		 lastKey = null;
+		         	 path = userdir +"movieinfo.txt";
+		         	 ArrayList<String> movieNamelist = new ArrayList<String>();
+		         	 ArrayList<String> movieKeylist = new ArrayList<String>();
+		         	 ArrayList<String> movieRuntimelist = new ArrayList<String>();
+		         	 String runtime = null;
+		         
+		         	 try {
+		        	  try (BufferedReader mvbr = new BufferedReader
+		                    (new InputStreamReader(new FileInputStream(path), StandardCharsets.UTF_8))) {
+		                 String line;
+		                 while ((line = mvbr.readLine()) != null) {
+		                	 System.out.println(line);
+		                     line = line.trim();
+		                     String[] info = line.split("\\s+");
+		                     movieKeylist.add(info[0]);
+		                     ArrayList<String> namebuflist = new ArrayList<String>();
+		                     for(int i=1 ; i<info.length - 1; i++) {
+		    	                namebuflist.add(info[i]);
+		    	             }
+		                     String moviename = String.join(" ", namebuflist);
+		                     
+		                     movieNamelist.add(moviename);
+		                     movieRuntimelist.add(info[info.length-1]);
+		                 }
+		                 
+		                 String[] info2 = movieKeylist.get(movieKeylist.size()-1).split("");
+		                 String[] info3 = new String[info2.length-1];
+		                 for(int j=1; j<info2.length; j++) {
+		                      info3[j-1] = info2[j];
+		                 }
+		                 lastKey = String.join("", info3);
+		            	 }
+		            	
+		                
+		             } catch (NumberFormatException e) {
+		                // TODO Auto-generated catch block
+		                e.printStackTrace(); 
+		             } catch(IOException e) {
+		                e.printStackTrace();
+		             }
+		         	System.out.println();
+		         	System.out.print("MovieReservation >> ");
+		            input = scan.nextLine().trim();
+			     	
+			     	if (!Pattern.matches("^[A-Z][0-9]*$", input)) {
+		                System.out.println("..! 오류 : 잘못된 입력입니다. 다시 입력해주세요.\n");
+		                continue lp2;}
+		             
+		             
+		            if((Integer.parseInt(input.substring(1)) > Integer.parseInt(lastKey)) || (Integer.parseInt(input.substring(1)) == 0)){
+		                System.out.println("..! 오류 : 벗어난 Key 값입니다. 다시 입력해주세요.\n");
+		                continue lp2;}
+		            
+		            System.out.println("추가할 상영스케줄의 상영 날짜를 입력하십시오.\n");
+		            boolean flag3 = false;
+		            lp3:
+		            while(!flag3) {
+				             flag2 = true;
+				             //선택한 러닝타임 저장
+				             String runtimebuf = new String();
+				             
+				             for(int j=0; j<movieKeylist.size(); j++) {
+				            	 if(movieKeylist.get(j).equals(input)) {
+				            		 runtimebuf = movieRuntimelist.get(j);
+				            	 }
+				             }
+				             System.out.println();
+				             System.out.print("MovieReservation >> ");
+					         input = scan.nextLine().trim();
+					         
+				             if (!Pattern.matches("^[\\d]{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$", input)) {
+				                System.out.println("..! 오류 : 잘못된 입력입니다. 다시 입력해주세요.\n");
+				                continue lp3;}
+				             
+				             System.out.println("\n추가할 상영스케줄의 상영 시작 시간을 입력하십시오.\n");
+				             boolean flag4 = false;
+				             lp4:
+				             while(!flag4) {
+				            	 flag3 = true;
+					             System.out.print("MovieReservation >> ");
+						         input = scan.nextLine().trim();
+						         
+						         if (!Pattern.matches("^([1-9]|[01][0-9]|2[0-3]):([0-5][0-9])$", input)) {
+					             	System.out.println("..! 오류 : 잘못된 입력입니다. 다시 입력해주세요.\n");
+					                continue lp4;}
+						         
+						         //시작시간 입력 + 러닝타임 -> 종료 시간 게산
+						         int runTime = Integer.parseInt(runtimebuf);
+						         int runTimeHour = runTime / 60;
+						         int runTimeMin = runTime % 60;
+						         
+						         int startHour = Integer.parseInt(input.substring(0, 2));
+						         int startMin = Integer.parseInt(input.substring(3));
+						         
+						         if((startMin + runTimeMin) >= 60) {
+						        	 startHour += (startMin + runTimeMin) / 60;
+						        	 startMin += (startMin + runTimeMin) % 60;
+						        	 startMin -= 60;
+						         }
+						         
+						         int endHour = startHour + runTimeHour;
+						         int endMin = startMin + runTimeMin;
+						         
+						         String cnt = "";
+						         if(endMin == 0) {
+						        	 cnt = Integer.toString(endMin) + "0";
+						         }else if(endMin / 10 == 0){
+						        	 cnt = "0" + Integer.toString(endMin);
+						         }else
+						        	 cnt = Integer.toString(endMin);
+						        	 
+						         String endtime = Integer.toString(endHour) + ":" + cnt;
 
+						         
+						         if (endHour >= 24) {
+						             	System.out.println("..! 오류 : 상영 시작시간이 너무 늦습니다. 다시 입력해주세요.\n");
+						             	continue lp4;}
+						         
+						         System.out.println("시작 시간: " + input + "\n");
+						         System.out.println("종료 시간: " + endtime + "\n");
+						         
+						         //상영스케줄 내에 겹치는 시간 있는지 검사
+				             }
+		            }
+             }
+    
+        }
+     
 	}
 
     public void EditTheaterNum() {
