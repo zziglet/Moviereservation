@@ -145,12 +145,18 @@ public void ShowDelMenu(){
 
         String input = scan.nextLine().replaceAll("\\s+", "");
 
-        if(input.equals("1"))
+        if(input.equals("1")){
             adminService.DeleteTheater();
-        else if(input.equals("2"))
+            ShowEditMenu();  
+        }
+        else if(input.equals("2")){
             adminService.DeleteMovieInfo();
-        else if(input.equals("3"))
+            ShowEditMenu();  
+        }
+        else if(input.equals("3")){
             adminService.DeleteMovie();
+            ShowEditMenu();  
+        }
         else if(input.equals("4"))
             ShowAdminMenu();
         else {
