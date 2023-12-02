@@ -1126,7 +1126,6 @@ public class AdminService {
         
     }
 
-    
 
     public void DeleteMovie() {
     }
