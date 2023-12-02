@@ -51,12 +51,18 @@ public void ShowAddMenu(){
 
         String input = scan.nextLine().replaceAll("\\s+", "");
 
-        if(input.equals("1"))
+        if(input.equals("1")){
             adminService.AddTheater();
+            ShowAdminMenu();
+        }
         else if(input.equals("2"))
-            adminService.AddMovieInfo();
-        else if(input.equals("3"))
+            {adminService.AddMovieInfo();
+            ShowAdminMenu();
+            }
+        else if(input.equals("3")){
             adminService.AddMovie();
+            ShowAdminMenu();
+        }
         else if(input.equals("4"))
             ShowAdminMenu();
         else {
@@ -76,11 +82,16 @@ public void ShowEditMenu(){
         String input = scan.nextLine().replaceAll("\\s+", "");
 
         if(input.equals("1"))
-            EditTheater();      
-        else if(input.equals("2"))
-            EditMovieInfo();   
-        else if(input.equals("3"))
+            {EditTheater(); 
             ShowAdminMenu();
+            }     
+        else if(input.equals("2"))
+            {EditMovieInfo();  
+            ShowAdminMenu();
+            } 
+        else if(input.equals("3"))
+         ShowAdminMenu();
+        
         else {
             System.out.print("..! 오류 : 잘못된 입력입니다. 다시 입력해주세요");
             System.out.println();
