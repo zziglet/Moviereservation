@@ -1069,7 +1069,7 @@ public class AdminService {
         /* 1. 제외시킬 내역을 배열에 담기 */
         String srcdir = System.getProperty("user.dir") + "./src/";
         try {
-            String path = srcdir + "movie.txt";
+            String path = srcdir + "movieinfo.txt";
             BufferedReader bufReader = new BufferedReader(
                     new InputStreamReader(new FileInputStream(path), StandardCharsets.UTF_8));
             // 상영스케줄에 존재하는 영화 키값 추출
@@ -1097,51 +1097,107 @@ public class AdminService {
                 runningList.add(line);
             }
             bufReader.close();
-            /* 3. 각 값을 비교해 같으면 제외(삭제) */
+            //3. 각 값을 비교해 같으면 제외(삭제) */
             info = null;
+            ArrayList<String> itemsToRemove = new ArrayList<>();
             for (String str : runningList) {
                 info = str.split(" ");
                 if (infokeyinmovieList.contains(info[0])) {
-                    runningList.remove(str);
+                    itemsToRemove.add(str);
                 }
             }
+            runningList.removeAll(itemsToRemove);
+
             /* 4. 제외된 내역 출력 */
-            System.out.println("수정할 좌석 수가 담긴 리스트입니다. \n");
-            for (int i = 0; i < runningList.size(); i++) {
-                System.out.println((i + 1) + ". " + runningList.get(i));
-            }
-            System.out.println("수정할 리스트의 번호를 입력하십시오.");
-            Scanner scan = new Scanner(System.in);
-            String input = scan.nextLine();
-            // 오류 처리 해줘야함
-            int result = Integer.parseInt(input.replaceAll("\\s+", ""));
-            System.out.println("수정할 러닝타임 기간을 입력하십시오.");
-            input = scan.nextLine();
-            // 오류 처리 해줘야함
-            String runningTime = input.replaceAll("\\s+", "");
-            info = runningList.get(result - 1).split(" ");
-            String movieinfoKey = info[0];
-            // movieinfo.txt에 수정된 내역 적용
-            path = srcdir + "moiveinfo.txt";
-            bufReader = new BufferedReader(
-                    new InputStreamReader(new FileInputStream(path), StandardCharsets.UTF_8));
-            StringBuffer inputBuffer = new StringBuffer();
-            while ((line = bufReader.readLine()) != null) {
-                info = line.split(" ");
-                if (info[0].equals(movieinfoKey))
-                    info[2] = runningTime;
-                line = "";
-                for (String str : info) {
-                    line += str + " ";
+            System.out.println("수정할 러닝타임 기간이 담긴 리스트입니다. \n");
+            if (runningList.isEmpty()) {
+                System.out.println("수정 가능한 러닝타임이 없습니다.\n");
+            } else {
+                for (int i = 0; i < runningList.size(); i++) {
+                    System.out.println((i + 1) + ". " + runningList.get(i));
                 }
-                inputBuffer.append(line);
-                inputBuffer.append("\n");
             }
-            bufReader.close();
-            FileOutputStream fileout = new FileOutputStream(path);
-            fileout.write(inputBuffer.toString().getBytes());
-            fileout.close();
-            scan.close();
+            System.out.println("수정할 리스트의 번호를 입력하십시오.\n");
+            Scanner scan = new Scanner(System.in);
+
+            boolean flag1=false;
+            lp1:
+            while(!flag1){
+                System.out.print("MovieReservation >> ");
+                String input = scan.nextLine();
+                // 오류 처리 해줘야함
+                int result = Integer.parseInt(input.replaceAll("\\s+", ""));
+                if (result < 1 || result > runningList.size()) {
+                    System.out.println("..! 오류 : 존재하지 않는 리스트입니다. 다시 입력해주세요.\n");
+                    continue lp1;
+                }
+                if(!Pattern.matches("^[1-9][0-9]?$", input)){
+                    System.out.println("..! 오류 : 잘못된 입력입니다. 다시 입력해주세요.\n");
+                    continue lp1;
+                }
+                flag1=true;
+
+                System.out.println("수정할 러닝타임 기간을 입력하십시오.\n");
+                boolean flag2=false;
+                lp2:
+                while(!flag2){
+                    System.out.print("MovieReservation >> ");
+                    input = scan.nextLine();
+                    // 오류 처리 해줘야함
+                    String runningTime = input.replaceAll("\\s+", "");
+                    info = runningList.get(result - 1).split(" ");
+                    String movieinfoKey = info[0];
+                    //String runtime = info[1].replaceAll("\\D+", ""); // 숫자가 아닌 문자를 모두 제거
+
+                    int runningTimeIndex = -1;
+
+                    for (int i = 0; i < info.length; i++) {
+                        if (info[i].matches("\\d+")) {
+                            runningTimeIndex = i;
+                            break;
+                        }
+                    }
+
+                    if (Integer.parseInt(runningTime) == Integer.parseInt(info[runningTimeIndex])) {
+                        System.out.println("..! 오류 : 입력된 러닝 타임은 기존의 러닝 타임과 동일합니다. 다시 입력해주세요.\n");
+                        continue lp2;
+                    }
+
+                    if ((Integer.parseInt(runningTime)>Integer.parseInt(movieruntimeMax))||(Integer.parseInt(runningTime)<Integer.parseInt(movieruntimeMin))) {
+                        System.out.println("..! 오류 : 잘못된 입력입니다. 다시 입력해주세요.\n");
+                        continue lp2;
+                    }
+                    flag2=true;
+                    System.out.println("수정이 완료되었습니다.\n");
+
+                    // movieinfo.txt에 수정된 내역 적용
+                    path = srcdir + "moiveinfo.txt";
+                    bufReader = new BufferedReader(
+                            new InputStreamReader(new FileInputStream(path), StandardCharsets.UTF_8));
+                    StringBuffer inputBuffer = new StringBuffer();
+                    while ((line = bufReader.readLine()) != null) {
+                        info = line.split(" ");
+                        if (info[0].equals(movieinfoKey))
+                            info[2] = runningTime;
+                        line = "";
+                        for (String str : info) {
+                            line += str + " ";
+                        }
+                        inputBuffer.append(line);
+                        inputBuffer.append("\n");
+                    }
+                    bufReader.close();
+                    FileOutputStream fileout = new FileOutputStream(path);
+                    fileout.write(inputBuffer.toString().getBytes());
+                    fileout.close();
+                    scan.close();
+
+                }
+
+            }
+            System.out.println("관리자 메뉴로 돌아갑니다.\n");
+            AdminMenu showAdminMenu=new AdminMenu();
+            showAdminMenu.ShowAdminMenu();
         } catch (IOException e) {
             e.printStackTrace();
         }
