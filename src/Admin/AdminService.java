@@ -742,51 +742,94 @@ public class AdminService {
             bufReader.close();
             /* 3. 각 값을 비교해 같으면 제외(삭제) */
             info = null;
+            ArrayList<String> itemsToRemove = new ArrayList<>();
             for (String str : theaterList) {
                 info = str.split(" ");
                 if (tkeyinIDList.contains(info[0])) {
-                    theaterList.remove(str);
+                    itemsToRemove.add(str);
                 }
             }
+            theaterList.removeAll(itemsToRemove);
             /* 4. 제외된 내역 출력 */
             System.out.println("수정할 좌석 수가 담긴 리스트입니다. \n");
             for (int i = 0; i < theaterList.size(); i++) {
                 System.out.println((i + 1) + ": " + theaterList.get(i));
             }
-            System.out.println("수정할 리스트의 번호를 입력하십시오.");
+            System.out.println("수정할 리스트의 번호를 입력하십시오.\n");
+            System.out.println();
+
             Scanner scan = new Scanner(System.in);
-            String input = scan.nextLine();
-            // 오류 처리 해줘야함
-            int result = Integer.parseInt(input.replaceAll("\\s+", ""));
-
-            System.out.println("수정할 좌석 수를 입력하십시오.");
-            input = scan.nextLine();
-            // 오류 처리 해줘야함
-            String seatsNum = input.replaceAll("\\s+", "");
-            info = theaterList.get(result - 1).split(" ");
-            String theaterKey = info[0];
-            // theater.txt에 수정된 내역 적용
-
-            path = srcdir + "theater.txt";
-            bufReader = new BufferedReader(
-                    new InputStreamReader(new FileInputStream(path), StandardCharsets.UTF_8));
-            StringBuffer inputBuffer = new StringBuffer();
-            while ((line = bufReader.readLine()) != null) {
-                info = line.split(" ");
-                if (info[0].equals(theaterKey))
-                    info[2] = seatsNum;
-                line = "";
-                for (String str : info) {
-                    line += str + " ";
+            boolean flag1=false;
+            lp1:
+            while(!flag1){
+                System.out.print("MovieReservation >> ");
+                String input = scan.nextLine();
+                // 오류 처리 해줘야함
+                if(!Pattern.matches("^[1-9][0-9]?$", input)){
+                    System.out.println("..! 오류 : 잘못된 입력입니다. 다시 입력해주세요.\n");
+                    continue lp1;
                 }
-                inputBuffer.append(line);
-                inputBuffer.append("\n");
+                int result = Integer.parseInt(input.replaceAll("\\s+", ""));
+                if (result < 1 || result > theaterList.size()) {
+                    System.out.println("..! 오류 : 존재하지 않는 리스트입니다. 다시 입력해주세요.\n");
+                    continue lp1;
+                }
+                flag1=true;
+
+                System.out.println("수정할 좌석 수를 입력하십시오.\n");
+                boolean flag2=false;
+                lp2:
+                while(!flag2){
+                    System.out.print("MovieReservation >> ");
+                    input = scan.nextLine();
+                    // 오류 처리 해줘야함
+                    String seatsNum = input.replaceAll("\\s+", "");
+                    info = theaterList.get(result - 1).split(" ");
+                    String theaterKey = info[0];
+
+                    String theaterSnum=info[2];
+                    if (theaterSnum.equals(seatsNum)) {
+                        System.out.println("..! 오류 : 입력된 좌석 개수는 기존의 좌석 개수와 동일합니다. 다시 입력해주세요.\n");
+                        continue lp2;
+                    }
+                    if (!Pattern.matches("^[0-9]|[1-9][0-9]|120$", input)) {
+                        System.out.println("..! 오류 : 잘못된 입력입니다. 다시 입력해주세요.\n");
+                        continue lp2;
+                    }
+
+                    flag2=true;
+                    System.out.println("수정이 완료 되었습니다.\n");
+
+                    // theater.txt에 수정된 내역 적용
+
+                    path = srcdir + "theater.txt";
+                    bufReader = new BufferedReader(
+                            new InputStreamReader(new FileInputStream(path), StandardCharsets.UTF_8));
+                    StringBuffer inputBuffer = new StringBuffer();
+                    while ((line = bufReader.readLine()) != null) {
+                        info = line.split(" ");
+                        if (info[0].equals(theaterKey))
+                            info[2] = seatsNum;
+                        line = "";
+                        for (String str : info) {
+                            line += str + " ";
+                        }
+                        inputBuffer.append(line);
+                        inputBuffer.append("\n");
+                    }
+                    bufReader.close();
+                    FileOutputStream fileout = new FileOutputStream(path);
+                    fileout.write(inputBuffer.toString().getBytes());
+                    fileout.close();
+                    scan.close();
+                    System.out.println("관리자 메뉴로 돌아갑니다.\n");
+                    AdminMenu showAdminMenu=new AdminMenu();
+                    showAdminMenu.ShowAdminMenu();
+                }
+
             }
-            bufReader.close();
-            FileOutputStream fileout = new FileOutputStream(path);
-            fileout.write(inputBuffer.toString().getBytes());
-            fileout.close();
-            scan.close();
+
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -814,7 +857,7 @@ public class AdminService {
                 System.out.println((i + 1) + ". " + movieList.get(i));
             }
             System.out.println();
-            System.out.println("수정할 리스트의 번호를 입력하십시오.");
+            System.out.println("수정할 리스트의 번호를 입력하십시오.\n");
             Scanner scan = new Scanner(System.in);
             String input = scan.nextLine();
             // 오류 처리 해줘야함
