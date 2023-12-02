@@ -9,7 +9,9 @@ import java.util.regex.Pattern;
 
 public class MovieRepository {
     public void SaveMovietxt(Movie movie, String seat) {
-        File movieFile = new File("./src/movie.txt");
+        String srcdir = System.getProperty("user.dir") + "./src/";
+        String path = srcdir + "movie.txt";
+        File movieFile = new File(path);
 
         try (BufferedReader reader = new BufferedReader(new FileReader(movieFile))) {
             
@@ -25,7 +27,7 @@ public class MovieRepository {
             List<String> lines = new ArrayList<>();
             String line;
             while ((line = reader.readLine()) != null) {
-                if (line.startsWith(movieInfo)) {
+                if (line.contains(movieInfo)) {
                     //해당 line의 마지막에 seat 추가
                     line = line + " " + seat;
                 }
