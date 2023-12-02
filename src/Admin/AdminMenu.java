@@ -147,15 +147,15 @@ public void ShowDelMenu(){
 
         if(input.equals("1")){
             adminService.DeleteTheater();
-            ShowEditMenu();  
+            ShowAdminMenu();  
         }
         else if(input.equals("2")){
             adminService.DeleteMovieInfo();
-            ShowEditMenu();  
+            ShowAdminMenu();  
         }
         else if(input.equals("3")){
             adminService.DeleteMovie();
-            ShowEditMenu();  
+            ShowAdminMenu();  
         }
         else if(input.equals("4"))
             ShowAdminMenu();
