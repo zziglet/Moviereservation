@@ -654,10 +654,10 @@ public class AdminService {
                     tempString += info[i] + " ";
                 }
                 temp[1] = tempString;
-
+                System.out.println(temp[1]);
                 if (temp[0].equals(movieinfoKey))
                     temp[1] = repString;
-                ;
+                
                 line = "";
                 for (String str : temp) {
                     line += str + " ";
@@ -674,8 +674,9 @@ public class AdminService {
             path = srcdir + "movie.txt";
             membr = new BufferedReader(
                     new InputStreamReader(new FileInputStream(path), StandardCharsets.UTF_8));
-            String movieKey = "";
+            
             while ((line = membr.readLine()) != null) {
+                System.out.println(line);
                 info = line.split(" ");
                 int dateIndex = 0; // info 배열에서 날짜를 담은 방의 번호 -> 상영관 이후 ~ 날짜 전까지는 전부 제목으로 하기 위함
 
@@ -685,6 +686,10 @@ public class AdminService {
                     }
                 }
                 ArrayList<String> temp = new ArrayList<>();
+                System.out.println(dateIndex);
+                for(int i=0;i<info.length;i++){
+                    System.out.println(info[i]);
+                }
 
                 for (int i = 0; i < 4; i++) {
                     temp.add(info[i]);
