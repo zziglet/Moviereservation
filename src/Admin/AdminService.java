@@ -753,7 +753,7 @@ public class AdminService {
             /* 4. 제외된 내역 출력 */
             System.out.println("수정할 좌석 수가 담긴 리스트입니다. \n");
             for (int i = 0; i < theaterList.size(); i++) {
-                System.out.println((i + 1) + ": " + theaterList.get(i));
+                System.out.println((i + 1) + ". " + theaterList.get(i));
             }
             System.out.println("수정할 리스트의 번호를 입력하십시오.\n");
             System.out.println();
@@ -1171,7 +1171,7 @@ public class AdminService {
                     System.out.println("수정이 완료되었습니다.\n");
 
                     // movieinfo.txt에 수정된 내역 적용
-                    path = srcdir + "moiveinfo.txt";
+                    path = srcdir + "movieinfo.txt";
                     bufReader = new BufferedReader(
                             new InputStreamReader(new FileInputStream(path), StandardCharsets.UTF_8));
                     StringBuffer inputBuffer = new StringBuffer();
