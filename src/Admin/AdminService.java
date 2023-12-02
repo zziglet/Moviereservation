@@ -9,6 +9,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -642,9 +644,10 @@ public class AdminService {
             /// movieinfo.txt 에 수정된 내역 적용
             path = srcdir + "movieinfo.txt";
             membr = new BufferedReader(
-                    new InputStreamReader(new FileInputStream(path), StandardCharsets.UTF_8));
+                    new InputStreamReader(new FileInputStream(path),StandardCharsets.UTF_8));
             while ((line = membr.readLine()) != null) {
                 info = line.split(" ");
+                System.out.println(line);
                 String[] temp = new String[3];
                 // movieinfo.txt의 key, 제목, running time을 담는 배열
                 temp[0] = info[0];
@@ -653,8 +656,9 @@ public class AdminService {
                 for (int i = 1; i < info.length - 2; i++) {
                     tempString += info[i] + " ";
                 }
+                
                 temp[1] = tempString;
-                System.out.println(temp[1]);
+              
                 if (temp[0].equals(movieinfoKey))
                     temp[1] = repString;
                 
