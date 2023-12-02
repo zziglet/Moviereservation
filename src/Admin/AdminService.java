@@ -640,68 +640,82 @@ public class AdminService {
             String repString = input;
             String[] info = movieList.get(result - 1).split(" ");
             String movieinfoKey = info[0];
-
+            System.out.println(repString + " " + movieinfoKey);
             /// movieinfo.txt 에 수정된 내역 적용
             path = srcdir + "movieinfo.txt";
             membr = new BufferedReader(
-                    new InputStreamReader(new FileInputStream(path),StandardCharsets.UTF_8));
+                    new InputStreamReader(new FileInputStream(path), StandardCharsets.UTF_8));
+            FileOutputStream fileout;
             while ((line = membr.readLine()) != null) {
+                if (info.length == 0) {
+                    break;
+                }
                 info = line.split(" ");
-                System.out.println(line);
                 String[] temp = new String[3];
                 // movieinfo.txt의 key, 제목, running time을 담는 배열
                 temp[0] = info[0];
                 temp[2] = info[info.length - 1]; // 마지막 방에는 running time이 담겨 있음
                 String tempString = "";
-                for (int i = 1; i < info.length - 2; i++) {
+
+                for (int i = 1; i < info.length - 1; i++) {
                     tempString += info[i] + " ";
                 }
-                
+                tempString = tempString.substring(0, tempString.length() - 1);
                 temp[1] = tempString;
-              
+
                 if (temp[0].equals(movieinfoKey))
                     temp[1] = repString;
-                
+
                 line = "";
                 for (String str : temp) {
                     line += str + " ";
                 }
                 inputBuffer.append(line);
                 inputBuffer.append("\n");
-            }
-            membr.close();
-            FileOutputStream fileout = new FileOutputStream(path);
-            fileout.write(inputBuffer.toString().getBytes());
-            fileout.close();
 
+
+            }
+                membr.close();
+                fileout = new FileOutputStream(path);
+                fileout.write(inputBuffer.toString().getBytes());
+                fileout.close();
+                inputBuffer.delete(0, inputBuffer.length());
             //// movie.txt (상영 스케줄)에 수정된 내역 적용
             path = srcdir + "movie.txt";
             membr = new BufferedReader(
                     new InputStreamReader(new FileInputStream(path), StandardCharsets.UTF_8));
-            
+
             while ((line = membr.readLine()) != null) {
-                System.out.println(line);
                 info = line.split(" ");
+                if (info.length == 0) {
+                    break;
+                }
                 int dateIndex = 0; // info 배열에서 날짜를 담은 방의 번호 -> 상영관 이후 ~ 날짜 전까지는 전부 제목으로 하기 위함
 
                 for (int i = 0; i < info.length; i++) {
-                    if (!Pattern.matches("^[\\d]{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$", info[i])) {
+                    if (Pattern.matches("^[\\d]{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$", info[i])) {
                         dateIndex = i;
                     }
                 }
                 ArrayList<String> temp = new ArrayList<>();
-                System.out.println(dateIndex);
-                for(int i=0;i<info.length;i++){
-                    System.out.println(info[i]);
-                }
 
                 for (int i = 0; i < 4; i++) {
                     temp.add(info[i]);
                     // tempStrings[]에 기존 키값들, 상영관 복사
                 }
 
+                String tempString = "";
+
+                for (int i = 4; i < dateIndex; i++) {
+                    tempString += info[i] + " ";
+                }
+                tempString = tempString.substring(0, tempString.length() - 1);
+
                 if (temp.get(2).equals(movieinfoKey))
                     temp.add(repString);
+                else
+                    temp.add(tempString);
+
 
                 for (int i = dateIndex; i < info.length; i++)
                     temp.add(info[i]);
@@ -718,6 +732,8 @@ public class AdminService {
             fileout.write(inputBuffer.toString().getBytes());
             fileout.close();
 
+            inputBuffer.delete(0, inputBuffer.length());
+
             // 예매 내역 반영
             File folder = new File(userdir);
             File[] filelist = folder.listFiles();
@@ -726,12 +742,18 @@ public class AdminService {
                     if (file.isFile() && file.canRead()) {
                         FileReader filereader = new FileReader(file);
                         BufferedReader bufReader = new BufferedReader(filereader);
+                        String admin = bufReader.readLine();
+                        inputBuffer.delete(0, inputBuffer.length());
+                        inputBuffer.append(admin);
+                        inputBuffer.append("\n");
+                        // 계정 정보 넘김
                         while ((line = bufReader.readLine()) != null) {
+
                             info = line.split(" ");
                             int dateIndex = 0; // info 배열에서 날짜를 담은 방의 번호 -> 상영관 이후 ~ 날짜 전까지는 전부 제목으로 하기 위함
 
                             for (int i = 0; i < info.length; i++) {
-                                if (!Pattern.matches("^[\\d]{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$", info[i])) {
+                                if (Pattern.matches("^[\\d]{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$", info[i])) {
                                     dateIndex = i;
                                 }
                             }
@@ -742,8 +764,17 @@ public class AdminService {
                                 // tempStrings[]에 기존 키값들, 상영관 복사
                             }
 
+                            String tempString = "";
+
+                            for (int i = 4; i < dateIndex; i++) {
+                                tempString += info[i] + " ";
+                            }
+                            tempString = tempString.substring(0, tempString.length() - 1);
+
                             if (temp.get(2).equals(movieinfoKey))
                                 temp.add(repString);
+                            else
+                                temp.add(tempString);
 
                             for (int i = dateIndex; i < info.length; i++)
                                 temp.add(info[i]);
@@ -755,8 +786,9 @@ public class AdminService {
                             inputBuffer.append(line);
                             inputBuffer.append("\n");
                         }
+
                         bufReader.close();
-                        fileout = new FileOutputStream(path);
+                        fileout = new FileOutputStream(file);
                         fileout.write(inputBuffer.toString().getBytes());
                         fileout.close();
                     }
