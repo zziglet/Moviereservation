@@ -635,12 +635,12 @@ public class AdminService {
             int result = Integer.parseInt(input.replaceAll("\\s+", ""));
             System.out.println("수정할 제목을 입력하십시오.");
             input = scan.nextLine();
-            scan.close();
+
             // 오류 처리 해줘야함
             String repString = input;
             String[] info = movieList.get(result - 1).split(" ");
             String movieinfoKey = info[0];
-            System.out.println(repString + " " + movieinfoKey);
+
             /// movieinfo.txt 에 수정된 내역 적용
             path = srcdir + "movieinfo.txt";
             membr = new BufferedReader(
