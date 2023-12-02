@@ -544,7 +544,7 @@ public class AdminService {
         try {
             // 1.
             // 관리자에게 수정할 관 번호 선택
-            System.out.println("수정할 관 번호가 담긴 리스트입니다. \n");
+            System.out.println("수정할 관 번호가 담긴 리스트입니다.\n");
             String userdir = System.getProperty("user.dir") + "./src/user/";
             String srcdir = System.getProperty("user.dir") + "./src/";
             String path = srcdir + "theater.txt";
@@ -561,85 +561,137 @@ public class AdminService {
                 System.out.println((i + 1) + ". " + movieList.get(i));
             }
             System.out.println();
-            System.out.println("수정할 리스트의 번호를 입력하십시오.");
+            System.out.println("수정할 리스트의 번호를 입력하십시오.\n");
             Scanner scan = new Scanner(System.in);
-            String input = scan.nextLine();
-            // 오류 처리 해줘야함
-            int result = Integer.parseInt(input.replaceAll("\\s+", ""));
-            System.out.println("수정할 관 번호를 입력하십시오.");
-            input = scan.nextLine();
-            // 오류 처리 해줘야함
-            String repString = input;
-            String[] info = movieList.get(result - 1).split(" ");
-            String theaterKey = info[0];
-            // theater.txt에 수정된 내역 적용
-            path = srcdir + "theater.txt";
-            membr = new BufferedReader(
-                    new InputStreamReader(new FileInputStream(path), StandardCharsets.UTF_8));
-            while ((line = membr.readLine()) != null) {
-                info = line.split(" ");
-                if (info[0].equals(theaterKey))
-                    info[1] = repString;
-                line = "";
-                for (String str : info) {
-                    line += str + " ";
+            boolean flag1=false;
+            lp1:
+            while(!flag1){
+                System.out.print("MovieReservation >> ");
+                String input = scan.nextLine();
+                if(!Pattern.matches("^[1-9][0-9]?$", input)){
+                    System.out.println("..! 오류 : 잘못된 입력입니다. 다시 입력해주세요.\n");
+                    continue lp1;
                 }
-                inputBuffer.append(line);
-                inputBuffer.append("\n");
-            }
-            membr.close();
-            FileOutputStream fileout = new FileOutputStream(path);
-            fileout.write(inputBuffer.toString().getBytes());
-            fileout.close();
-            scan.close();
-            /* movie.txt (상영 스케줄)에 수정된 내역 적용 */
-            path = srcdir + "movie.txt";
-            membr = new BufferedReader(
-                    new InputStreamReader(new FileInputStream(path), StandardCharsets.UTF_8));
-            String movieKey = "";
-            while ((line = membr.readLine()) != null) {
-                info = line.split(" ");
-                if (info[1].equals(theaterKey))
-                    movieKey = info[0];
-                info[3] = repString;
-                line = "";
-                for (String str : info) {
-                    line += str + " ";
+                int result = Integer.parseInt(input.replaceAll("\\s+", ""));
+                if (result < 1 || result > movieList.size()) {
+                    System.out.println("..! 오류 : 존재하지 않는 상영관입니다. 다시 입력해주세요.\n");
+                    continue lp1;
                 }
-                inputBuffer.append(line);
-                inputBuffer.append("\n");
-            }
-            membr.close();
-            fileout = new FileOutputStream(path);
-            fileout.write(inputBuffer.toString().getBytes());
-            fileout.close();
-            scan.close();
-            // 예매 내역 반영
-            File folder = new File(userdir);
-            File[] filelist = folder.listFiles();
-            if (filelist != null) {
-                for (File file : filelist) {
-                    if (file.isFile() && file.canRead()) {
-                        FileReader filereader = new FileReader(file);
-                        BufferedReader bufReader = new BufferedReader(filereader);
-                        while ((line = bufReader.readLine()) != null) {
-                            info = line.split(" ");
-                            if (info[0].equals(movieKey))
-                                info[3] = repString;
-                            line = "";
-                            for (String str : info) {
-                                line += str + " ";
-                            }
-                            inputBuffer.append(line);
-                            inputBuffer.append("\n");
-                        }
-                        bufReader.close();
-                        fileout = new FileOutputStream(path);
-                        fileout.write(inputBuffer.toString().getBytes());
-                        fileout.close();
+                flag1=true;
+                System.out.println("수정할 관 번호를 입력하시오.\n");
+                boolean flag2=false;
+                lp2:
+                while(!flag2){
+                    System.out.print("MovieReservation >> ");
+                    input = scan.nextLine();
+
+                    String repString = input;
+                    String[] info = movieList.get(result - 1).split(" ");
+                    String theaterKey = info[0];
+
+                    String theaternum=info[1];
+                    if (theaternum.equals(repString)) {
+                        System.out.println("..! 오류 : 입력된 관 번호는 현재 관 번호와 동일합니다. 다른 번호를 입력해주세요.\n");
+                        continue lp2;
                     }
+                    if ((Integer.parseInt(repString)>Integer.parseInt(theaternumMax))||(Integer.parseInt(repString)<Integer.parseInt(theaternumMin))) {
+                        System.out.println("..! 오류 : 잘못된 입력입니다. 다시 입력해주세요.\n");
+                        continue lp2;
+                    }
+
+                    // 사용자가 입력한 번호와 이미 존재하는 번호 비교
+                    int newTheaterNumber = Integer.parseInt(repString);
+                    boolean exists = false; // 추가: 이미 존재하는 관 번호 여부를 저장할 변수
+                    for (String theaterInfo : movieList) {
+                        String[] existingInfo = theaterInfo.split(" ");
+                        int existingTheaterNumber = Integer.parseInt(existingInfo[1]);
+
+                        if (newTheaterNumber == existingTheaterNumber) {
+                            // 새로운 상영관 번호가 이미 다른 상영관에서 사용 중인 번호일 경우
+                            System.out.println("..! 오류: 이미 존재하는 관 번호입니다. 다른 번호를 입력해주세요.\n");
+                            exists = true;
+                            continue lp2;
+                        }
+                    }
+                    flag2=true;
+                    System.out.println("수정이 완료되었습니다.\n");
+                    System.out.println("관리자 메뉴로 돌아갑니다.\n");
+
+                    // theater.txt에 수정된 내역 적용
+                    path = srcdir + "theater.txt";
+                    membr = new BufferedReader(
+                            new InputStreamReader(new FileInputStream(path), StandardCharsets.UTF_8));
+                    while ((line = membr.readLine()) != null) {
+                        info = line.split(" ");
+                        if (info[0].equals(theaterKey))
+                            info[1] = repString;
+                        line = "";
+                        for (String str : info) {
+                            line += str + " ";
+                        }
+                        inputBuffer.append(line);
+                        inputBuffer.append("\n");
+                    }
+                    membr.close();
+                    FileOutputStream fileout = new FileOutputStream(path);
+                    fileout.write(inputBuffer.toString().getBytes());
+                    fileout.close();
+                    scan.close();
+                    /* movie.txt (상영 스케줄)에 수정된 내역 적용 */
+                    path = srcdir + "movie.txt";
+                    membr = new BufferedReader(
+                            new InputStreamReader(new FileInputStream(path), StandardCharsets.UTF_8));
+                    String movieKey = "";
+                    while ((line = membr.readLine()) != null) {
+                        info = line.split(" ");
+                        if (info[1].equals(theaterKey))
+                            movieKey = info[0];
+                        info[3] = repString;
+                        line = "";
+                        for (String str : info) {
+                            line += str + " ";
+                        }
+                        inputBuffer.append(line);
+                        inputBuffer.append("\n");
+                    }
+                    membr.close();
+                    fileout = new FileOutputStream(path);
+                    fileout.write(inputBuffer.toString().getBytes());
+                    fileout.close();
+                    scan.close();
+                    // 예매 내역 반영
+                    File folder = new File(userdir);
+                    File[] filelist = folder.listFiles();
+                    if (filelist != null) {
+                        for (File file : filelist) {
+                            if (file.isFile() && file.canRead()) {
+                                FileReader filereader = new FileReader(file);
+                                BufferedReader bufReader = new BufferedReader(filereader);
+                                while ((line = bufReader.readLine()) != null) {
+                                    info = line.split(" ");
+                                    if (info[0].equals(movieKey))
+                                        info[3] = repString;
+                                    line = "";
+                                    for (String str : info) {
+                                        line += str + " ";
+                                    }
+                                    inputBuffer.append(line);
+                                    inputBuffer.append("\n");
+                                }
+                                bufReader.close();
+                                fileout = new FileOutputStream(path);
+                                fileout.write(inputBuffer.toString().getBytes());
+                                fileout.close();
+
+                            }
+                        }
+                    }
+
                 }
+
             }
+            AdminMenu showAdminMenu=new AdminMenu();
+            showAdminMenu.ShowAdminMenu();
         } catch (IOException e) {
             e.printStackTrace();
         }
