@@ -115,7 +115,7 @@ public class MovieRepository {
 					line = line.trim();
 					String[] info = line.split("\\s+");
 					
-					for(int i=info.length-1 ; i>0; i--) {
+					for(int i=info.length-1 ; i>2; i--) {
 	                	if(Pattern.matches("^[\\d]{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$",info[i])){
 	                		idx = i;
 	                		break;
@@ -124,13 +124,12 @@ public class MovieRepository {
 					
 			for(int i=0; i<info.length; ) {
 
-		                String[] movienamelist = new String[idx-1];
-		                for(int j=1; j<idx; j++) {
-		                     movienamelist[j-1] = info[j];
+		                String[] movienamelist = new String[idx-4];
+		                for(int j=1; j<idx-3; j++) {
+		                     movienamelist[j-1] = info[j+3];
 		                }
-
 		                //movie 인자
-		                String movietheater = info[0];
+		                String movietheater = info[3];
 		                
 		                String moviename = String.join(" ", movienamelist);
 		                String moviedate = info[idx];
@@ -159,8 +158,6 @@ public class MovieRepository {
 		                }
 
 		                Movie movie = new Movie(movietheater, moviename, moviedate, moviestarttime, movieendtime, movierseat, movieseat);
-						
-
 		                list.add(movie);
 		                break;
 		                }

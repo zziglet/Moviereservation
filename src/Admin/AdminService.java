@@ -115,7 +115,7 @@ public class AdminService {
          } catch(IOException e) {
             e.printStackTrace();
          }
-    
+        return;
     
     }
        
@@ -219,7 +219,7 @@ public class AdminService {
             e.printStackTrace();
          }
         
-              
+        return;
    }
       
    public void AddMovie(){
