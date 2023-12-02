@@ -12,10 +12,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public class AdminService {
@@ -893,7 +890,8 @@ public class AdminService {
                     String[] info = movieList.get(result - 1).split(" ");
                     String movieinfoKey = info[0];
 
-                    String movieName=info[1];
+                    String movieName = String.join(" ", Arrays.copyOfRange(info, 1, info.length - 1));
+
                     if (movieName.equals(repString)) {
                         System.out.println("..! 오류 : 입력된 영화 제목은 기존의 영화 제목과 동일합니다. 다시 입력해주세요.\n");
                         continue lp2;
