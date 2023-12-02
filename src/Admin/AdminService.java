@@ -614,7 +614,7 @@ public class AdminService {
             String srcdir = System.getProperty("user.dir") + "./src/";
             String path = srcdir + "movieinfo.txt";
             BufferedReader membr = new BufferedReader(
-                    new InputStreamReader(new FileInputStream(path), StandardCharsets.UTF_8));
+                    new InputStreamReader(new FileInputStream(path)));
             StringBuffer inputBuffer = new StringBuffer();
             ArrayList<String> movieList = new ArrayList<>();
             String line;
@@ -1126,8 +1126,7 @@ public class AdminService {
         
     }
 
-    public void DeleteMovieInfo() {
-    }
+    
 
     public void DeleteMovie() {
     }
