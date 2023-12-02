@@ -9,9 +9,13 @@ import java.io.FileReader;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
+import Admin.AdminMenu;
+
 //id, pw, name을 넘겨서 savemember()에 인자로 해서 회원가입 후 txt 파일 생성
 public class SignUpInMenu {
 
+    //지금 로그인한 사용자 정보 저장
+    public static Member currentMember=null;
     Scanner scan = new Scanner(System.in);
 
     public void Start() {
@@ -193,12 +197,23 @@ public class SignUpInMenu {
             }
             System.out.println("로그인이 완료되었습니다.");
 
+            //관ㄹㅣ자 정보 저장
+            Member currentUser=new Member(userId, userPw, userName);
+            SignUpInMenu.currentMember=currentUser;
+            //관리자 아이디 로그인
+            if(userId.equals("root")){
+                AdminMenu adminMenu=new AdminMenu();
+                adminMenu.ShowAdminMenu();
+            }
+            else{
+            // 일반 사용자 로그인
             //로그인 완료 시 유저 객체 생성
             Member user = new Member(userId, userPw, userName);
             //메인메뉴 객체 생성
             MainMenu mainmenu = new MainMenu(user);
             //메인메뉴의 showMenu 함수 호출
             mainmenu.ShowMenu();
+            }
 
         }catch(Exception e) {
             e.printStackTrace();
@@ -209,6 +224,13 @@ public class SignUpInMenu {
         System.out.println("\n영화 예매 프로그램을 이용해주셔서 감사합니다.");
         System.out.println("프로그램을 종료합니다.");
         System.exit(0);
+    }
+
+    //로그아웃
+    public void logout(){
+        currentMember=null;
+        System.out.println("로그아웃 되었습니다.\n");
+        Start();
     }
 
 }

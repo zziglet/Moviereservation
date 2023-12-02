@@ -791,4 +791,13 @@ public class AdminService {
             e.printStackTrace();
         }
     }
+
+    public void DeleteTheater() {
+    }
+
+    public void DeleteMovieInfo() {
+    }
+
+    public void DeleteMovie() {
+    }
 }
