@@ -11,7 +11,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 public class AdminService {
@@ -793,6 +795,144 @@ public class AdminService {
     }
 
     public void DeleteTheater() {
+        String userdir = System.getProperty("user.dir") + "./src/";
+        String filePath = userdir +"movie.txt";
+        String[] cantDeleteTheater = null; //상영스케쥴이 있어 삭제할 수 없는 상영관
+
+        try {
+            // 파일에서 문자열 읽어오기
+            Set<String> secondValuesSet = new HashSet<>();
+
+            try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+                String movieInfoLine;
+
+                // 파일에서 각 줄을 읽어와 두 번째 값을 Set에 추가
+                while ((movieInfoLine = br.readLine()) != null) {
+                    String[] tokens = movieInfoLine.split("\\s+"); // 공백을 기준으로 문자열을 나눔
+                    if (tokens.length >= 2) {
+                        secondValuesSet.add(tokens[1]);
+                    }
+                }
+            }
+            // Set을 배열로 변환
+            cantDeleteTheater = secondValuesSet.toArray(new String[0]);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        //삭제 가능 상영관의 배열 만들기
+        ArrayList<String> theaterInfo = new ArrayList<>();
+        String[] theaterArray = null; //전체 상영관 정보, 원본 theater 파일 정보
+        String[] canTheaterArray = null; //삭제 가능 상영관 정보
+        System.out.println("[상영관 리스트]");
+        userdir = System.getProperty("user.dir") + "./src/";
+        filePath = userdir +"theater.txt";
+
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+
+            // 한 줄씩 읽어오기
+            while ((line = br.readLine()) != null) {
+                // 각 라인을 분리하여 배열로 저장
+                theaterInfo.add(line);
+            }
+            // List를 배열로 변환
+            theaterArray = new String[theaterInfo.size()];
+            theaterArray = theaterInfo.toArray(theaterArray);
+
+            //상영스케쥴이 있는 상영관은 삭제 가능 상영관 배열에서 삭제
+            ArrayList<String> result = new ArrayList<>();
+
+            outerLoop:
+            for (String strA : theaterArray) {
+                for (String strB : cantDeleteTheater) {
+                    if (strA.startsWith(strB)) {
+                        // 배열 cantDeleteTheater의 원소로 시작하는 경우, 현재의 strA를 무시하고 다음으로 넘어감
+                        continue outerLoop;
+                    }
+                }
+                // 배열 cantDeleteTheater의 어떠한 원소로도 시작하지 않는 경우, result에 추가
+                result.add(strA);
+            }
+            canTheaterArray = result.toArray(new String[0]);
+
+                // 배열의 각 요소 출력
+                for (String info : canTheaterArray) {
+                    System.out.println(info);
+                }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        //삭제할 상영관의 키 값 사용자에게 입력 받음
+        String deleteTheater = null; //삭제할 상영관 정보
+        String keyDeleteTheater = null; //삭제할 상영관 키값
+        while (true){
+            System.out.print("\n삭제할 상영관의 키 값을 입력하세요: ");
+            Scanner scanner = new Scanner(System.in);
+            keyDeleteTheater = scanner.nextLine();
+
+            // 입력 형식 검사
+            if (!keyDeleteTheater.matches("^T\\d+$")) {
+                System.out.println("입력 형식이 잘못 되었습니다.\n");
+                continue;
+            }
+
+            // theaterInfo 배열에서 검색
+            for (String theater : canTheaterArray) {
+                if (theater.startsWith(keyDeleteTheater)) {
+                    deleteTheater = theater;
+                }
+            }
+            if(deleteTheater == null){
+                System.out.println("해당 키 값을 가진 상영관은 없습니다. 다시 입력해 주세요.\n");
+                continue;
+            }
+            String input = null;
+
+            do {
+                // 사용자로부터 입력 받기
+                System.out.println("\n선택된 상영관 : "+deleteTheater);
+                System.out.print("해당 상영관을 삭제하시겠습니까? (y/n): ");
+
+                input = scanner.nextLine().replaceAll("\\s+", "");;
+                // 입력 값에 따라 분기
+                if ("y".equalsIgnoreCase(input)) {
+                    // deleteTheater를 삭제한 전체 상영관 정보 ArrayList 생성
+                    ArrayList<String> modifiedList = new ArrayList<>();
+                    for (String theater : theaterArray) {
+                        if (!(deleteTheater.equals(theater))) {
+                            modifiedList.add(theater);
+                        }
+                    }
+
+                    // ArrayList를 배열로 변환
+                    String[] modifiedArray = modifiedList.toArray(new String[0]);
+                    //상영관 파일에 덮어쓰기
+                    try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+                        for (String line : modifiedArray) {
+                            writer.write(line);
+                            writer.newLine(); // 각 원소를 새로운 줄에 작성
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println(deleteTheater + " 이 삭제 되었습니다.\n");
+                    return;
+
+                } else if ("n".equalsIgnoreCase(input)) {
+                    System.out.println("메인화면으로 돌아갑니다.\n");
+                    return;
+                } else {
+                    System.out.println("잘못된 입력입니다.");
+                }
+
+            } while (!"y".equalsIgnoreCase(input) && !"n".equalsIgnoreCase(input));
+
+            scanner.close();
+        }
     }
 
     public void DeleteMovieInfo() {
