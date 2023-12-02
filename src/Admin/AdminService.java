@@ -640,27 +640,23 @@ public class AdminService {
             String repString = input;
             String[] info = movieList.get(result - 1).split(" ");
             String movieinfoKey = info[0];
-            System.out.println(repString + " " + movieinfoKey);
+
             /// movieinfo.txt 에 수정된 내역 적용
             path = srcdir + "movieinfo.txt";
             membr = new BufferedReader(
-                    new InputStreamReader(new FileInputStream(path), StandardCharsets.UTF_8));
-            FileOutputStream fileout;
+                    new InputStreamReader(new FileInputStream(path),StandardCharsets.UTF_8));
             while ((line = membr.readLine()) != null) {
-                if (info.length == 0) {
-                    break;
-                }
                 info = line.split(" ");
+                System.out.println(line);
                 String[] temp = new String[3];
                 // movieinfo.txt의 key, 제목, running time을 담는 배열
                 temp[0] = info[0];
                 temp[2] = info[info.length - 1]; // 마지막 방에는 running time이 담겨 있음
                 String tempString = "";
-
-                for (int i = 1; i < info.length - 1; i++) {
+                for (int i = 1; i < info.length - 2; i++) {
                     tempString += info[i] + " ";
                 }
-                tempString = tempString.substring(0, tempString.length() - 1);
+
                 temp[1] = tempString;
 
                 if (temp[0].equals(movieinfoKey))
@@ -672,50 +668,40 @@ public class AdminService {
                 }
                 inputBuffer.append(line);
                 inputBuffer.append("\n");
-
-
             }
-                membr.close();
-                fileout = new FileOutputStream(path);
-                fileout.write(inputBuffer.toString().getBytes());
-                fileout.close();
-                inputBuffer.delete(0, inputBuffer.length());
+            membr.close();
+            FileOutputStream fileout = new FileOutputStream(path);
+            fileout.write(inputBuffer.toString().getBytes());
+            fileout.close();
+
             //// movie.txt (상영 스케줄)에 수정된 내역 적용
             path = srcdir + "movie.txt";
             membr = new BufferedReader(
                     new InputStreamReader(new FileInputStream(path), StandardCharsets.UTF_8));
 
             while ((line = membr.readLine()) != null) {
+                System.out.println(line);
                 info = line.split(" ");
-                if (info.length == 0) {
-                    break;
-                }
                 int dateIndex = 0; // info 배열에서 날짜를 담은 방의 번호 -> 상영관 이후 ~ 날짜 전까지는 전부 제목으로 하기 위함
 
                 for (int i = 0; i < info.length; i++) {
-                    if (Pattern.matches("^[\\d]{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$", info[i])) {
+                    if (!Pattern.matches("^[\\d]{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$", info[i])) {
                         dateIndex = i;
                     }
                 }
                 ArrayList<String> temp = new ArrayList<>();
+                System.out.println(dateIndex);
+                for(int i=0;i<info.length;i++){
+                    System.out.println(info[i]);
+                }
 
                 for (int i = 0; i < 4; i++) {
                     temp.add(info[i]);
                     // tempStrings[]에 기존 키값들, 상영관 복사
                 }
 
-                String tempString = "";
-
-                for (int i = 4; i < dateIndex; i++) {
-                    tempString += info[i] + " ";
-                }
-                tempString = tempString.substring(0, tempString.length() - 1);
-
                 if (temp.get(2).equals(movieinfoKey))
                     temp.add(repString);
-                else
-                    temp.add(tempString);
-
 
                 for (int i = dateIndex; i < info.length; i++)
                     temp.add(info[i]);
@@ -732,8 +718,6 @@ public class AdminService {
             fileout.write(inputBuffer.toString().getBytes());
             fileout.close();
 
-            inputBuffer.delete(0, inputBuffer.length());
-
             // 예매 내역 반영
             File folder = new File(userdir);
             File[] filelist = folder.listFiles();
@@ -742,18 +726,12 @@ public class AdminService {
                     if (file.isFile() && file.canRead()) {
                         FileReader filereader = new FileReader(file);
                         BufferedReader bufReader = new BufferedReader(filereader);
-                        String admin = bufReader.readLine();
-                        inputBuffer.delete(0, inputBuffer.length());
-                        inputBuffer.append(admin);
-                        inputBuffer.append("\n");
-                        // 계정 정보 넘김
                         while ((line = bufReader.readLine()) != null) {
-
                             info = line.split(" ");
                             int dateIndex = 0; // info 배열에서 날짜를 담은 방의 번호 -> 상영관 이후 ~ 날짜 전까지는 전부 제목으로 하기 위함
 
                             for (int i = 0; i < info.length; i++) {
-                                if (Pattern.matches("^[\\d]{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$", info[i])) {
+                                if (!Pattern.matches("^[\\d]{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$", info[i])) {
                                     dateIndex = i;
                                 }
                             }
@@ -764,17 +742,8 @@ public class AdminService {
                                 // tempStrings[]에 기존 키값들, 상영관 복사
                             }
 
-                            String tempString = "";
-
-                            for (int i = 4; i < dateIndex; i++) {
-                                tempString += info[i] + " ";
-                            }
-                            tempString = tempString.substring(0, tempString.length() - 1);
-
                             if (temp.get(2).equals(movieinfoKey))
                                 temp.add(repString);
-                            else
-                                temp.add(tempString);
 
                             for (int i = dateIndex; i < info.length; i++)
                                 temp.add(info[i]);
@@ -786,9 +755,8 @@ public class AdminService {
                             inputBuffer.append(line);
                             inputBuffer.append("\n");
                         }
-
                         bufReader.close();
-                        fileout = new FileOutputStream(file);
+                        fileout = new FileOutputStream(path);
                         fileout.write(inputBuffer.toString().getBytes());
                         fileout.close();
                     }
@@ -913,7 +881,7 @@ public class AdminService {
         ArrayList<String> theaterInfo = new ArrayList<>();
         String[] theaterArray = null; //전체 상영관 정보, 원본 theater 파일 정보
         String[] canTheaterArray = null; //삭제 가능 상영관 정보
-        System.out.println("[상영관 리스트]");
+
         userdir = System.getProperty("user.dir") + "./src/";
         filePath = userdir +"theater.txt";
 
@@ -945,7 +913,13 @@ public class AdminService {
             }
             canTheaterArray = result.toArray(new String[0]);
 
+            if(canTheaterArray.length == 0){
+                System.out.println("삭제 가능한 상영관이 존재하지 않습니다. 관리자 메뉴로 돌아갑니다.\n");
+                return;
+            }
+
             // 배열의 각 요소 출력
+            System.out.println("[삭제 가능한 상영관 리스트]");
             for (String info : canTheaterArray) {
                 System.out.println(info);
             }
@@ -964,7 +938,7 @@ public class AdminService {
 
             // 입력 형식 검사
             if (!keyDeleteTheater.matches("^T\\d+$")) {
-                System.out.println("입력 형식이 잘못 되었습니다.\n");
+                System.out.println("입력 형식이 잘못 되었습니다.");
                 continue;
             }
 
@@ -975,7 +949,7 @@ public class AdminService {
                 }
             }
             if(deleteTheater == null){
-                System.out.println("해당 키 값을 가진 상영관은 없습니다. 다시 입력해 주세요.\n");
+                System.out.println("해당 키 값을 가진 상영관은 없습니다. 다시 입력해 주세요.");
                 continue;
             }
             String input = null;
@@ -1011,7 +985,7 @@ public class AdminService {
                     return;
 
                 } else if ("n".equalsIgnoreCase(input)) {
-                    System.out.println("메인화면으로 돌아갑니다.\n");
+                    System.out.println("관리자 메뉴로 돌아갑니다.\n");
                     return;
                 } else {
                     System.out.println("잘못된 입력입니다.");
@@ -1053,7 +1027,7 @@ public class AdminService {
         ArrayList<String> movieInfo = new ArrayList<>();
         String[] allMovieArray = null; //전체 상영관 정보, 원본 theater 파일 정보
         String[] canMovieArray = null; //삭제 가능 상영관 정보
-        System.out.println("[영화 리스트]");
+
         userdir = System.getProperty("user.dir") + "./src/";
         filePath = userdir +"movieinfo.txt";
 
@@ -1085,7 +1059,13 @@ public class AdminService {
             }
             canMovieArray = result.toArray(new String[0]);
 
+            if(canMovieArray.length == 0){
+                System.out.println("삭제 가능한 영화가 존재하지 않습니다. 관리자 메뉴로 돌아갑니다.\n");
+                return;
+            }
+
             // 배열의 각 요소 출력
+            System.out.println("[삭제 가능한 영화 리스트]");
             for (String info : canMovieArray) {
                 System.out.println(info);
             }
@@ -1104,7 +1084,7 @@ public class AdminService {
 
             // 입력 형식 검사
             if (!keyDeleteMovie.matches("^O\\d+$")) {
-                System.out.println("입력 형식이 잘못 되었습니다.\n");
+                System.out.println("입력 형식이 잘못 되었습니다.");
                 continue;
             }
 
@@ -1115,7 +1095,7 @@ public class AdminService {
                 }
             }
             if(deleteMovie == null){
-                System.out.println("해당 키 값을 가진 영화는 없습니다. 다시 입력해 주세요.\n");
+                System.out.println("해당 키 값을 가진 영화는 없습니다. 다시 입력해 주세요.");
                 continue;
             }
             String input = null;
@@ -1151,7 +1131,7 @@ public class AdminService {
                     return;
 
                 } else if ("n".equalsIgnoreCase(input)) {
-                    System.out.println("메인화면으로 돌아갑니다.\n");
+                    System.out.println("관리자 메뉴로 돌아갑니다.\n");
                     return;
                 } else {
                     System.out.println("잘못된 입력입니다.");
@@ -1159,10 +1139,118 @@ public class AdminService {
 
             } while (!"y".equalsIgnoreCase(input) && !"n".equalsIgnoreCase(input));
         }
-        
+
     }
 
 
+    //상영스케쥴 삭제
     public void DeleteMovie() {
+        String userdir = System.getProperty("user.dir") + "./src/";
+        String filePath = userdir +"movie.txt";
+
+        //삭제 가능 영화의 배열 만들기 > 00:00으로 끝나는
+        ArrayList<String> movieInfo = new ArrayList<>();
+        ArrayList<String> canDelete = new ArrayList<>();
+        String[] allMovieArray = null; //전체 상영관 정보, 원본 theater 파일 정보
+        String[] canMovieArray = null; //삭제 가능 상영관 정보
+
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+
+            // 한 줄씩 읽어오기
+            while ((line = br.readLine()) != null) {
+                // 각 라인을 분리하여 배열로 저장
+                movieInfo.add(line);
+                if (line.matches(".*\\b\\d{2}\\b:\\b\\d{2}\\b$")) {
+                    canDelete.add(line);
+                }
+            }
+            // List를 배열로 변환
+            allMovieArray = new String[movieInfo.size()];
+            allMovieArray = movieInfo.toArray(allMovieArray);
+
+            canMovieArray = new String[canDelete.size()];
+            canMovieArray = canDelete.toArray(canMovieArray);
+
+            if(canMovieArray.length == 0){
+                System.out.println("삭제 가능한 상영스케쥴이 존재하지 않습니다. 관리자 메뉴로 돌아갑니다.\n");
+                return;
+            }
+
+            // 배열의 각 요소 출력
+            System.out.println("[삭제 가능한 상영스케쥴 리스트]");
+            for (String info : canMovieArray) {
+                System.out.println(info);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //삭제할 영화 키 값 사용자에게 입력 받음
+        String deleteMovie = null; //삭제할 영화 정보
+        String keyDeleteMovie = null; //삭제할 영화 키값
+        while (true){
+            System.out.print("\n삭제할 상영스케쥴의 키 값을 입력하세요: ");
+            Scanner scanner = new Scanner(System.in);
+            keyDeleteMovie = scanner.nextLine();
+
+            // 입력 형식 검사
+            if (!keyDeleteMovie.matches("^M\\d+$")) {
+                System.out.println("입력 형식이 잘못 되었습니다.");
+                continue;
+            }
+
+            // canMovieArray 배열에서 검색
+            for (String movieinput : canMovieArray) {
+                if (movieinput.startsWith(keyDeleteMovie)) {
+                    deleteMovie = movieinput;
+                }
+            }
+            if(deleteMovie == null){
+                System.out.println("해당 키 값을 가진 상영스케쥴은 없습니다. 다시 입력해 주세요.");
+                continue;
+            }
+            String input = null;
+
+            do {
+                // 사용자로부터 입력 받기
+                System.out.println("\n선택된 상영스케쥴 : "+deleteMovie);
+                System.out.print("해당 상영스케쥴을 삭제하시겠습니까? (y/n): ");
+
+                input = scanner.nextLine();
+                // 입력 값에 따라 분기
+                if ("y".equalsIgnoreCase(input)) {
+
+                    ArrayList<String> modifiedList = new ArrayList<>();
+                    for (String theater : allMovieArray) {
+                        if (!(deleteMovie.equals(theater))) {
+                            modifiedList.add(theater);
+                        }
+                    }
+
+                    // ArrayList를 배열로 변환
+                    String[] modifiedArray = modifiedList.toArray(new String[0]);
+                    //상영관 파일에 덮어쓰기
+                    try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+                        for (String line : modifiedArray) {
+                            writer.write(line);
+                            writer.newLine(); // 각 원소를 새로운 줄에 작성
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println(deleteMovie + " 이 삭제 되었습니다.\n");
+                    return;
+
+                } else if ("n".equalsIgnoreCase(input)) {
+                    System.out.println("관리자 메뉴로 돌아갑니다.\n");
+                    return;
+                } else {
+                    System.out.println("잘못된 입력입니다.");
+                }
+
+            } while (!"y".equalsIgnoreCase(input) && !"n".equalsIgnoreCase(input));
+        }
     }
 }
