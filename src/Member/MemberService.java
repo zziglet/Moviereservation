@@ -189,35 +189,63 @@ public class MemberService {
                                         flag4 = false;
                                         int allSeatsNum = movie.getSeat().length;
                                         int colNum;
+                                        int lastColNum;
                                         int rowNum;
                                         if(allSeatsNum>=26*26){
-                                            colNum = (allSeatsNum%26==0)?allSeatsNum/26:allSeatsNum/26+1;
-                                            rowNum = 26;
+                                            rowNum = (allSeatsNum%26==0)?allSeatsNum/26:allSeatsNum/26+1;
+                                            colNum = 26;
+                                            lastColNum = (allSeatsNum%26!=0)?allSeatsNum%26:0;
                                         }
                                         else if(allSeatsNum>=19*19){
-                                            colNum = (allSeatsNum%19==0)?allSeatsNum/19:allSeatsNum/19+1;
-                                            rowNum = 19;
+                                            rowNum = (allSeatsNum%19==0)?allSeatsNum/19:allSeatsNum/19+1;
+                                            colNum  = 19;
+                                            lastColNum = (allSeatsNum%19!=0)?allSeatsNum%19:0;
                                         }
                                         else if(allSeatsNum >= 12*12){
-                                            colNum = (allSeatsNum%12==0)?allSeatsNum/12:allSeatsNum/12+1;
-                                            rowNum = 12;
+                                            rowNum = (allSeatsNum%12==0)?allSeatsNum/12:allSeatsNum/12+1;
+                                            colNum = 12;
+                                            lastColNum = (allSeatsNum%12!=0)?allSeatsNum%12:0;
                                         }
                                         else {
                                             rowNum = (allSeatsNum%12==0)? allSeatsNum / 12 : allSeatsNum/12+1;
                                             colNum = 12;
+                                            lastColNum = (allSeatsNum%12!=0)?allSeatsNum%12:0;
                                         }
                                         String[] reservedSeats = movie.getRseat();
                                         System.out.println("[예매 / 좌석선택] 좌석을 선택해주세요.\n");
-                                        for (int i = 0; i < rowNum; i++) {
-                                            int line = 65 + i;
+                                        if(lastColNum==0){
+                                            for (int i = 0; i < rowNum; i++) {
+                                                int line = 65 + i;
+                                                char ch = (char) line;
+                                                System.out.print(ch + "|\t");
+                                                for (int j = 0; j < colNum; j++) {
+                                                    if (j == colNum-1) System.out.print(reservedSeats[colNum * i + j]);
+                                                    else System.out.print(reservedSeats[colNum * i + j] + "|");
+                                                }
+                                                if (i%rowNum==0) System.out.println("\n");
+                                                else System.out.println();
+                                            }
+                                        }
+
+                                        else{
+                                            for (int i = 0; i < rowNum-1; i++) {
+                                                int line = 65 + i;
+                                                char ch = (char) line;
+                                                System.out.print(ch + "|\t");
+                                                for (int j = 0; j < colNum; j++) {
+                                                    if (j == colNum-1) System.out.print(reservedSeats[colNum * i + j]);
+                                                    else System.out.print(reservedSeats[colNum * i + j] + "|");
+                                                }
+                                                if (i%rowNum==0) System.out.println("\n");
+                                                else System.out.println();
+                                            }
+                                            int line = 65 + rowNum-1;
                                             char ch = (char) line;
                                             System.out.print(ch + "|\t");
-                                            for (int j = 0; j < colNum; j++) {
-                                                if (j == colNum-1) System.out.print(reservedSeats[colNum * i + j]);
-                                                else System.out.print(reservedSeats[colNum * i + j] + "|");
+                                            for (int j = 0; j < lastColNum; j++) {
+                                                System.out.print(reservedSeats[colNum * (rowNum-1) + j] + "|");
                                             }
-                                            if (i%rowNum==0) System.out.println("\n");
-                                            else System.out.println();
+                                            System.out.println();
                                         }
 
                                         System.out.println("첫 열에 표시된 영대문자는 각 행의 좌석 라인입니다.");

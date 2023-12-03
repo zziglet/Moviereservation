@@ -18,7 +18,7 @@ public class MemberRepository {
             이 함수를 통해 생성되는 파일은 항상 새로운 파일
          */
         try {
-            String userdir = System.getProperty("user.dir") + "./src/user/";
+            String userdir = System.getProperty("user.dir") + "/src/user/";
             String path = userdir + id + ".txt";
             File file = new File(path);
             FileWriter fw = new FileWriter(file);
@@ -43,7 +43,7 @@ public class MemberRepository {
             }
             FileWriter fw = new FileWriter(file, true);
             BufferedWriter writer = new BufferedWriter(fw);
-            String str = movie.getTheater() + " " + movie.getName() + " " + movie.getDate()
+            String str = movie.getKeys()[0]+ " " + movie.getKeys()[1] + " " + movie.getKeys()[2] + " " +movie.getTheater() + " " + movie.getName() + " " + movie.getDate()
                     + " " + movie.getStart() + " " + movie.getEnd() + " " + movie.getRseat().length + " ";
             for (String i : movie.getRseat()) {
                 str += i + " ";
@@ -56,9 +56,9 @@ public class MemberRepository {
     }
 
     @SuppressWarnings("resource")
-	public void DeleteMembertxtMovie(Movie movie, Member member) {
-        String targetstr = movie.getTheater() + " " + movie.getName() + " " + movie.getDate() + " "
-                + movie.getStart() + " " + movie.getEnd() + " " + movie.getRseat().length + " ";
+    public void DeleteMembertxtMovie(Movie movie, Member member) {
+        String targetstr = movie.getKeys()[0]+ " " + movie.getKeys()[1] + " " + movie.getKeys()[2] + " " +movie.getTheater() + " " + movie.getName() + " " + movie.getDate()
+                + " " + movie.getStart() + " " + movie.getEnd() + " " + movie.getRseat().length + " ";
         for (String str : movie.getRseat()) {
             targetstr += str + " ";
         }
@@ -105,7 +105,7 @@ public class MemberRepository {
         System.out.println("[예매 내역 확인]\n\n");
         if(mov.isEmpty()){
             System.out.println("사용자의 예매 내역이 존재하지 않습니다.\n ");
-           new MyPageMenu(member).ShowMenu2();
+            new MyPageMenu(member).ShowMenu2();
             return;
         }
         for (int i = 0; i < mov.size(); i++) {
