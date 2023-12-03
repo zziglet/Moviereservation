@@ -4,6 +4,7 @@ package Movie;
 public class Movie {
 
 
+	private String keys[];
 	private String theater;
 	private String name;
     private String date;
@@ -14,8 +15,9 @@ public class Movie {
     
     Movie(){};
 
-    public Movie(String theater, String name, String date, String start, String end, String[] rseat, String[] seat) {
+    public Movie(String keys[], String theater, String name, String date, String start, String end, String[] rseat, String[] seat) {
 		super();
+		this.keys = keys;
 		this.theater = theater;
 		this.name = name;
 		this.date = date;
@@ -27,6 +29,14 @@ public class Movie {
 	}
     
 
+	public String[] getKeys() {
+		return keys;
+	}
+
+	public void setKeys(String[] keys) {
+		this.keys = keys;
+	}
+	
 	public String getTheater() {
 		return theater;
 	}

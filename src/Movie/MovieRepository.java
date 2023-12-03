@@ -107,65 +107,119 @@ public class MovieRepository {
         int idx = 1;
         try {
             try (//movie.txt 불러오기
-			BufferedReader mvbr = new BufferedReader
+         BufferedReader mvbr = new BufferedReader
                     (new InputStreamReader(new FileInputStream(path), StandardCharsets.UTF_8))) {
-				//한줄씩 읽기
-				String line;
-				while ((line = mvbr.readLine()) != null) {
-					line = line.trim();
-					String[] info = line.split("\\s+");
-					
-					for(int i=info.length-1 ; i>2; i--) {
-	                	if(Pattern.matches("^[\\d]{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$",info[i])){
-	                		idx = i;
-	                		break;
-	                	}
-	                }
-					
-			for(int i=0; i<info.length; ) {
+            //한줄씩 읽기
+            String line;
+            while ((line = mvbr.readLine()) != null) {
+               line = line.trim();
+               String[] info = line.split("\\s+");
+               
+               for(int i=info.length-1 ; i>2; i--) {
+                      if(Pattern.matches("^[\\d]{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$",info[i])){
+                         idx = i;
+                         break;
+                      }
+                   }
+               
+         for(int i=0; i<info.length; ) {
 
-		                String[] movienamelist = new String[idx-4];
-		                for(int j=1; j<idx-3; j++) {
-		                     movienamelist[j-1] = info[j+3];
-		                }
-		                //movie 인자
-		                String movietheater = info[3];
-		                
-		                String moviename = String.join(" ", movienamelist);
-		                String moviedate = info[idx];
-		                String moviestarttime = info[idx+1];
-		                String movieendtime = info[idx+2];
-		                String[] movierseat = new String[72];
-		                String[] movieseat = new String[72];
+                      String[] movienamelist = new String[idx-4];
+                      for(int j=1; j<idx-3; j++) {
+                           movienamelist[j-1] = info[j+3];
+                      }
+                      //movie 인자
+                      String[] moviekey = new String[3];
+                      for(int j=0; j<3; j++) {
+                         moviekey[j] = info[j];
+                      }
+                      String movietheater = info[3];
+                      ArrayList<String> theatersizelist = new ArrayList<String>();
+                      String path1 = userdir +"theater.txt";
+                      
+                      try {
+                          try (
+                       BufferedReader mvbr2 = new BufferedReader
+                                  (new InputStreamReader(new FileInputStream(path1), StandardCharsets.UTF_8))) {
+                          
+                          String line2;
+                          while ((line2 = mvbr2.readLine()) != null) {
+                             line2 = line2.trim();
+                             String[] info2 = line2.split("\\s+");
+                             if(info2[0].equals(moviekey[1])) {
+                                theatersizelist.add(info2[2]);
+                                    }
+                                 }
+                             }
+                          
+                       } catch (NumberFormatException e) {
+                          // TODO Auto-generated catch block
+                          e.printStackTrace();
+                      } catch(IOException e) {
+                          e.printStackTrace();
+                      }
+                      String moviename = String.join(" ", movienamelist);
+                      String moviedate = info[idx];
+                      String moviestarttime = info[idx+1];
+                      String movieendtime = info[idx+2];
 
-		                //좌석 초기화
-		                for(int j=0; j<12; j++) {
-		                    for(int k=0; k<6; k++) {
-		                        movierseat[j*6+k] = "0" + Integer.toString(k+1);
-		                    }
-		                }
+                      int allSeatsNum = Integer.parseInt(theatersizelist.get(i));
+                      int colNum;
+                      int rowNum;
+                      if(allSeatsNum>=26*26){
+                    	  rowNum = (allSeatsNum%26==0)?allSeatsNum/26:allSeatsNum/26+1;
+                    	  colNum = 26;
+                      }
+                      else if(allSeatsNum>=19*19){
+                       rowNum = (allSeatsNum%19==0)?allSeatsNum/19:allSeatsNum/19+1;
+                       colNum  = 19;
+                     }
+                     else if(allSeatsNum >= 12*12){
+                         rowNum = (allSeatsNum%12==0)?allSeatsNum/12:allSeatsNum/12+1;
+                         colNum = 12;
+                     }
+                     else {
+                        rowNum = (allSeatsNum%12==0)? allSeatsNum / 12 : allSeatsNum/12+1;
+                        colNum = 12;
+                     }
+                        
+                      
+                      String[] movierseat = new String[rowNum * colNum];
+                      String[] movieseat = new String[rowNum * colNum];
+                      
+                      //좌석 초기화
+                      for(int j=0; j<rowNum; j++) {
+                          for(int k=0; k<colNum; k++) {
+                             String tmp = "";
+                             if(k < 9) {
+                                tmp = "0";
+                             }
+                              movierseat[j*colNum+k] = tmp + Integer.toString(k+1);
+                          }
+                      }
 
-		                Arrays.fill(movieseat, "1");
+                      Arrays.fill(movieseat, "1");
 
-		                //예약된 좌석 표기
-		                int idx2 = 0;
-		                for(int j=idx+3; j<info.length; j++) {
-		                    String[] inforseat = info[j].split("");
-		                    int temp = (int)inforseat[0].charAt(0);
-		                    idx2 = 6*(temp - 65) + Integer.parseInt(inforseat[2]) - 1;
-		                    movierseat[idx2] = "00";
-		                    movieseat[idx2] = "0";
-		                }
-
-		                Movie movie = new Movie(movietheater, moviename, moviedate, moviestarttime, movieendtime, movierseat, movieseat);
-		                list.add(movie);
-		                break;
-		                }
-				}
-			} catch (NumberFormatException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+                      //예약된 좌석 표기
+                      int idx2 = 0;
+                      for(int j=idx+3; j<info.length; j++) {
+                          String[] inforseat = info[j].split("");
+                          int temp = (int)inforseat[0].charAt(0);
+                          int seatNum = Integer.parseInt(inforseat[1] + inforseat[2]);
+                          idx2 = colNum*(temp - 65) + seatNum - 1;
+                          movierseat[idx2] = "00";
+                          movieseat[idx2] = "0";
+                      }
+                      
+                      Movie movie = new Movie(moviekey, movietheater, moviename, moviedate, moviestarttime, movieendtime, movierseat, movieseat);
+                      list.add(movie);
+                      break;
+                      }
+            }
+         } catch (NumberFormatException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+         }
             
 
         } catch(IOException e) {
