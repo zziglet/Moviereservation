@@ -88,7 +88,11 @@ public class Member {
                     }
 
                     //movie 인자
-                    String movietheater = info[0];
+                    String[] keys = new String[3];
+                    keys[0]=info[0];
+                    keys[1]=info[1];
+                    keys[1]=info[2];
+                    String movietheater = info[3];
                     String moviename = String.join(" ", movienamelist);
                     String moviedate = info[idx];
                     String moviestarttime = info[idx+1];
@@ -101,7 +105,7 @@ public class Member {
                         cnt++;
                     }
 
-                    Movie movie = new Movie(movietheater, moviename, moviedate, moviestarttime, movieendtime, movierseat, movieseat);
+                    Movie movie = new Movie(keys,movietheater, moviename, moviedate, moviestarttime, movieendtime, movierseat, movieseat);
                     movieList.add(movie);
 
                     break;
