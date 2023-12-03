@@ -14,12 +14,12 @@ public class MemberService {
     MemberRepository memberRepository = new MemberRepository();
     MovieRepository movieRepository = new MovieRepository();
     Scanner scan = new Scanner(System.in);
-    
+
     public void CreateReservation(Member member) {
-    	//예매 가능 영화 목록 출력하기
+        //예매 가능 영화 목록 출력하기
         ArrayList<Movie> movieAllList = movieRepository.find();
         ArrayList<Movie> movieList = new ArrayList<Movie>();
-        
+
         //빈 좌석이 0개인 목록은 제외하기
         int cnt = 0;
         for (int j = 0; j < movieAllList.size(); j++) {
@@ -172,7 +172,7 @@ public class MemberService {
                                     //남은 좌석 수보다 많은 인원 수 입력했을 시
                                     Movie movie = movieList.get(0);
                                     String[] seats = movie.getRseat();
-                                    int seatsNum = 72; // 전체 좌석 수
+                                    int seatsNum = movie.getSeat().length; // 전체 좌석 수 수저우저수저ㅜ서주서주서주서
                                     int reservedSeatsNum = 0; // 이미 예약된 좌석 수
                                     for (String seat : seats) {
                                         if (seat.equals("00")) reservedSeatsNum++;
@@ -187,17 +187,36 @@ public class MemberService {
 
                                     if (num >= 1 && num <= 5) {
                                         flag4 = false;
+                                        int allSeatsNum = movie.getSeat().length;
+                                        int colNum;
+                                        int rowNum;
+                                        if(allSeatsNum>=26*26){
+                                            colNum = (allSeatsNum%26==0)?allSeatsNum/26:allSeatsNum/26+1;
+                                            rowNum = 26;
+                                        }
+                                        else if(allSeatsNum>=19*19){
+                                            colNum = (allSeatsNum%19==0)?allSeatsNum/19:allSeatsNum/19+1;
+                                            rowNum = 19;
+                                        }
+                                        else if(allSeatsNum >= 12*12){
+                                            colNum = (allSeatsNum%12==0)?allSeatsNum/12:allSeatsNum/12+1;
+                                            rowNum = 12;
+                                        }
+                                        else {
+                                            rowNum = (allSeatsNum%12==0)? allSeatsNum / 12 : allSeatsNum/12+1;
+                                            colNum = 12;
+                                        }
                                         String[] reservedSeats = movie.getRseat();
                                         System.out.println("[예매 / 좌석선택] 좌석을 선택해주세요.\n");
-                                        for (int i = 0; i < 12; i++) {
+                                        for (int i = 0; i < rowNum; i++) {
                                             int line = 65 + i;
                                             char ch = (char) line;
                                             System.out.print(ch + "|\t");
-                                            for (int j = 0; j < 6; j++) {
-                                                if (j == 5) System.out.print(reservedSeats[6 * i + j]);
-                                                else System.out.print(reservedSeats[6 * i + j] + "|");
+                                            for (int j = 0; j < colNum; j++) {
+                                                if (j == colNum-1) System.out.print(reservedSeats[colNum * i + j]);
+                                                else System.out.print(reservedSeats[colNum * i + j] + "|");
                                             }
-                                            if (i == 1 || i == 5 || i == 11) System.out.println("\n");
+                                            if (i%rowNum==0) System.out.println("\n");
                                             else System.out.println();
                                         }
 
@@ -212,7 +231,7 @@ public class MemberService {
                                             System.out.print("MovieReservation >> ");
                                             String result1 = scan.nextLine();
                                             String input = result1.replaceAll("\\s+", "");
-                                            
+
                                             if (input.equals("1")) {
                                                 flag5 = false;
                                                 System.out.println("[예매 / 좌석선택] 예매하려는 좌석번호를 입력해주세요.");
@@ -233,44 +252,44 @@ public class MemberService {
                                                             System.out.println("!오류 : 잘못된 입력입니다. 다시 입력해주세요.");
                                                             continue lp2;
                                                         }
-                                                        
+
                                                     }
                                                     Long distinctCount = Stream.of(splited_input).distinct().count();
-                                                    
+
                                                     if(distinctCount != splited_input.length) {
-                                                    	System.out.println("..! 중복되는 좌석을 선택했습니다. 다시 입력해주세요.");
+                                                        System.out.println("..! 중복되는 좌석을 선택했습니다. 다시 입력해주세요.");
                                                         continue;
                                                     }
-                                                    
+
                                                     if (splited_input.length != num) {
                                                         System.out.println("..! 앞서 입력하신 인원 수 (" + num + "명)에 맞지 않는 좌석을 선택했습니다. 다시 입력해주세요.");
                                                         continue;
                                                     }
-                                                    
+
                                                     for (int i = 0; i < splited_input.length; i++) {
-                                                        
-                                                   
-                                                    	char ch = splited_input[i].charAt(0);
+
+
+                                                        char ch = splited_input[i].charAt(0);
                                                         ch = Character.toUpperCase(ch);
                                                         String idxOfNumber = splited_input[i].substring(1, 3);
                                                         int idxOfNumberInt = Integer.parseInt(idxOfNumber) - 1;
                                                         int idxOfLine = (int) ch - 65;
-                                                        if (movieList.get(0).getSeat()[idxOfLine * 6 + idxOfNumberInt] == "0") {
+                                                        if (movieList.get(0).getSeat()[idxOfLine * colNum + idxOfNumberInt] == "0") {
                                                             System.out.println("..! 이미 예약되어있는 자리 입니다. 다시 입력해주세요.");
                                                             continue lp2;
                                                         }
                                                         for (int j=0; j<splited_input[i].length(); j++) {
-                                                        	String[] str = splited_input[i].split("");
-                                                        	String upper = str[0].toUpperCase();
-                                                        	str[0] = upper;
-                                                        	String result = "";
-                                                        	for(String st : str) {
-                                                        		result += st;
-                                                        	}
-                                                        	splited_input[i] = result;
+                                                            String[] str = splited_input[i].split("");
+                                                            String upper = str[0].toUpperCase();
+                                                            str[0] = upper;
+                                                            String result = "";
+                                                            for(String st : str) {
+                                                                result += st;
+                                                            }
+                                                            splited_input[i] = result;
                                                         }
                                                     }
-                                                    
+
                                                     flag6 = false;
                                                     Movie movie1 = movieList.get(0);
                                                     movie1.setRseat(splited_input);
@@ -278,7 +297,7 @@ public class MemberService {
                                                     for (String str : splited_input) {
                                                         seatsstr += str + " ";
                                                     }
-                                                    
+
                                                     movieRepository.SaveMovietxt(movie1, seatsstr);
                                                     memberRepository.SaveMovie(member, movie1);
                                                 }
@@ -329,52 +348,52 @@ public class MemberService {
         MainMenu mainmenu = new MainMenu(member);
 
         try (Scanner scanner = new Scanner(System.in)) {
-			while (true) {
-			    System.out.print("MovieReservation >> ");
-			    String choiceInput = scanner.nextLine();
-			    int choice;
+            while (true) {
+                System.out.print("MovieReservation >> ");
+                String choiceInput = scanner.nextLine();
+                int choice;
 
-			    try {
-			        choice = Integer.parseInt(choiceInput);
+                try {
+                    choice = Integer.parseInt(choiceInput);
 
-			        ArrayList<Movie> movieList = member.getMovielist();
+                    ArrayList<Movie> movieList = member.getMovielist();
 
-			        if (choice > 0 && choice <= movieList.size()) {
-			            Movie cancelMovie = movieList.get(choice - 1);
-			            System.out.println("[" + choice + "]");
-			            System.out.println("영화 제목:" + cancelMovie.getName());
-			            System.out.println("상영 날짜:" + cancelMovie.getDate());
-			            System.out.println("좌석:" + String.join("/", cancelMovie.getRseat()));
+                    if (choice > 0 && choice <= movieList.size()) {
+                        Movie cancelMovie = movieList.get(choice - 1);
+                        System.out.println("[" + choice + "]");
+                        System.out.println("영화 제목:" + cancelMovie.getName());
+                        System.out.println("상영 날짜:" + cancelMovie.getDate());
+                        System.out.println("좌석:" + String.join("/", cancelMovie.getRseat()));
 
-			            System.out.println("예매를 취소하시겠습니까? (y/n): ");
-			            while (true) {
-			                System.out.print("MovieReservation >> ");
-			                String ans = scanner.next();
-			                if (ans.equals("y") || ans.equals("Y")) {
-			                    System.out.println("사용자의 예매 내역이 취소되었습니다. 메인 메뉴로 돌아갑니다.");
-			                    for (String seat : cancelMovie.getRseat()) {
-			                        memberRepository.DeleteMembertxtMovie(cancelMovie, member);
-			                        movieRepository.DeleteMovietxt(cancelMovie, seat);
-			                    }
-			                    mainmenu.ShowMenu();
-			                    break;
-			                } else if (ans.equals("n") || ans.equals("N")) {
-			                    System.out.println("메인 메뉴로 돌아갑니다.");
-			                    mainmenu.ShowMenu();
-			                    break;
-			                } else {
-			                    System.out.println("..! 오류: 예매 취소를 원하시면 y를 원하지 않으시면 n을 입력해야합니다. 다시 입력해주세요.");
-			                }
-			            }
-			            break;
-			        } else {
-			            System.out.println("..! 오류: 예매되어 있는 영화 번호를 입력해야 합니다. 다시 입력해주세요");
-			        }
-			    } catch (NumberFormatException e) {
-			        System.out.println("..! 오류: 예매되어 있는 영화 번호를 입력해야 합니다. 다시 입력해주세요");
-			    }
-			}
-		}
+                        System.out.println("예매를 취소하시겠습니까? (y/n): ");
+                        while (true) {
+                            System.out.print("MovieReservation >> ");
+                            String ans = scanner.next();
+                            if (ans.equals("y") || ans.equals("Y")) {
+                                System.out.println("사용자의 예매 내역이 취소되었습니다. 메인 메뉴로 돌아갑니다.");
+                                for (String seat : cancelMovie.getRseat()) {
+                                    memberRepository.DeleteMembertxtMovie(cancelMovie, member);
+                                    movieRepository.DeleteMovietxt(cancelMovie, seat);
+                                }
+                                mainmenu.ShowMenu();
+                                break;
+                            } else if (ans.equals("n") || ans.equals("N")) {
+                                System.out.println("메인 메뉴로 돌아갑니다.");
+                                mainmenu.ShowMenu();
+                                break;
+                            } else {
+                                System.out.println("..! 오류: 예매 취소를 원하시면 y를 원하지 않으시면 n을 입력해야합니다. 다시 입력해주세요.");
+                            }
+                        }
+                        break;
+                    } else {
+                        System.out.println("..! 오류: 예매되어 있는 영화 번호를 입력해야 합니다. 다시 입력해주세요");
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("..! 오류: 예매되어 있는 영화 번호를 입력해야 합니다. 다시 입력해주세요");
+                }
+            }
+        }
 
     }
 
