@@ -165,37 +165,52 @@ public class MovieRepository {
 
                       int allSeatsNum = Integer.parseInt(theatersizelist.get(i));
                       int colNum;
+                      int lastColNum;
                       int rowNum;
                       if(allSeatsNum>=26*26){
-                    	  rowNum = (allSeatsNum%26==0)?allSeatsNum/26:allSeatsNum/26+1;
-                    	  colNum = 26;
+                          rowNum = (allSeatsNum%26==0)?allSeatsNum/26:allSeatsNum/26+1;
+                          colNum = 26;
+                          lastColNum = (allSeatsNum%26!=0)?allSeatsNum%26:0;
                       }
                       else if(allSeatsNum>=19*19){
-                       rowNum = (allSeatsNum%19==0)?allSeatsNum/19:allSeatsNum/19+1;
-                       colNum  = 19;
-                     }
-                     else if(allSeatsNum >= 12*12){
-                         rowNum = (allSeatsNum%12==0)?allSeatsNum/12:allSeatsNum/12+1;
-                         colNum = 12;
-                     }
-                     else {
-                        rowNum = (allSeatsNum%12==0)? allSeatsNum / 12 : allSeatsNum/12+1;
-                        colNum = 12;
-                     }
-                        
+                          rowNum = (allSeatsNum%19==0)?allSeatsNum/19:allSeatsNum/19+1;
+                          colNum  = 19;
+                          lastColNum = (allSeatsNum%19!=0)?allSeatsNum%19:0;
+                      }
+                      else if(allSeatsNum >= 12*12){
+                          rowNum = (allSeatsNum%12==0)?allSeatsNum/12:allSeatsNum/12+1;
+                          colNum = 12;
+                          lastColNum = (allSeatsNum%12!=0)?allSeatsNum%12:0;
+                      }
+                      else {
+                          rowNum = (allSeatsNum%12==0)? allSeatsNum / 12 : allSeatsNum/12+1;
+                          colNum = 12;
+                          lastColNum = (allSeatsNum%12!=0)?allSeatsNum%12:0;
+                      } 
                       
-                      String[] movierseat = new String[rowNum * colNum];
-                      String[] movieseat = new String[rowNum * colNum];
+                      String[] movierseat = new String[Integer.parseInt(theatersizelist.get(i))];
+                      String[] movieseat = new String[Integer.parseInt(theatersizelist.get(i))];
                       
                       //좌석 초기화
                       for(int j=0; j<rowNum; j++) {
-                          for(int k=0; k<colNum; k++) {
-                             String tmp = "";
-                             if(k < 9) {
-                                tmp = "0";
-                             }
-                              movierseat[j*colNum+k] = tmp + Integer.toString(k+1);
-                          }
+                          
+                    	 if((j == rowNum-1) && (lastColNum != 0)) {
+                    		 for(int k=0; k<lastColNum; k++) {
+                    			 String tmp = "";
+	                             if(k < 9) {
+	                                tmp = "0";
+	                             }
+	                             movierseat[j*colNum+k] = tmp + Integer.toString(k+1);
+                    		 }
+                    	 }else {
+                    		 for(int k=0; k<colNum; k++) {
+                    			 String tmp = "";
+	                             if(k < 9) {
+	                                tmp = "0";
+	                             }
+	                             movierseat[j*colNum+k] = tmp + Integer.toString(k+1);
+                    		 }
+                    	 }
                       }
 
                       Arrays.fill(movieseat, "1");
@@ -212,6 +227,9 @@ public class MovieRepository {
                       }
                       
                       Movie movie = new Movie(moviekey, movietheater, moviename, moviedate, moviestarttime, movieendtime, movierseat, movieseat);
+                      System.out.printf("%s %s %s %s %s", movie.getTheater(), movie.getName(),
+      						 movie.getDate(), movie.getStart(), movie.getEnd()); for(String st :
+      						 movie.getRseat()) { System.out.printf(" %s", st); } System.out.println();
                       list.add(movie);
                       break;
                       }
