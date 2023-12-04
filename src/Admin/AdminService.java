@@ -560,7 +560,7 @@ public class AdminService {
                 }
                 int result = Integer.parseInt(input.replaceAll("\\s+", ""));
                 if (result < 1 || result > movieList.size()) {
-                    System.out.println("..! 오류 : 존재하지 않는 상영관입니다. 다시 입력해주세요.\n");
+                    System.out.println("..! 오류 : 존재하지 않는 리스트입니다. 다시 입력해주세요.\n");
                     continue lp1;
                 }
                 flag1=true;
@@ -582,7 +582,7 @@ public class AdminService {
                             System.out.println("..! 오류 : 입력된 관 번호는 현재 관 번호와 동일합니다. 다른 번호를 입력해주세요.\n");
                             continue lp2;
                         }
-                        if (!(Integer.parseInt(repString)<Integer.parseInt(theaternumMax))/*||(Integer.parseInt(repString)<Integer.parseInt(theaternumMin))*/) {
+                        if (!(Integer.parseInt(repString)>0)){
                             System.out.println("..! 오류 : 존재하지 않는 관입니다. 다시 입력해주세요.\n");
                             continue lp2;
                         }
@@ -641,6 +641,7 @@ public class AdminService {
                         if (info[1].equals(theaterKey)){
                             movieKey = info[0];
                             info[3] = repString;
+
                         }
                         line = "";
                         for (String str : info) {
