@@ -16,7 +16,7 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 public class AdminService {
-    private static String theaternumMax = "2600"; 
+    private static String theaternumMax = "2574"; 
     private static String theaternumMin = "1"; 
     
     private static String movieruntimeMax = "1440"; 
