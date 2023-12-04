@@ -19,7 +19,7 @@ public class AdminService {
     private static String theaternumMax = "2574"; 
     private static String theaternumMin = "1"; 
     
-    private static String movieruntimeMax = "1440"; 
+    private static String movieruntimeMax = "600"; 
     private static String movieruntimeMin = "1"; 
     
     
@@ -160,7 +160,6 @@ public class AdminService {
              while (!flag1) {
                System.out.print("MovieReservation >> ");
                 String input = scan.nextLine().trim();
-                System.out.println(input);
                 if (!Pattern.matches("^[가-힣a-zA-Z0-9 ,:.!?()~-]+$", input)) {
                    System.out.println("..! 오류 : 잘못된 입력입니다. 다시 입력해주세요.\n");
                    continue lp1;
