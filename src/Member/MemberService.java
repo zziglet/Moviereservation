@@ -1,8 +1,8 @@
 package Member;
 
+import Menu.MainMenu;
 import Movie.Movie;
 import Movie.MovieRepository;
-import Menu.MainMenu;
 
 import java.util.*;
 import java.util.regex.Pattern;
@@ -147,9 +147,25 @@ public class MemberService {
                                         }
                                         for (int j = 0; j < mov.size(); j++) {
                                             if (movieDateInput.equals(mov.get(j).getDate()) && (inputStartTimeInteger * 60 + inputStartMinuteInteger) < ((reservatedMovieStartTime[j] + inputTimeInteger) * 60 + (reservatedMovieStartMinute[j] + inputMinuteInteger)) && ((reservatedMovieEndTime[j] + inputTimeInteger) * 60 + (reservatedMovieEndMinute[j] + inputMinuteInteger)) > (inputEndTimeInteger * 60 + inputEndMinuteInteger)) {
-                                                System.out.println("동일한 시간대에 예매한 영화가 있습니다. 다시 입력해주세요.");
-                                                flag3 = false;
-                                                continue lp1;
+                                                System.out.println("동일한 시간대에 예매한 영화가 있습니다. 원하시는 서비스의 숫자를 입력해주세요.");
+                                                System.out.print("  1. 다시 입력\n  2. 예매 페이지\n  3. 메인 메뉴\n");
+                                                System.out.println();
+                                                System.out.print("MovieReservation >>");
+
+                                                String input=scan.nextLine();
+                                                String result = input.replaceAll("\\s+", "");
+
+                                                if(result.equals("1")){
+                                                    flag3 = false;
+                                                    continue lp1;
+                                                }
+                                                else if(result.equals("2")){
+                                                    CreateReservation(member);
+                                                }
+                                                else if(result.equals("3")){
+                                                    MainMenu showmenu = new MainMenu(member);
+                                                    showmenu.ShowMenu();
+                                                }
                                             }
                                         }
                                     }
