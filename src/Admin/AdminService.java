@@ -40,7 +40,7 @@ public class AdminService {
              lastKey = String.join("", info3);
             }
             
-             System.out.println("추가할 상영관 이름을 입력하십시오.\n");
+             System.out.println("\n추가할 상영관 이름을 입력하십시오.");
                
              @SuppressWarnings("resource")
             Scanner scan = new Scanner(System.in);
@@ -61,7 +61,7 @@ public class AdminService {
                    }
                 }
                 
-                System.out.println("추가할 상영관의 좌석 수를 입력하십시오.\n");
+                System.out.println("\n추가할 상영관의 좌석 수를 입력하십시오.\n");
                 boolean flag2 = false;
                 lp2:
                 while(!flag2) {
@@ -141,7 +141,7 @@ public class AdminService {
              lastKey = String.join("", info3);
             }
             
-             System.out.println("추가할 영화의 제목을 입력하십시오.\n");
+             System.out.println("\n추가할 영화의 제목을 입력하십시오.\n");
                
              @SuppressWarnings("resource")
             Scanner scan = new Scanner(System.in);
@@ -163,7 +163,7 @@ public class AdminService {
                    }
                 }
                 
-                System.out.println("추가할 영화의 러닝타임을 입력하십시오.\n");
+                System.out.println("\n추가할 영화의 러닝타임을 입력하십시오.\n");
                 boolean flag2 = false;
                 lp2:
                 while(!flag2) {
@@ -329,7 +329,7 @@ public class AdminService {
                       System.out.println("..! 오류 : 벗어난 Key 값입니다. 다시 입력해주세요.\n");
                       continue lp2;}
                   
-                  System.out.println("추가할 상영스케줄의 상영 날짜를 입력하십시오.\n");
+                  System.out.println("\n추가할 상영스케줄의 상영 날짜를 입력하십시오.\n");
                   boolean flag3 = false;
                   lp3:
                   while(!flag3) {
