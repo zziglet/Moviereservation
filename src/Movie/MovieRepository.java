@@ -227,9 +227,6 @@ public class MovieRepository {
                       }
                       
                       Movie movie = new Movie(moviekey, movietheater, moviename, moviedate, moviestarttime, movieendtime, movierseat, movieseat);
-                      System.out.printf("%s %s %s %s %s", movie.getTheater(), movie.getName(),
-      						 movie.getDate(), movie.getStart(), movie.getEnd()); for(String st :
-      						 movie.getRseat()) { System.out.printf(" %s", st); } System.out.println();
                       list.add(movie);
                       break;
                       }
