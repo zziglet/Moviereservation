@@ -61,7 +61,7 @@ public class AdminService {
                    }
                 }
                 
-                System.out.println("\n추가할 상영관의 좌석 수를 입력하십시오.\n");
+                System.out.println("\n추가할 상영관의 좌석 수를 입력하십시오.");
                 boolean flag2 = false;
                 lp2:
                 while(!flag2) {
@@ -102,6 +102,7 @@ public class AdminService {
          } catch(IOException e) {
             e.printStackTrace();
          }
+        System.out.println("\n상영관 추가가 완료되었습니다.");
         return;
     
     }
@@ -141,10 +142,10 @@ public class AdminService {
              lastKey = String.join("", info3);
             }
             
-             System.out.println("\n추가할 영화의 제목을 입력하십시오.\n");
+             System.out.println("\n추가할 영화의 제목을 입력하십시오.");
                
              @SuppressWarnings("resource")
-            Scanner scan = new Scanner(System.in);
+             Scanner scan = new Scanner(System.in);
              boolean flag1 = false; // 영화 제목 체크
              lp1:
              while (!flag1) {
@@ -163,7 +164,7 @@ public class AdminService {
                    }
                 }
                 
-                System.out.println("\n추가할 영화의 러닝타임을 입력하십시오.\n");
+                System.out.println("\n추가할 영화의 러닝타임을 입력하십시오.");
                 boolean flag2 = false;
                 lp2:
                 while(!flag2) {
@@ -205,6 +206,7 @@ public class AdminService {
             e.printStackTrace();
          }
         
+        System.out.println("\n영화 정보 추가가 완료되었습니다.");
         return;
    }
       
@@ -232,8 +234,8 @@ public class AdminService {
                    (new InputStreamReader(new FileInputStream(path), StandardCharsets.UTF_8))) {
                 String line;
                 while ((line = mvbr.readLine()) != null) {
-                   System.out.println(line);
                     line = line.trim();
+                    System.out.println(line);
                     String[] info = line.split(" ");
                     theaterKeylist.add(info[0]);
                     theaterNamelist.add(info[1]);
@@ -280,15 +282,14 @@ public class AdminService {
                    ArrayList<String> movieNamelist = new ArrayList<String>();
                    ArrayList<String> movieKeylist = new ArrayList<String>();
                    ArrayList<String> movieRuntimelist = new ArrayList<String>();
-                   String runtime = null;
                
                    try {
                    try (BufferedReader mvbr = new BufferedReader
                           (new InputStreamReader(new FileInputStream(path), StandardCharsets.UTF_8))) {
                        String line;
                        while ((line = mvbr.readLine()) != null) {
-                          System.out.println(line);
                            line = line.trim();
+                           System.out.println(line);
                            String[] info = line.split("\\s+");
                            movieKeylist.add(info[0]);
                            ArrayList<String> namebuflist = new ArrayList<String>();
@@ -329,7 +330,7 @@ public class AdminService {
                       System.out.println("..! 오류 : 벗어난 Key 값입니다. 다시 입력해주세요.\n");
                       continue lp2;}
                   
-                  System.out.println("\n추가할 상영스케줄의 상영 날짜를 입력하십시오.\n");
+                  System.out.println("\n추가할 상영스케줄의 상영 날짜를 입력하십시오.");
                   boolean flag3 = false;
                   lp3:
                   while(!flag3) {
@@ -343,7 +344,6 @@ public class AdminService {
                                movienamebuf = movieNamelist.get(j);
                             }
                          }
-                         System.out.println();
                          System.out.print("MovieReservation >> ");
                         input = scan.nextLine().trim();
                         
@@ -351,7 +351,7 @@ public class AdminService {
                             System.out.println("..! 오류 : 잘못된 입력입니다. 다시 입력해주세요.\n");
                             continue lp3;}
                          
-                         System.out.println("\n추가할 상영스케줄의 상영 시작 시간을 입력하십시오.\n");
+                         System.out.println("\n추가할 상영스케줄의 상영 시작 시간을 입력하십시오.");
                          boolean flag4 = false;
                          lp4:
                          while(!flag4) {
@@ -470,8 +470,9 @@ public class AdminService {
                            
                            starttime = input;
                            
-                           System.out.println("시작 시간: " + input + "\n");
+                           System.out.println("\n시작 시간: " + input);
                            System.out.println("종료 시간: " + endtime + "\n");
+
                             flag4 = true;
                          }
                          
@@ -509,7 +510,6 @@ public class AdminService {
                                  + " " + theaterKey + " " + movieKey + " " + theaternamebuf 
                                + " " + movienamebuf + " " + datebuf + " " + starttime 
                                + " " + endtime;
-                         System.out.println(str);
                          writer.write(str + System.lineSeparator());
                          writer.close();
                       } catch (NumberFormatException e) {
@@ -520,7 +520,7 @@ public class AdminService {
              }
              
         }
-        
+        System.out.println("상영스케줄 추가가 완료되었습니다.");
         return;
      
    }
