@@ -1,16 +1,6 @@
 package Admin;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.Charset;
-import java.nio.charset.CharsetEncoder;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.regex.Pattern;
@@ -587,29 +577,38 @@ public class AdminService {
                     String theaterKey = info[0];
 
                     String theaternum=info[1];
-                    if (theaternum.equals(repString)) {
-                        System.out.println("..! 오류 : 입력된 관 번호는 현재 관 번호와 동일합니다. 다른 번호를 입력해주세요.\n");
-                        continue lp2;
-                    }
-                    if ((Integer.parseInt(repString)>Integer.parseInt(theaternumMax))||(Integer.parseInt(repString)<Integer.parseInt(theaternumMin))) {
-                        System.out.println("..! 오류 : 잘못된 입력입니다. 다시 입력해주세요.\n");
-                        continue lp2;
-                    }
 
-                    // 사용자가 입력한 번호와 이미 존재하는 번호 비교
-                    int newTheaterNumber = Integer.parseInt(repString);
-                    boolean exists = false; // 추가: 이미 존재하는 관 번호 여부를 저장할 변수
-                    for (String theaterInfo : movieList) {
-                        String[] existingInfo = theaterInfo.split(" ");
-                        int existingTheaterNumber = Integer.parseInt(existingInfo[1]);
-
-                        if (newTheaterNumber == existingTheaterNumber) {
-                            // 새로운 상영관 번호가 이미 다른 상영관에서 사용 중인 번호일 경우
-                            System.out.println("..! 오류: 이미 존재하는 관 번호입니다. 다른 번호를 입력해주세요.\n");
-                            exists = true;
+                    try{
+                        if (theaternum.equals(repString)) {
+                            System.out.println("..! 오류 : 입력된 관 번호는 현재 관 번호와 동일합니다. 다른 번호를 입력해주세요.\n");
                             continue lp2;
                         }
+                        if (!(Integer.parseInt(repString)<=Integer.parseInt(theaternumMax))||(Integer.parseInt(repString)<=Integer.parseInt(theaternumMin))) {
+                            System.out.println("..! 오류 : 존재하지 않는 관입니다. 다시 입력해주세요.\n");
+                            continue lp2;
+                        }
+
+                        // 사용자가 입력한 번호와 이미 존재하는 번호 비교
+                        int newTheaterNumber = Integer.parseInt(repString);
+                        boolean exists = false; // 추가: 이미 존재하는 관 번호 여부를 저장할 변수
+                        for (String theaterInfo : movieList) {
+                            String[] existingInfo = theaterInfo.split(" ");
+                            int existingTheaterNumber = Integer.parseInt(existingInfo[1]);
+
+                            if (newTheaterNumber == existingTheaterNumber) {
+                                // 새로운 상영관 번호가 이미 다른 상영관에서 사용 중인 번호일 경우
+                                System.out.println("..! 오류: 이미 존재하는 관 번호입니다. 다른 번호를 입력해주세요.\n");
+                                exists = true;
+                                continue lp2;
+                            }
+                        }
+
+                    } catch (NumberFormatException e){
+                        System.out.println("..! 오류 : 숫자 형식이 아닙니다. 다시 입력해주세요.\n");
+                        continue lp2;
                     }
+
+
                     flag2=true;
                     System.out.println("수정이 완료되었습니다.\n");
                     System.out.println("관리자 메뉴로 돌아갑니다.\n");
