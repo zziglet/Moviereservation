@@ -416,9 +416,9 @@ public class MemberService {
                             if (ans.equals("y") || ans.equals("Y")) {
                                 System.out.println("사용자의 예매 내역이 취소되었습니다. 메인 메뉴로 돌아갑니다.");
                                 for (String seat : cancelMovie.getRseat()) {
-                                    memberRepository.DeleteMembertxtMovie(cancelMovie, member);
                                     movieRepository.DeleteMovietxt(cancelMovie, seat);
                                 }
+                                memberRepository.DeleteMembertxtMovie(cancelMovie, member);
                                 mainmenu.ShowMenu();
                                 break;
                             } else if (ans.equals("n") || ans.equals("N")) {

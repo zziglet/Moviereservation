@@ -3,6 +3,7 @@ package Member;
 import Menu.MyPageMenu;
 import Movie.Movie;
 
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -63,7 +64,7 @@ public class MemberRepository {
             targetstr += str + " ";
         }
         targetstr = targetstr.trim();
-
+        System.out.println(targetstr);
         ArrayList<String> memtxt = new ArrayList<>();
         try {
             String userdir = System.getProperty("user.dir") + "./src/user/";
@@ -79,7 +80,15 @@ public class MemberRepository {
                 memtxt.add(line);
             }
 
-            memtxt.remove(targetstr);
+            int deleteIndex = 0;
+
+            for(int i=0; i<memtxt.size();i++){
+                if(memtxt.get(i).contains(movie.getKeys()[0])){
+                    deleteIndex = i;
+                    break;
+                }
+            }
+            memtxt.remove(deleteIndex);
 
             File file = new File(path);
             if (!file.exists()) {

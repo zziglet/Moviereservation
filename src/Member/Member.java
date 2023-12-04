@@ -82,16 +82,17 @@ public class Member {
 
                 for(int i=0; i<info.length; ) {
 
-                    String[] movienamelist = new String[idx-1];
-                    for(int j=1; j<idx; j++) {
-                        movienamelist[j-1] = info[j];
+                    String[] movienamelist = new String[idx-4];
+                    for(int j=4; j<idx; j++) {
+                        movienamelist[j-4] = info[j];
                     }
 
                     //movie 인자
                     String[] keys = new String[3];
                     keys[0]=info[0];
                     keys[1]=info[1];
-                    keys[1]=info[2];
+                    keys[2]=info[2];
+
                     String movietheater = info[3];
                     String moviename = String.join(" ", movienamelist);
                     String moviedate = info[idx];
