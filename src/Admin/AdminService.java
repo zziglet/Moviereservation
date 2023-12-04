@@ -631,7 +631,6 @@ public class AdminService {
                     FileOutputStream fileout = new FileOutputStream(path);
                     fileout.write(inputBuffer.toString().getBytes());
                     fileout.close();
-                    scan.close();
                     /* movie.txt (상영 스케줄)에 수정된 내역 적용 */
                     path = srcdir + "movie.txt";
                     membr = new BufferedReader(
@@ -653,7 +652,7 @@ public class AdminService {
                     fileout = new FileOutputStream(path);
                     fileout.write(inputBuffer.toString().getBytes());
                     fileout.close();
-                    scan.close();
+
                     // 예매 내역 반영
                     File folder = new File(userdir);
                     File[] filelist = folder.listFiles();
@@ -685,8 +684,8 @@ public class AdminService {
                 }
 
             }
-            AdminMenu showAdminMenu=new AdminMenu();
-            showAdminMenu.ShowAdminMenu();
+            /*AdminMenu showAdminMenu=new AdminMenu();
+            showAdminMenu.ShowAdminMenu();*/
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -816,10 +815,7 @@ public class AdminService {
                     FileOutputStream fileout = new FileOutputStream(path);
                     fileout.write(inputBuffer.toString().getBytes());
                     fileout.close();
-                    scan.close();
                     System.out.println("관리자 메뉴로 돌아갑니다.\n");
-                    AdminMenu showAdminMenu=new AdminMenu();
-                    showAdminMenu.ShowAdminMenu();
                 }
 
             }
@@ -1052,8 +1048,6 @@ public class AdminService {
                     }
                 }
                 System.out.println("관리자 메뉴로 돌아갑니다.\n");
-                AdminMenu showAdminMenu=new AdminMenu();
-                showAdminMenu.ShowAdminMenu();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -1186,14 +1180,11 @@ public class AdminService {
                     FileOutputStream fileout = new FileOutputStream(path);
                     fileout.write(inputBuffer.toString().getBytes());
                     fileout.close();
-                    scan.close();
 
                 }
 
             }
             System.out.println("관리자 메뉴로 돌아갑니다.\n");
-            AdminMenu showAdminMenu=new AdminMenu();
-            showAdminMenu.ShowAdminMenu();
         } catch (IOException e) {
             e.printStackTrace();
         }
