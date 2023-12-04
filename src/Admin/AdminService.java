@@ -661,6 +661,10 @@ public class AdminService {
                             if (file.isFile() && file.canRead()) {
                                 FileReader filereader = new FileReader(file);
                                 BufferedReader bufReader = new BufferedReader(filereader);
+                                String admin = bufReader.readLine();
+                                inputBuffer.delete(0, inputBuffer.length());
+                                inputBuffer.append(admin);
+                                inputBuffer.append("\n");
                                 while ((line = bufReader.readLine()) != null) {
                                     info = line.split(" ");
                                     if (info[0].equals(movieKey))
