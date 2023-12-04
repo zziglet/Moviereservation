@@ -292,7 +292,7 @@ public class MemberService {
                                                     String[] splited_input = input.split(" ");
 
                                                     for (int i=0; i<splited_input.length; i++) {
-                                                        if (!Pattern.matches("^[A-L][0-9][1-6]", splited_input[i])) {
+                                                        if (!Pattern.matches("^[A-Z][0-9]*$", splited_input[i])) {
                                                             System.out.println("!오류 : 잘못된 입력입니다. 다시 입력해주세요.");
                                                             continue lp2;
                                                         }
