@@ -53,35 +53,33 @@ public class MovieRepository {
 
     public void DeleteMovietxt(Movie movie, String seat) {
         File inputFile = new File("./src/movie.txt");
-        String dummyContent = "";
+        StringBuilder updatedContent = new StringBuilder();
+
 
         try (BufferedReader reader = new BufferedReader(new FileReader(inputFile))) {
             String currentLine;
 
             //좌석 내역 정보 전까지 movieInfo에 저장
-            String movieInfo = String.format("%s %s %s %s %s",
-                    movie.getTheater(),
-                    movie.getName(),
-                    movie.getDate(),
-                    movie.getStart(),
-                    movie.getEnd());
+            String movieInfo = String.join(" ", movie.getKeys()[0], movie.getKeys()[1], movie.getKeys()[2], movie.getTheater(), movie.getName(), movie.getDate(), movie.getStart(), movie.getEnd());
+
 
             //파일 끝까지 한 줄씩 읽기
             while ((currentLine = reader.readLine()) != null) {
                 // 현재 읽은 줄에 해당 영화 정보가 있는지 확인
                 if (currentLine.startsWith(movieInfo)) {
                     String[] seats = currentLine.split(" ");
-                    dummyContent += String.join(" ", Arrays.copyOfRange(seats, 0, 5)) + " ";
+                    updatedContent.append(String.join(" ", Arrays.copyOfRange(seats, 0, 8))); // 기본 영화 정보
 
                     // 취소된 좌석 삭제
-                    for (int i = 5; i < seats.length; i++) {
+                    for (int i = 8; i < seats.length; i++) {
                         if (!seats[i].equals(seat)) {
-                            dummyContent += seats[i] + " ";
+                            updatedContent.append(" ").append(seats[i]);
+
                         }
                     }
-                    dummyContent = dummyContent.trim() + System.lineSeparator();
+                    updatedContent.append(System.lineSeparator());
                 } else {
-                    dummyContent += currentLine + System.lineSeparator();
+                    updatedContent.append(currentLine).append(System.lineSeparator());
                 }
             }
         } catch (FileNotFoundException e) {
@@ -92,7 +90,7 @@ public class MovieRepository {
 
         // 변경된 내용 txt 파일에 저장
         try (FileWriter writer = new FileWriter(inputFile)) {
-            writer.write(dummyContent);
+            writer.write(updatedContent.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
