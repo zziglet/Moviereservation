@@ -1,8 +1,8 @@
 package Member;
 
-import Menu.MainMenu;
 import Movie.Movie;
 import Movie.MovieRepository;
+import Menu.MainMenu;
 
 import java.util.*;
 import java.util.regex.Pattern;
@@ -108,6 +108,10 @@ public class MemberService {
                         boolean flag3 = false; //영화 상영 시작시간 체크
                         lp1:
                         while (!flag3) {
+                            ArrayList<Movie> tmpmovieList = new ArrayList<Movie>();
+                            for (int i = 0; i <movieList.size(); i++){
+                                tmpmovieList.add(movieList.get(i));
+                            }
                             System.out.println();
                             System.out.print("MovieReservation >> ");
                             movieStartInput = scan.nextLine();
@@ -131,32 +135,42 @@ public class MemberService {
                                         int inputStartMinuteInteger = Integer.parseInt(inputStartTime.substring(3));
                                         int inputEndTimeInteger = Integer.parseInt(inputEndTime.substring(0, 2));
                                         int inputEndMinuteInteger = Integer.parseInt(inputEndTime.substring(3));
-                                        int inputTimeInteger = (inputEndMinuteInteger - inputStartMinuteInteger >= 0) ? inputEndTimeInteger - inputStartTimeInteger : inputEndTimeInteger - inputStartTimeInteger - 1;
-                                        int inputMinuteInteger = (inputEndMinuteInteger - inputStartMinuteInteger >= 0) ? inputEndMinuteInteger - inputStartMinuteInteger : inputEndMinuteInteger - inputStartMinuteInteger + 60;
+                                        int inputStartInteger = inputStartTimeInteger*60+inputStartMinuteInteger;
+                                        int inputEndInteger = inputEndTimeInteger*60+inputEndMinuteInteger;
 
                                         ArrayList<Movie> mov = member.getMovielist();
                                         int[] reservatedMovieStartTime = new int[mov.size()];
                                         int[] reservatedMovieStartMinute = new int[mov.size()];
                                         int[] reservatedMovieEndTime = new int[mov.size()];
                                         int[] reservatedMovieEndMinute = new int[mov.size()];
+                                        int[] reservatedMovieStartInteger = new int[mov.size()];
+                                        int[] reservatedMovieEndInteger = new int[mov.size()];
                                         for (int j = 0; j < mov.size(); j++) {
                                             reservatedMovieStartTime[j] = Integer.parseInt(mov.get(j).getStart().substring(0, 2));
                                             reservatedMovieStartMinute[j] = Integer.parseInt(mov.get(j).getStart().substring(3));
                                             reservatedMovieEndTime[j] = Integer.parseInt(mov.get(j).getEnd().substring(0, 2));
                                             reservatedMovieEndMinute[j] = Integer.parseInt(mov.get(j).getEnd().substring(3));
+                                            reservatedMovieStartInteger[j] = reservatedMovieStartTime[j]*60+reservatedMovieStartMinute[j];
+                                            reservatedMovieEndInteger[j] = reservatedMovieEndTime[j]*60+reservatedMovieEndMinute[j];
                                         }
                                         for (int j = 0; j < mov.size(); j++) {
-                                            if (movieDateInput.equals(mov.get(j).getDate()) && (inputStartTimeInteger * 60 + inputStartMinuteInteger) < ((reservatedMovieStartTime[j] + inputTimeInteger) * 60 + (reservatedMovieStartMinute[j] + inputMinuteInteger)) && ((reservatedMovieEndTime[j] + inputTimeInteger) * 60 + (reservatedMovieEndMinute[j] + inputMinuteInteger)) > (inputEndTimeInteger * 60 + inputEndMinuteInteger)) {
+                                            if (movieDateInput.equals(mov.get(j).getDate())&&((inputEndInteger>reservatedMovieStartInteger[j]&&inputEndInteger<reservatedMovieEndInteger[j])||(inputStartInteger>reservatedMovieStartInteger[j]&&inputEndInteger<reservatedMovieEndInteger[j])||(inputStartInteger<reservatedMovieEndInteger[j]&&inputStartInteger>reservatedMovieStartInteger[j])||(inputStartInteger<reservatedMovieStartInteger[j]&&inputEndInteger>reservatedMovieEndInteger[j]))) {
                                                 System.out.println("동일한 시간대에 예매한 영화가 있습니다. 원하시는 서비스의 숫자를 입력해주세요.");
                                                 System.out.print("  1. 다시 입력\n  2. 예매 페이지\n  3. 메인 메뉴\n");
                                                 System.out.println();
-                                                System.out.print("MovieReservation >>");
+                                                System.out.print("MovieReservation >> ");
 
                                                 String input=scan.nextLine();
                                                 String result = input.replaceAll("\\s+", "");
 
                                                 if(result.equals("1")){
                                                     flag3 = false;
+                                                    for (int k = 0; k<movieList.size();k++){
+                                                        movieList.remove(k);
+                                                    }
+                                                    for (int k = 0; k <tmpmovieList.size();k++){
+                                                        movieList.add(tmpmovieList.get(k));
+                                                    }
                                                     continue lp1;
                                                 }
                                                 else if(result.equals("2")){
@@ -292,7 +306,7 @@ public class MemberService {
                                                     String[] splited_input = input.split(" ");
 
                                                     for (int i=0; i<splited_input.length; i++) {
-                                                        if (!Pattern.matches("^[A-Z][0-9]*$", splited_input[i])) {
+                                                        if (!Pattern.matches("^[A-L][0-9][1-6]", splited_input[i])) {
                                                             System.out.println("!오류 : 잘못된 입력입니다. 다시 입력해주세요.");
                                                             continue lp2;
                                                         }
@@ -416,9 +430,9 @@ public class MemberService {
                             if (ans.equals("y") || ans.equals("Y")) {
                                 System.out.println("사용자의 예매 내역이 취소되었습니다. 메인 메뉴로 돌아갑니다.");
                                 for (String seat : cancelMovie.getRseat()) {
+                                    memberRepository.DeleteMembertxtMovie(cancelMovie, member);
                                     movieRepository.DeleteMovietxt(cancelMovie, seat);
                                 }
-                                memberRepository.DeleteMembertxtMovie(cancelMovie, member);
                                 mainmenu.ShowMenu();
                                 break;
                             } else if (ans.equals("n") || ans.equals("N")) {
