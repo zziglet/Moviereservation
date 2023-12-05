@@ -1499,7 +1499,7 @@ public class AdminService {
         String userdir = System.getProperty("user.dir") + "./src/";
         String filePath = userdir +"movie.txt";
 
-        //삭제 가능 영화의 배열 만들기 > 00:00으로 끝나는
+        //삭제 가능 영화의 배열 만들기 > 00:00으로 끝나는 것들만 가져옴
         ArrayList<String> movieInfo = new ArrayList<>();
         ArrayList<String> canDelete = new ArrayList<>();
         String[] allMovieArray = null; //전체 상영관 정보, 원본 theater 파일 정보
@@ -1524,12 +1524,12 @@ public class AdminService {
             canMovieArray = canDelete.toArray(canMovieArray);
 
             if(canMovieArray.length == 0){
-                System.out.println("삭제 가능한 상영스케쥴이 존재하지 않습니다. 관리자 메뉴로 돌아갑니다.\n");
+                System.out.println("삭제 가능한 상영스케줄이 존재하지 않습니다. 관리자 메뉴로 돌아갑니다.\n");
                 return;
             }
 
             // 배열의 각 요소 출력
-            System.out.println("[삭제 가능한 상영스케쥴 리스트]");
+            System.out.println("[삭제 가능한 상영스케줄 리스트]");
             for (String info : canMovieArray) {
                 System.out.println(info);
             }
@@ -1542,7 +1542,7 @@ public class AdminService {
         String deleteMovie = null; //삭제할 영화 정보
         String keyDeleteMovie = null; //삭제할 영화 키값
         while (true){
-            System.out.print("\n삭제할 상영스케쥴의 키 값을 입력하세요: ");
+            System.out.print("\n삭제할 상영스케줄의 키 값을 입력하세요: ");
             Scanner scanner = new Scanner(System.in);
             keyDeleteMovie = scanner.nextLine();
 
@@ -1559,15 +1559,15 @@ public class AdminService {
                 }
             }
             if(deleteMovie == null){
-                System.out.println("해당 키 값을 가진 상영스케쥴은 없습니다. 다시 입력해 주세요.");
+                System.out.println("해당 키 값을 가진 상영스케줄은 없습니다. 다시 입력해 주세요.");
                 continue;
             }
             String input = null;
 
             do {
                 // 사용자로부터 입력 받기
-                System.out.println("\n선택된 상영스케쥴 : "+deleteMovie);
-                System.out.print("해당 상영스케쥴을 삭제하시겠습니까? (y/n): ");
+                System.out.println("\n선택된 상영스케줄 : "+deleteMovie);
+                System.out.print("해당 상영스케줄을 삭제하시겠습니까? (y/n): ");
 
                 input = scanner.nextLine();
                 // 입력 값에 따라 분기
