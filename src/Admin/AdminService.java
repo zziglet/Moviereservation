@@ -543,8 +543,14 @@ public class AdminService {
                 movieList.add(line);
             }
             membr.close();
-            for (int i = 0; i < movieList.size(); i++) {
-                System.out.println((i + 1) + ". " + movieList.get(i));
+            if (movieList.isEmpty()) {
+                System.out.println("수정 가능한 리스트가 없습니다.\n");
+                System.out.println("관리자 메뉴로 돌아갑니다.\n");
+                return;
+            } else {
+                for (int i = 0; i < movieList.size(); i++) {
+                    System.out.println((i + 1) + ". " + movieList.get(i));
+                }
             }
             System.out.println();
             System.out.println("수정할 리스트의 번호를 입력하십시오.\n");
@@ -750,9 +756,16 @@ public class AdminService {
             theaterList.removeAll(itemsToRemove);
             /* 4. 제외된 내역 출력 */
             System.out.println("수정할 좌석 수가 담긴 리스트입니다. \n");
-            for (int i = 0; i < theaterList.size(); i++) {
-                System.out.println((i + 1) + ". " + theaterList.get(i));
+            if (theaterList.isEmpty()) {
+                System.out.println("수정 가능한 리스트가 없습니다.\n");
+                System.out.println("관리자 메뉴로 돌아갑니다.\n");
+                return;
+            } else {
+                for (int i = 0; i < theaterList.size(); i++) {
+                    System.out.println((i + 1) + ". " + theaterList.get(i));
+                }
             }
+
             System.out.println("수정할 리스트의 번호를 입력하십시오.\n");
             System.out.println();
 
@@ -1113,6 +1126,8 @@ public class AdminService {
             System.out.println("수정할 러닝타임 기간이 담긴 리스트입니다. \n");
             if (runningList.isEmpty()) {
                 System.out.println("수정 가능한 러닝타임이 없습니다.\n");
+                System.out.println("관리자 메뉴로 돌아갑니다.\n");
+                return;
             } else {
                 for (int i = 0; i < runningList.size(); i++) {
                     System.out.println((i + 1) + ". " + runningList.get(i));
@@ -1127,6 +1142,10 @@ public class AdminService {
                 System.out.print("MovieReservation >> ");
                 String input = scan.nextLine();
                 // 오류 처리 해줘야함
+                if(!Pattern.matches("^[1-9][0-9]?$", input)){
+                    System.out.println("..! 오류 : 잘못된 입력입니다. 다시 입력해주세요.\n");
+                    continue lp1;
+                }
                 int result = Integer.parseInt(input.replaceAll("\\s+", ""));
                 if (result < 1 || result > runningList.size()) {
                     System.out.println("..! 오류 : 존재하지 않는 리스트입니다. 다시 입력해주세요.\n");
@@ -1179,7 +1198,7 @@ public class AdminService {
                     while ((line = bufReader.readLine()) != null) {
                         info = line.split(" ");
                         if (info[0].equals(movieinfoKey))
-                            info[2] = runningTime;
+                            info[info.length-1] = runningTime;
                         line = "";
                         for (String str : info) {
                             line += str + " ";
