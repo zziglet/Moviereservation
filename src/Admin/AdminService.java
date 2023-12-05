@@ -1066,11 +1066,11 @@ public class AdminService {
     }
 
     public void EditTheaterRuntime() {
-        /* 러닝 타임 수정 -> 상영스케줄에 등록 내역 제외 후 상영스케줄 반영 */
+        /* 러닝 타임 수정 -> 상영스케줄에 등록 내역 제외
         /* 1. 제외시킬 내역을 배열에 담기 */
         String srcdir = System.getProperty("user.dir") + "./src/";
         try {
-            String path = srcdir + "movieinfo.txt";
+            String path = srcdir + "movie.txt";
             BufferedReader bufReader = new BufferedReader(
                     new InputStreamReader(new FileInputStream(path), StandardCharsets.UTF_8));
             // 상영스케줄에 존재하는 영화 키값 추출
