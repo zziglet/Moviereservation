@@ -895,9 +895,17 @@ public class AdminService {
                 movieList.add(line);
             }
             membr.close();
-            for (int i = 0; i < movieList.size(); i++) {
+
+            if (movieList.isEmpty()) {
+                System.out.println("수정 가능한 리스트가 없습니다.\n");
+                System.out.println("관리자 메뉴로 돌아갑니다.\n");
+                return;
+            } else {
+                for (int i = 0; i < movieList.size(); i++) {
                 System.out.println((i + 1) + ". " + movieList.get(i));
             }
+            }
+            
             System.out.println();
             System.out.println("수정할 리스트의 번호를 입력하십시오.\n");
             Scanner scan = new Scanner(System.in);
