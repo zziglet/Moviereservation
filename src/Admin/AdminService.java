@@ -75,11 +75,17 @@ public class AdminService {
                        System.out.println("..! 오류 : 잘못된 입력입니다. 다시 입력해주세요.\n");
                        continue lp2;
                    }
-                   
-                   if((Integer.parseInt(num) < Integer.parseInt(theaternumMin)) || (Integer.parseInt(num) > Integer.parseInt(theaternumMax))) {
-                      System.out.println("..! 오류 : 가능한 좌석 수가 아닙니다. 다시 입력해주세요.\n");
-                      continue lp2;
+                   try {
+                	   if((Integer.parseInt(num) < Integer.parseInt(theaternumMin)) || (Integer.parseInt(num) > Integer.parseInt(theaternumMax))) {
+                           System.out.println("..! 오류 : 가능한 좌석 수가 아닙니다. 다시 입력해주세요.\n");
+                           continue lp2;
+                	   }
+                   }catch(NumberFormatException ex) {
+                	   System.out.println("..! 오류 : 잘못된 입력입니다. 다시 입력해주세요.\n");
+                       continue lp2;
                    }
+                   
+                   
                   
                    flag2 = true;
                 }
@@ -178,11 +184,16 @@ public class AdminService {
                        System.out.println("..! 오류 : 잘못된 입력입니다. 다시 입력해주세요.\n");
                        continue lp2;
                    }
-                   
-                   if((Integer.parseInt(runtime) < Integer.parseInt(movieruntimeMin)) || (Integer.parseInt(runtime) > Integer.parseInt(movieruntimeMax))) {
-                      System.out.println("..! 오류 : 가능한 러닝타임이 아닙니다. 다시 입력해주세요.\n");
-                      continue lp2;
+                   try {
+                	   if((Integer.parseInt(runtime) < Integer.parseInt(movieruntimeMin)) || (Integer.parseInt(runtime) > Integer.parseInt(movieruntimeMax))) {
+                           System.out.println("..! 오류 : 가능한 러닝타임이 아닙니다. 다시 입력해주세요.\n");
+                           continue lp2;
+                        }
+                   }catch(NumberFormatException ex) {
+                	   System.out.println("..! 오류 : 잘못된 입력입니다. 다시 입력해주세요.\n");
+                       continue lp2;
                    }
+                   
                   
                    flag2 = true;
                 }
@@ -530,7 +541,7 @@ public class AdminService {
         try {
             // 1.
             // 관리자에게 수정할 관 번호 선택
-            System.out.println("수정할 관 번호가 담긴 리스트입니다.\n");
+            
             String userdir = System.getProperty("user.dir") + "./src/user/";
             String srcdir = System.getProperty("user.dir") + "./src/";
             String path = srcdir + "theater.txt";
@@ -552,6 +563,7 @@ public class AdminService {
                     System.out.println((i + 1) + ". " + movieList.get(i));
                 }
             }
+            System.out.println("수정할 관 번호가 담긴 리스트입니다.\n");
             System.out.println();
             System.out.println("수정할 리스트의 번호를 입력하십시오.\n");
             Scanner scan = new Scanner(System.in);
@@ -755,7 +767,7 @@ public class AdminService {
             }
             theaterList.removeAll(itemsToRemove);
             /* 4. 제외된 내역 출력 */
-            System.out.println("수정할 좌석 수가 담긴 리스트입니다. \n");
+            
             if (theaterList.isEmpty()) {
                 System.out.println("수정 가능한 리스트가 없습니다.\n");
                 System.out.println("관리자 메뉴로 돌아갑니다.\n");
@@ -765,7 +777,7 @@ public class AdminService {
                     System.out.println((i + 1) + ". " + theaterList.get(i));
                 }
             }
-
+            System.out.println("수정할 좌석 수가 담긴 리스트입니다. \n");
             System.out.println("수정할 리스트의 번호를 입력하십시오.\n");
             System.out.println();
 
@@ -1123,7 +1135,7 @@ public class AdminService {
             runningList.removeAll(itemsToRemove);
 
             /* 4. 제외된 내역 출력 */
-            System.out.println("수정할 러닝타임 기간이 담긴 리스트입니다. \n");
+            
             if (runningList.isEmpty()) {
                 System.out.println("수정 가능한 러닝타임이 없습니다.\n");
                 System.out.println("관리자 메뉴로 돌아갑니다.\n");
@@ -1133,6 +1145,7 @@ public class AdminService {
                     System.out.println((i + 1) + ". " + runningList.get(i));
                 }
             }
+            System.out.println("수정할 러닝타임 기간이 담긴 리스트입니다. \n");
             System.out.println("수정할 리스트의 번호를 입력하십시오.\n");
             Scanner scan = new Scanner(System.in);
 
