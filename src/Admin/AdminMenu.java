@@ -126,7 +126,7 @@ public void EditMovieInfo(){
 
         if(input.equals("1"))
             //인자가 이게 맞나..
-            adminService.EditTheaterInfoName(null,null);     
+            adminService.EditTheaterInfoName();     
         else if(input.equals("2"))
             adminService.EditTheaterRuntime();  
          else if(input.equals("3"))

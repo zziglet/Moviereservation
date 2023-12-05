@@ -877,7 +877,7 @@ public class AdminService {
         }
     }
 
-    public void EditTheaterInfoName(String keyString, String moviename) {
+    public void EditTheaterInfoName() {
         try {
             /* 영화 제목 수정 -> 예매 내역 반영, 상영 스케줄 반영 */
             // 1.
