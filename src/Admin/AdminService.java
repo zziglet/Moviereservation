@@ -822,26 +822,32 @@ public class AdminService {
                     System.out.print("MovieReservation >> ");
                     input = scan.nextLine();
                     // 오류 처리 해줘야함
-                    String seatsNum = input.replaceAll("\\s+", "");
+                    String seatsNum = input;
                     info = theaterList.get(result - 1).split(" ");
                     String theaterKey = info[0];
 
                     String theaterSnum=info[2];
 
-                    try{
+
+                    if (!Pattern.matches("^[0-9]*$", seatsNum)) {
+                        System.out.println("..! 오류 : 잘못된 입력입니다. 다시 입력해주세요.\n");
+                        continue lp2;
+                    }
+
+                    try {
                         if (theaterSnum.equals(seatsNum)) {
                             System.out.println("..! 오류 : 입력된 좌석 개수는 기존의 좌석 개수와 동일합니다. 다시 입력해주세요.\n");
                             continue lp2;
                         }
-                        if (!(Integer.parseInt(seatsNum)<Integer.parseInt(theaternumMax))||(Integer.parseInt(seatsNum)<Integer.parseInt(theaternumMin))) {
-                            System.out.println("..! 오류 : 좌석 수 범위를 벗어났습니다. 다시 입력해주세요.\n");
+                        if ((Integer.parseInt(seatsNum) < Integer.parseInt(theaternumMin)) || (Integer.parseInt(seatsNum) > Integer.parseInt(theaternumMax))) {
+                            System.out.println("..! 오류 : 가능한 좌석 수가 아닙니다. 다시 입력해주세요.\n");
                             continue lp2;
                         }
-
-                    } catch (NumberFormatException e){
+                    } catch (NumberFormatException e) {
                         System.out.println("..! 오류 : 잘못된 입력입니다. 다시 입력해주세요.\n");
                         continue lp2;
                     }
+
 
                     flag2=true;
                     System.out.println("수정이 완료 되었습니다.\n");
