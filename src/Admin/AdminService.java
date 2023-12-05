@@ -944,7 +944,7 @@ public class AdminService {
                     // 오류 처리 해줘야함
                     if(!Pattern.matches("^[가-힣a-zA-Z0-9 ,:.!?()~-]+$", input)){
                         System.out.println("..! 오류 : 잘못된 입력입니다. 다시 입력해주세요.\n");
-                        continue lp1;
+                        continue lp2;
                     }
                     String repString = input;
                     String[] info = movieList.get(result - 1).split(" ");
@@ -1207,7 +1207,7 @@ public class AdminService {
                     System.out.print("MovieReservation >> ");
                     input = scan.nextLine();
                     // 오류 처리 해줘야함
-                    String runningTime = input.replaceAll("\\s+", "");
+                    String runningTime = input;
                     info = runningList.get(result - 1).split(" ");
                     String movieinfoKey = info[0];
                     //String runtime = info[1].replaceAll("\\D+", ""); // 숫자가 아닌 문자를 모두 제거
@@ -1221,15 +1221,22 @@ public class AdminService {
                         }
                     }
 
-                    if (Integer.parseInt(runningTime) == Integer.parseInt(info[runningTimeIndex])) {
-                        System.out.println("..! 오류 : 입력된 러닝 타임은 기존의 러닝 타임과 동일합니다. 다시 입력해주세요.\n");
-                        continue lp2;
-                    }
+                    try {
+                        if (Integer.parseInt(runningTime) == Integer.parseInt(info[runningTimeIndex])) {
+                            System.out.println("..! 오류 : 입력된 러닝 타임은 기존의 러닝 타임과 동일합니다. 다시 입력해주세요.\n");
+                            continue lp2;
+                        }
 
-                    if ((Integer.parseInt(runningTime)>Integer.parseInt(movieruntimeMax))||(Integer.parseInt(runningTime)<Integer.parseInt(movieruntimeMin))) {
+                        if ((Integer.parseInt(runningTime) > Integer.parseInt(movieruntimeMax)) || (Integer.parseInt(runningTime) < Integer.parseInt(movieruntimeMin))) {
+                            System.out.println("..! 오류 : 잘못된 입력입니다. 다시 입력해주세요.\n");
+                            continue lp2;
+                        }
+
+                    } catch (NumberFormatException e) {
                         System.out.println("..! 오류 : 잘못된 입력입니다. 다시 입력해주세요.\n");
                         continue lp2;
                     }
+
                     flag2=true;
                     System.out.println("수정이 완료되었습니다.\n");
 
