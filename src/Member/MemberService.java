@@ -26,7 +26,7 @@ public class MemberService {
             for (String st : movieAllList.get(j).getSeat()) {
                 if (st == "0") cnt++;
             }
-            if (cnt < 72) {
+            if (cnt < movieAllList.get(j).getSeat().length) {
                 movieList.add(movieAllList.get(j));
             }
             cnt = 0;
