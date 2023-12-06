@@ -1368,7 +1368,7 @@ public class AdminService {
 
             // 입력 형식 검사
             if (!keyDeleteTheater.matches("^T\\d+$")) {
-                System.out.println("입력 형식이 잘못 되었습니다.");
+                System.out.println("..! 오류 : 잘못된 입력입니다. 다시 입력해주세요.");
                 continue;
             }
 
@@ -1379,7 +1379,7 @@ public class AdminService {
                 }
             }
             if(deleteTheater == null){
-                System.out.println("해당 키 값을 가진 상영관은 없습니다. 다시 입력해 주세요.");
+                System.out.println("..! 오류 : 존재하지 않는 키값입니다.");
                 continue;
             }
             String input = null;
@@ -1418,7 +1418,7 @@ public class AdminService {
                     System.out.println("관리자 메뉴로 돌아갑니다.\n");
                     return;
                 } else {
-                    System.out.println("잘못된 입력입니다.");
+                    System.out.println("..! 오류 : 잘못된 입력입니다. 다시 입력해주세요.");
                 }
 
             } while (!"y".equalsIgnoreCase(input) && !"n".equalsIgnoreCase(input));
@@ -1514,7 +1514,7 @@ public class AdminService {
 
             // 입력 형식 검사
             if (!keyDeleteMovie.matches("^O\\d+$")) {
-                System.out.println("입력 형식이 잘못 되었습니다.");
+                System.out.println("..! 잘못된 입력입니다. 다시 입력하세요.");
                 continue;
             }
 
@@ -1525,7 +1525,7 @@ public class AdminService {
                 }
             }
             if(deleteMovie == null){
-                System.out.println("해당 키 값을 가진 영화는 없습니다. 다시 입력해 주세요.");
+                System.out.println("..! 오류 : 존재하지 않는 키값입니다.");
                 continue;
             }
             String input = null;
@@ -1533,7 +1533,7 @@ public class AdminService {
             do {
                 // 사용자로부터 입력 받기
                 System.out.println("\n선택된 영화 : "+deleteMovie);
-                System.out.print("해당 영화을 삭제하시겠습니까? (y/n): ");
+                System.out.print("해당 영화를 삭제하시겠습니까? (y/n): ");
 
                 input = scanner.nextLine();
                 // 입력 값에 따라 분기
@@ -1564,7 +1564,7 @@ public class AdminService {
                     System.out.println("관리자 메뉴로 돌아갑니다.\n");
                     return;
                 } else {
-                    System.out.println("잘못된 입력입니다.");
+                    System.out.println("..! 잘못된 입력입니다. 다시 입력하세요.");
                 }
 
             } while (!"y".equalsIgnoreCase(input) && !"n".equalsIgnoreCase(input));
@@ -1627,7 +1627,7 @@ public class AdminService {
 
             // 입력 형식 검사
             if (!keyDeleteMovie.matches("^M\\d+$")) {
-                System.out.println("입력 형식이 잘못 되었습니다.");
+                System.out.println("..! 잘못된 입력입니다. 다시 입력하세요.");
                 continue;
             }
 
@@ -1638,7 +1638,7 @@ public class AdminService {
                 }
             }
             if(deleteMovie == null){
-                System.out.println("해당 키 값을 가진 상영스케줄은 없습니다. 다시 입력해 주세요.");
+                System.out.println("..! 오류 : 존재하지 않는 키값입니다.");
                 continue;
             }
             String input = null;
@@ -1677,7 +1677,7 @@ public class AdminService {
                     System.out.println("관리자 메뉴로 돌아갑니다.\n");
                     return;
                 } else {
-                    System.out.println("잘못된 입력입니다.");
+                    System.out.println("..! 잘못된 입력입니다. 다시 입력하세요.");
                 }
 
             } while (!"y".equalsIgnoreCase(input) && !"n".equalsIgnoreCase(input));
