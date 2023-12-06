@@ -897,9 +897,17 @@ public class AdminService {
                     new InputStreamReader(new FileInputStream(path)));
             StringBuffer inputBuffer = new StringBuffer();
             ArrayList<String> movieList = new ArrayList<>();
+            ArrayList<String> movieNamelist = new ArrayList<>();
             String line;
             while ((line = membr.readLine()) != null) {
-                movieList.add(line);
+            	String[] info = line.split("\\s+");
+                ArrayList<String> namebuflist = new ArrayList<String>();
+                for(int i=1 ; i<info.length - 1; i++) {
+                  namebuflist.add(info[i]);
+               }
+                String moviename = String.join(" ", namebuflist);
+                movieNamelist.add(moviename);
+            	movieList.add(line);
             }
             membr.close();
 
@@ -946,6 +954,12 @@ public class AdminService {
                         System.out.println("..! 오류 : 잘못된 입력입니다. 다시 입력해주세요.\n");
                         continue lp2;
                     }
+                    for(String st : movieNamelist) {
+                        if(st.equals(input)) {
+                           System.out.println("..! 오류 : 같은 영화 제목이 있습니다. 다시 입력해주세요.\n");
+                            continue lp2;
+                        }
+                     }
                     String repString = input;
                     String[] info = movieList.get(result - 1).split(" ");
                     String movieinfoKey = info[0];
@@ -1194,10 +1208,6 @@ public class AdminService {
                     System.out.println("..! 오류 : 존재하지 않는 리스트입니다. 다시 입력해주세요.\n");
                     continue lp1;
                 }
-                if(!Pattern.matches("^[1-9][0-9]?$", input)){
-                    System.out.println("..! 오류 : 잘못된 입력입니다. 다시 입력해주세요.\n");
-                    continue lp1;
-                }
                 flag1=true;
 
                 System.out.println("수정할 러닝타임 기간을 입력하십시오.\n");
@@ -1228,7 +1238,7 @@ public class AdminService {
                         }
 
                         if ((Integer.parseInt(runningTime) > Integer.parseInt(movieruntimeMax)) || (Integer.parseInt(runningTime) < Integer.parseInt(movieruntimeMin))) {
-                            System.out.println("..! 오류 : 잘못된 입력입니다. 다시 입력해주세요.\n");
+                            System.out.println("..! 오류 : 가능한 러닝타임이 아닙니다. 다시 입력해주세요.\n");
                             continue lp2;
                         }
 
